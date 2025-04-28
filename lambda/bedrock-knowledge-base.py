@@ -249,84 +249,107 @@ def add_document_to_knowledge_base(event):
                     'body': json.dumps('KENDRA_INDEX_ID environment variable not set')
                 }
 
-            # Create the knowledge base
-            print(f"Creating knowledge base: {kb_name}")
+            # Check if knowledge base already exists
+            print(f"Checking if knowledge base already exists: {kb_name}")
             try:
-                kb_response = bedrock_agent.create_knowledge_base(
-                    name=kb_name,
-                    description='Knowledge base for processed documents',
-                    roleArn=kb_role_arn,
-                    knowledgeBaseConfiguration={
-                        'type': 'KENDRA',
-                        'kendraKnowledgeBaseConfiguration': {
-                            'kendraIndexArn': f"arn:aws:kendra:us-east-1:361769603480:index/{kendra_index_id}"
-                        }
-                    }
-                )
+                # List existing knowledge bases
+                list_kb_response = bedrock_agent.list_knowledge_bases()
+                existing_kb = None
 
-                # Get the knowledge base ID
-                kb_id = kb_response['knowledgeBase']['knowledgeBaseId']
-                print(f"Knowledge base created with ID: {kb_id}")
+                # Check if a knowledge base with the given name already exists
+                for kb in list_kb_response.get('knowledgeBaseSummaries', []):
+                    if kb.get('name') == kb_name:
+                        existing_kb = kb
+                        break
 
-                # Create a data source for the knowledge base
-                print(f"Creating data source for knowledge base: {kb_id}")
-                data_source_response = bedrock_agent.create_data_source(
-                    knowledgeBaseId=kb_id,
-                    name=f"{kb_name}DataSource",
-                    description='S3 data source for processed documents',
-                    dataSourceConfiguration={
-                        'type': 'S3',
-                        's3Configuration': {
-                            'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                            'inclusionPrefixes': ['Smart', 'processed_']  # Include objects with common prefixes
-                        }
-                    },
-                    vectorIngestionConfiguration={
-                        'chunkingConfiguration': {
-                            'chunkingStrategy': 'FIXED_SIZE',
-                            'fixedSizeChunkingConfiguration': {
-                                'maxTokens': 300,
-                                'overlapPercentage': 10
+                if existing_kb:
+                    # Use the existing knowledge base
+                    print(f"Using existing knowledge base: {kb_name} with ID: {existing_kb['knowledgeBaseId']}")
+                    kb_id = existing_kb['knowledgeBaseId']
+
+                    # Check if data source already exists for this knowledge base
+                    list_ds_response = bedrock_agent.list_data_sources(knowledgeBaseId=kb_id)
+                    existing_ds = None
+
+                    # Check if a data source already exists
+                    for ds in list_ds_response.get('dataSourceSummaries', []):
+                        existing_ds = ds
+                        break
+
+                    if existing_ds:
+                        # Use the existing data source
+                        print(f"Using existing data source with ID: {existing_ds['dataSourceId']}")
+                        ds_id = existing_ds['dataSourceId']
+                    else:
+                        # Create a new data source for the existing knowledge base
+                        print(f"Creating new data source for existing knowledge base: {kb_id}")
+                        data_source_response = bedrock_agent.create_data_source(
+                            knowledgeBaseId=kb_id,
+                            name=f"{kb_name}DataSource",
+                            description='S3 data source for processed documents',
+                            dataSourceConfiguration={
+                                'type': 'S3',
+                                's3Configuration': {
+                                    'bucketArn': f"arn:aws:s3:::{processed_bucket}",
+                                    'inclusionPrefixes': ['Smart', 'processed_']  # Include objects with common prefixes
+                                }
+                            },
+                            vectorIngestionConfiguration={
+                                'chunkingConfiguration': {
+                                    'chunkingStrategy': 'FIXED_SIZE',
+                                    'fixedSizeChunkingConfiguration': {
+                                        'maxTokens': 300,
+                                        'overlapPercentage': 10
+                                    }
+                                }
+                            }
+                        )
+                        ds_id = data_source_response['dataSource']['dataSourceId']
+                else:
+                    # Create a new knowledge base
+                    print(f"Creating new knowledge base: {kb_name}")
+                    kb_response = bedrock_agent.create_knowledge_base(
+                        name=kb_name,
+                        description='Knowledge base for processed documents',
+                        roleArn=kb_role_arn,
+                        knowledgeBaseConfiguration={
+                            'type': 'KENDRA',
+                            'kendraKnowledgeBaseConfiguration': {
+                                'kendraIndexArn': f"arn:aws:kendra:us-east-1:361769603480:index/{kendra_index_id}"
                             }
                         }
-                    }
-                )
+                    )
 
-                # Get the data source ID
-                ds_id = data_source_response['dataSource']['dataSourceId']
-                print(f"Data source created with ID: {ds_id}")
+                    # Get the knowledge base ID from the response
+                    kb_id = kb_response['knowledgeBase']['knowledgeBaseId']
+                    print(f"Knowledge base created with ID: {kb_id}")
 
-                # Generate a unique ID for the config
-                kb_config_id = str(uuid.uuid4())
+                    # Create a data source for the new knowledge base
+                    print(f"Creating data source for knowledge base: {kb_id}")
+                    data_source_response = bedrock_agent.create_data_source(
+                        knowledgeBaseId=kb_id,
+                        name=f"{kb_name}DataSource",
+                        description='S3 data source for processed documents',
+                        dataSourceConfiguration={
+                            'type': 'S3',
+                            's3Configuration': {
+                                'bucketArn': f"arn:aws:s3:::{processed_bucket}",
+                                'inclusionPrefixes': ['Smart', 'processed_']  # Include objects with common prefixes
+                            }
+                        },
+                        vectorIngestionConfiguration={
+                            'chunkingConfiguration': {
+                                'chunkingStrategy': 'FIXED_SIZE',
+                                'fixedSizeChunkingConfiguration': {
+                                    'maxTokens': 300,
+                                    'overlapPercentage': 10
+                                }
+                            }
+                        }
+                    )
+                    ds_id = data_source_response['dataSource']['dataSourceId']
 
-                # Store the knowledge base configuration in DynamoDB
-                print(f"Storing knowledge base configuration in DynamoDB")
-                table.put_item(Item={
-                    'id': kb_config_id,
-                    'document_id': 'KNOWLEDGE_BASE_CONFIG',
-                    'knowledge_base_id': kb_id,
-                    'data_source_id': ds_id,
-                    'created_at': datetime.now().isoformat(),
-                    'updated_at': datetime.now().isoformat(),
-                    'status': 'CREATED'
-                })
 
-                # Query again to get the newly created configuration
-                response = table.query(
-                    IndexName='DocumentIdIndex',
-                    KeyConditionExpression='document_id = :did',
-                    ExpressionAttributeValues={
-                        ':did': 'KNOWLEDGE_BASE_CONFIG'
-                    }
-                )
-
-                if not response['Items']:
-                    return {
-                        'statusCode': 500,
-                        'body': json.dumps('Failed to create knowledge base configuration')
-                    }
-
-                print("Successfully created and stored knowledge base configuration")
 
             except Exception as kb_error:
                 print(f"Error creating knowledge base: {str(kb_error)}")
@@ -334,6 +357,38 @@ def add_document_to_knowledge_base(event):
                     'statusCode': 500,
                     'body': json.dumps(f'Error creating knowledge base: {str(kb_error)}')
                 }
+
+            # Generate a unique ID for the config
+            kb_config_id = str(uuid.uuid4())
+
+            # Store the knowledge base configuration in DynamoDB
+            print(f"Storing knowledge base configuration in DynamoDB")
+            table.put_item(Item={
+                'id': kb_config_id,
+                'document_id': 'KNOWLEDGE_BASE_CONFIG',
+                'knowledge_base_id': kb_id,
+                'data_source_id': ds_id,
+                'created_at': datetime.now().isoformat(),
+                'updated_at': datetime.now().isoformat(),
+                'status': 'CREATED'
+            })
+
+            # Query again to get the newly created configuration
+            response = table.query(
+                IndexName='DocumentIdIndex',
+                KeyConditionExpression='document_id = :did',
+                ExpressionAttributeValues={
+                    ':did': 'KNOWLEDGE_BASE_CONFIG'
+                }
+            )
+
+            if not response['Items']:
+                return {
+                    'statusCode': 500,
+                    'body': json.dumps('Failed to create knowledge base configuration')
+                }
+
+            print("Successfully created and stored knowledge base configuration")
 
         # Now we should have a valid knowledge base configuration
         kb_config = response['Items'][0]
