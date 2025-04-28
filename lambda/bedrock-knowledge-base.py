@@ -79,6 +79,15 @@ def create_knowledge_base(event):
         # Create the knowledge base
         try:
             print(f"Attempting to create knowledge base: {kb_name}")
+            # Get the OpenSearch collection ARN
+            collection_arn = os.environ.get('OPENSEARCH_COLLECTION_ARN')
+            if not collection_arn:
+                print("OPENSEARCH_COLLECTION_ARN environment variable not set")
+                return {
+                    'statusCode': 500,
+                    'body': json.dumps('OPENSEARCH_COLLECTION_ARN environment variable not set')
+                }
+
             response = bedrock_agent.create_knowledge_base(
                 name=kb_name,
                 description='Knowledge base for processed documents',
@@ -87,6 +96,12 @@ def create_knowledge_base(event):
                     'type': 'VECTOR',
                     'vectorKnowledgeBaseConfiguration': {
                         'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
+                    }
+                },
+                storageConfiguration={
+                    'type': 'OPENSEARCH_SERVERLESS',
+                    'opensearchServerlessConfiguration': {
+                        'collectionArn': collection_arn,
                     }
                 }
             )
@@ -226,11 +241,18 @@ def add_document_to_knowledge_base(event):
             # Get parameters from environment variables
             kb_name = 'DocumentProcessingKnowledgeBase'
             kb_role_arn = os.environ.get('KNOWLEDGE_BASE_ROLE_ARN')
+            collection_arn = os.environ.get('OPENSEARCH_COLLECTION_ARN')
 
             if not kb_role_arn:
                 return {
                     'statusCode': 500,
                     'body': json.dumps('KNOWLEDGE_BASE_ROLE_ARN environment variable not set')
+                }
+
+            if not collection_arn:
+                return {
+                    'statusCode': 500,
+                    'body': json.dumps('OPENSEARCH_COLLECTION_ARN environment variable not set')
                 }
 
             # Create the knowledge base
@@ -244,6 +266,12 @@ def add_document_to_knowledge_base(event):
                         'type': 'VECTOR',
                         'vectorKnowledgeBaseConfiguration': {
                             'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
+                        }
+                    },
+                    storageConfiguration={
+                        'type': 'OPENSEARCH_SERVERLESS',
+                        'opensearchServerlessConfiguration': {
+                            'collectionArn': collection_arn,
                         }
                     }
                 )
