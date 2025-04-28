@@ -563,6 +563,7 @@ def lambda_handler(event, context):
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
+        PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         OPERATION: 'create_knowledge_base',
       },
     });
