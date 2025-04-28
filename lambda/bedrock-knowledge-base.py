@@ -383,6 +383,48 @@ def add_document_to_knowledge_base(event):
                 # Create a Kendra client
                 kendra_client = boto3.client('kendra')
 
+                # First, check if the Kendra index has any S3 data sources
+                try:
+                    print(f"Checking for S3 data sources in Kendra index: {kendra_index_id}")
+                    data_sources_response = kendra_client.list_data_sources(
+                        IndexId=kendra_index_id
+                    )
+
+                    s3_data_source = None
+                    for ds in data_sources_response.get('SummaryItems', []):
+                        print(f"Found data source: {ds.get('Name')} (Type: {ds.get('Type')})")
+                        if ds.get('Type') == 'S3':
+                            s3_data_source = ds
+                            print(f"Found S3 data source: {ds.get('Name')} (ID: {ds.get('Id')})")
+                            break
+
+                    if s3_data_source:
+                        # Get more details about the S3 data source
+                        ds_id = s3_data_source.get('Id')
+                        ds_details = kendra_client.describe_data_source(
+                            IndexId=kendra_index_id,
+                            Id=ds_id
+                        )
+
+                        # Extract the S3 bucket and prefix
+                        s3_configuration = ds_details.get('Configuration', {}).get('S3Configuration', {})
+                        s3_bucket = s3_configuration.get('BucketName')
+                        s3_prefix = s3_configuration.get('InclusionPrefixes', [''])[0]
+
+                        if s3_bucket:
+                            print(f"Found Kendra S3 data source bucket: {s3_bucket}, prefix: {s3_prefix}")
+                            use_s3_data_source = True
+                        else:
+                            print("S3 bucket name not found in data source configuration. Falling back to BatchPutDocument.")
+                            use_s3_data_source = False
+                    else:
+                        print("No S3 data source found. Falling back to BatchPutDocument.")
+                        use_s3_data_source = False
+
+                except Exception as ds_error:
+                    print(f"Error checking data sources: {str(ds_error)}. Falling back to BatchPutDocument.")
+                    use_s3_data_source = False
+
                 # Check what documents are already in the index
                 try:
                     print(f"Checking existing documents in Kendra index: {kendra_index_id}")
@@ -488,30 +530,87 @@ def add_document_to_knowledge_base(event):
                     print(f"Original document ID: {document_id}")
                     print(f"Unique document ID for Kendra: {clean_doc_id}")
 
-                    # Use BatchPutDocument to add the document to Kendra
-                    print(f"Adding document to Kendra index: {kendra_index_id}")
-                    print(f"Document content length: {len(text_content)} characters")
+                    # Check if we should use S3 data source or BatchPutDocument
+                    if 'use_s3_data_source' in locals() and use_s3_data_source and 's3_bucket' in locals() and s3_bucket:
+                        # Create a unique filename for the document
+                        unique_filename = f"{clean_doc_id}.txt"
 
-                    # Prepare the document with attributes
-                    document = {
-                        'Id': clean_doc_id,
-                        'Title': clean_doc_id,
-                        'ContentType': 'PLAIN_TEXT',
-                        'Blob': text_content
-                    }
+                        # Construct the full S3 key with the prefix
+                        s3_key = f"{s3_prefix}/{unique_filename}" if s3_prefix else unique_filename
+                        s3_key = s3_key.replace('//', '/')  # Avoid double slashes
 
-                    # Add attributes if we have any
-                    if attributes:
-                        document['Attributes'] = attributes
-                        print(f"Adding document with {len(attributes)} metadata attributes")
+                        print(f"Uploading to Kendra S3 data source as: {s3_key}")
 
-                    kendra_response = kendra_client.batch_put_document(
-                        IndexId=kendra_index_id,
-                        Documents=[document]
-                    )
+                        # Create a metadata file if we have metadata
+                        if metadata:
+                            # Format metadata according to Kendra's requirements
+                            # See: https://docs.aws.amazon.com/kendra/latest/dg/s3-metadata.html
+                            metadata_lines = []
+                            for key, value in metadata.items():
+                                if isinstance(value, str):
+                                    metadata_lines.append(f"{key}={value}")
 
-                    job_id = f"KENDRA-{kendra_response['ResponseMetadata']['RequestId']}"
-                    print(f"Document added to Kendra index with job ID: {job_id}")
+                            if metadata_lines:
+                                metadata_content = "\n".join(metadata_lines)
+                                metadata_filename = f"{unique_filename}.metadata.txt"
+                                metadata_key = f"{s3_prefix}/{metadata_filename}" if s3_prefix else metadata_filename
+                                metadata_key = metadata_key.replace('//', '/')  # Avoid double slashes
+
+                                print(f"Uploading metadata file to: {metadata_key}")
+                                s3_client.put_object(
+                                    Bucket=s3_bucket,
+                                    Key=metadata_key,
+                                    Body=metadata_content,
+                                    ContentType='text/plain'
+                                )
+
+                        # Upload the document to the Kendra S3 data source bucket
+                        print(f"Uploading document to Kendra S3 data source bucket: {s3_bucket}/{s3_key}")
+                        print(f"Document content length: {len(text_content)} characters")
+
+                        s3_client.put_object(
+                            Bucket=s3_bucket,
+                            Key=s3_key,
+                            Body=text_content,
+                            ContentType='text/plain'
+                        )
+
+                        # Start a sync job to make the document available immediately
+                        print(f"Starting sync job for data source: {ds_id}")
+                        sync_response = kendra_client.start_data_source_sync_job(
+                            IndexId=kendra_index_id,
+                            Id=ds_id
+                        )
+
+                        job_id = sync_response['ExecutionId']
+                        print(f"Started sync job with ID: {job_id}")
+                    else:
+                        # Use BatchPutDocument to add the document to Kendra
+                        print(f"Adding document to Kendra index: {kendra_index_id}")
+                        print(f"Document content length: {len(text_content)} characters")
+
+                        # Prepare the document with attributes
+                        document = {
+                            'Id': clean_doc_id,
+                            'Title': clean_doc_id,
+                            'ContentType': 'PLAIN_TEXT',
+                            'Blob': text_content
+                        }
+
+                        # Add attributes if we have any
+                        if attributes:
+                            document['Attributes'] = attributes
+                            print(f"Adding document with {len(attributes)} metadata attributes")
+
+                        kendra_response = kendra_client.batch_put_document(
+                            IndexId=kendra_index_id,
+                            Documents=[document]
+                        )
+
+                        job_id = f"KENDRA-{kendra_response['ResponseMetadata']['RequestId']}"
+                        print(f"Document added to Kendra index with job ID: {job_id}")
+
+
 
                     # Wait for document ingestion to complete
                     try:

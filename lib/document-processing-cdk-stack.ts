@@ -325,6 +325,20 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       })
     );
 
+    // Add permissions for Kendra data sources
+    bedrockLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'kendra:DescribeDataSource',
+          'kendra:ListDataSources',
+          'kendra:StartDataSourceSyncJob',
+          'kendra:StopDataSourceSyncJob',
+          'kendra:ListDataSourceSyncJobs'
+        ],
+        resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774/data-source/*'],
+      })
+    );
+
     bedrockLambdaRole.addToPolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject', 's3:ListBucket', 's3:PutObject'],
@@ -334,6 +348,15 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           this.payloadBucket.bucketArn,
           `${this.payloadBucket.bucketArn}/*`,
         ],
+      })
+    );
+
+    // Add permissions to access any S3 bucket that might be used as a Kendra data source
+    // Note: In a production environment, you should scope this down to specific buckets
+    bedrockLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject', 's3:ListBucket', 's3:PutObject'],
+        resources: ['*'],  // Scope this down in production
       })
     );
 
