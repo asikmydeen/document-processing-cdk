@@ -383,6 +383,19 @@ def add_document_to_knowledge_base(event):
                 # Create a Kendra client
                 kendra_client = boto3.client('kendra')
 
+                # Check what documents are already in the index
+                try:
+                    print(f"Checking existing documents in Kendra index: {kendra_index_id}")
+                    list_response = kendra_client.list_documents(
+                        IndexId=kendra_index_id
+                    )
+
+                    print(f"Found {len(list_response.get('DocumentInfoList', []))} existing documents in index")
+                    for doc_info in list_response.get('DocumentInfoList', [])[:10]:  # Show first 10 docs
+                        print(f"Existing document: {doc_info.get('DocumentId')} - Status: {doc_info.get('Status')}")
+                except Exception as list_error:
+                    print(f"Error listing existing documents: {str(list_error)}")
+
                 # Get the document content from S3
                 try:
                     s3_response = s3_client.get_object(Bucket=processed_bucket, Key=processed_key)
@@ -391,10 +404,44 @@ def add_document_to_knowledge_base(event):
 
                     # Extract text content from the processed document
                     text_content = ""
+
+                    # Print the document JSON structure to help debug
+                    print(f"Document JSON keys: {list(document_json.keys())}")
+
                     if 'text_content' in document_json:
                         text_content = document_json['text_content']
+                        print(f"Found text_content field with length: {len(text_content)}")
                     elif 'content' in document_json:
                         text_content = document_json['content']
+                        print(f"Found content field with length: {len(text_content)}")
+                    elif 'body' in document_json:
+                        text_content = document_json['body']
+                        print(f"Found body field with length: {len(text_content)}")
+                    elif 'text' in document_json:
+                        text_content = document_json['text']
+                        print(f"Found text field with length: {len(text_content)}")
+
+                    # If we still don't have content, try to extract it from nested structures
+                    if not text_content and isinstance(document_json, dict):
+                        # Try to find any field that might contain the text content
+                        for key, value in document_json.items():
+                            if isinstance(value, str) and len(value) > 100:  # Assume large string fields are content
+                                text_content = value
+                                print(f"Found potential content in field '{key}' with length: {len(text_content)}")
+                                break
+                            elif isinstance(value, dict):
+                                # Check nested dictionary
+                                for nested_key, nested_value in value.items():
+                                    if isinstance(nested_value, str) and len(nested_value) > 100:
+                                        text_content = nested_value
+                                        print(f"Found potential content in nested field '{key}.{nested_key}' with length: {len(text_content)}")
+                                        break
+
+                    # If we still don't have content, dump the entire JSON as text
+                    if not text_content:
+                        print("No content field found. Using the entire JSON as content.")
+                        text_content = json.dumps(document_json, indent=2)
+                        print(f"Generated content from full JSON with length: {len(text_content)}")
 
                     # Extract any metadata from the document
                     metadata = {}
@@ -416,10 +463,30 @@ def add_document_to_knowledge_base(event):
                                 }
                             })
 
-                    # Clean up the document ID for Kendra (remove file extension)
-                    clean_doc_id = document_id
-                    if clean_doc_id.lower().endswith('.pdf'):
-                        clean_doc_id = clean_doc_id[:-4]
+                    # Create a unique document ID for Kendra
+                    import re
+                    import uuid
+                    from datetime import datetime
+
+                    # Start with the original document ID
+                    base_doc_id = document_id
+
+                    # Remove file extension if present
+                    if '.' in base_doc_id:
+                        base_doc_id = base_doc_id.rsplit('.', 1)[0]
+
+                    # Replace spaces and special characters with underscores
+                    base_doc_id = re.sub(r'[^a-zA-Z0-9]', '_', base_doc_id)
+
+                    # Add a timestamp and UUID to make it unique
+                    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+                    unique_id = str(uuid.uuid4())[:8]  # Use first 8 chars of UUID
+
+                    # Combine to create a unique document ID
+                    clean_doc_id = f"{base_doc_id}_{timestamp}_{unique_id}"
+
+                    print(f"Original document ID: {document_id}")
+                    print(f"Unique document ID for Kendra: {clean_doc_id}")
 
                     # Use BatchPutDocument to add the document to Kendra
                     print(f"Adding document to Kendra index: {kendra_index_id}")
@@ -462,7 +529,7 @@ def add_document_to_knowledge_base(event):
                                 IndexId=kendra_index_id,
                                 DocumentInfoList=[
                                     {
-                                        'DocumentId': document_id
+                                        'DocumentId': clean_doc_id
                                     }
                                 ]
                             )
@@ -528,7 +595,7 @@ def add_document_to_knowledge_base(event):
                                         # Check if our document is in the list
                                         for doc_info in list_response.get('DocumentInfoList', []):
                                             print(f"Document in index: {doc_info.get('DocumentId')}")
-                                            if doc_info.get('DocumentId') == document_id:
+                                            if doc_info.get('DocumentId') == clean_doc_id:
                                                 print(f"Our document found in index list!")
                                                 break
                                     except Exception as list_error:
@@ -577,13 +644,13 @@ def add_document_to_knowledge_base(event):
                                         print(f"Found {len(list_response.get('DocumentInfoList', []))} documents in index")
                                         document_found = False
                                         for doc_info in list_response.get('DocumentInfoList', []):
-                                            if doc_info.get('DocumentId') == document_id:
+                                            if doc_info.get('DocumentId') == clean_doc_id:
                                                 print(f"Our document found in index list! Status: {doc_info.get('Status')}")
                                                 document_found = True
                                                 break
 
                                         if not document_found:
-                                            print(f"Document {document_id} not found in index document list")
+                                            print(f"Document {clean_doc_id} not found in index document list")
                                     except Exception as list_error:
                                         print(f"Error listing documents: {str(list_error)}")
                             except Exception as final_query_error:
@@ -594,7 +661,7 @@ def add_document_to_knowledge_base(event):
                             IndexId=kendra_index_id,
                             DocumentInfoList=[
                                 {
-                                    'DocumentId': document_id
+                                    'DocumentId': clean_doc_id
                                 }
                             ]
                         )
