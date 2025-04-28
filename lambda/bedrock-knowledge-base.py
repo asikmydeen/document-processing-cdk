@@ -329,6 +329,7 @@ def add_document_to_knowledge_base(event):
                 }
 
             # Generate a unique ID for the config
+            import uuid
             kb_config_id = str(uuid.uuid4())
 
             # Store the knowledge base configuration in DynamoDB
@@ -373,6 +374,10 @@ def add_document_to_knowledge_base(event):
                 # Extract the Kendra index ID from the knowledge base ARN
                 # The ARN format is: arn:aws:kendra:region:account-id:index/index-id
                 kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
+
+                # Get the document ID from the event or from the processed key
+                document_id = event.get('document_id', os.path.splitext(os.path.basename(processed_key))[0])
+                print(f"Using document ID: {document_id}")
 
                 # Create a Kendra client
                 kendra_client = boto3.client('kendra')
@@ -426,7 +431,9 @@ def add_document_to_knowledge_base(event):
             raise ingest_error
 
         # Update the document metadata with the ingestion job ID
-        document_id = os.path.splitext(os.path.basename(processed_key))[0]
+        # Use the document_id from the event if available, otherwise extract from the processed key
+        if 'document_id' not in locals() or not document_id:
+            document_id = event.get('document_id', os.path.splitext(os.path.basename(processed_key))[0])
 
         response = table.query(
             IndexName='DocumentIdIndex',
