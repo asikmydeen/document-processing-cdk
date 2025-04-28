@@ -198,6 +198,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         resources: [
           this.metadataTable.tableArn,
           this.searchIndexTable.tableArn,
+          `${this.metadataTable.tableArn}/index/*`,
+          `${this.searchIndexTable.tableArn}/index/*`,
         ],
       })
     );
@@ -282,6 +284,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         resources: [
           this.metadataTable.tableArn,
           this.searchIndexTable.tableArn,
+          `${this.metadataTable.tableArn}/index/*`,
+          `${this.searchIndexTable.tableArn}/index/*`,
         ],
       })
     );
