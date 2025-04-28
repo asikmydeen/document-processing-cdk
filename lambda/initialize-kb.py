@@ -85,7 +85,7 @@ def lambda_handler(event, context):
                 roleArn=kb_role_arn,
                 knowledgeBaseConfiguration={
                     'type': 'KENDRA',
-                    'kendraConfiguration': {
+                    'kendraKnowledgeBaseConfiguration': {
                         'indexId': kendra_index_id
                     }
                 }

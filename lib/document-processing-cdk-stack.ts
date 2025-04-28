@@ -242,14 +242,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
     bedrockKnowledgeBaseRole.addToPolicy(
       new iam.PolicyStatement({
         actions: [
-          'kendra:Query',
-          'kendra:BatchGetDocumentStatus',
-          'kendra:DescribeIndex',
-          'kendra:ListDataSources',
-          'kendra:StartDataSourceSyncJob',
-          'kendra:DescribeDataSource',
-          'kendra:BatchPutDocument',
-          'kendra:BatchDeleteDocument'
+          'kendra:Retrieve',
+          'kendra:DescribeIndex'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })
@@ -290,14 +284,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
     bedrockLambdaRole.addToPolicy(
       new iam.PolicyStatement({
         actions: [
-          'kendra:Query',
-          'kendra:BatchGetDocumentStatus',
-          'kendra:DescribeIndex',
-          'kendra:ListDataSources',
-          'kendra:StartDataSourceSyncJob',
-          'kendra:DescribeDataSource',
-          'kendra:BatchPutDocument',
-          'kendra:BatchDeleteDocument'
+          'kendra:Retrieve',
+          'kendra:DescribeIndex'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })

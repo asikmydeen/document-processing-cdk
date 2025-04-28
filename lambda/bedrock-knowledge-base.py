@@ -94,7 +94,7 @@ def create_knowledge_base(event):
                 roleArn=os.environ.get('KNOWLEDGE_BASE_ROLE_ARN'),
                 knowledgeBaseConfiguration={
                     'type': 'KENDRA',
-                    'kendraConfiguration': {
+                    'kendraKnowledgeBaseConfiguration': {
                         'indexId': kendra_index_id
                     }
                 }
@@ -258,7 +258,7 @@ def add_document_to_knowledge_base(event):
                     roleArn=kb_role_arn,
                     knowledgeBaseConfiguration={
                         'type': 'KENDRA',
-                        'kendraConfiguration': {
+                        'kendraKnowledgeBaseConfiguration': {
                             'indexId': kendra_index_id
                         }
                     }
