@@ -176,7 +176,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
     // Add permissions for S3 and DynamoDB
     metadataExtractorRole.addToPolicy(
       new iam.PolicyStatement({
-        actions: ['s3:GetObject', 's3:ListBucket'],
+        actions: ['s3:GetObject', 's3:ListBucket', 's3:PutObject'],
         resources: [
           this.processedBucket.bucketArn,
           `${this.processedBucket.bucketArn}/*`,
@@ -260,7 +260,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
 
     bedrockLambdaRole.addToPolicy(
       new iam.PolicyStatement({
-        actions: ['s3:GetObject', 's3:ListBucket'],
+        actions: ['s3:GetObject', 's3:ListBucket', 's3:PutObject'],
         resources: [
           this.processedBucket.bucketArn,
           `${this.processedBucket.bucketArn}/*`,

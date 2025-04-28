@@ -209,7 +209,8 @@ def add_document_to_knowledge_base(event):
                 }
             )
 
-        return {
+        # Prepare success response
+        response_data = {
             'statusCode': 200,
             'body': json.dumps({
                 'message': 'Document ingestion started',
@@ -218,6 +219,50 @@ def add_document_to_knowledge_base(event):
                 'ingestion_job_id': job_id
             })
         }
+
+        # Estimate the size of the response
+        response_size = len(json.dumps(response_data))
+        print(f"Estimated response size: {response_size} bytes")
+
+        # If the response is too large (over 200KB), store it in S3
+        if response_size > 200000:
+            try:
+                # Get the payload bucket name
+                payload_bucket = os.environ.get('PAYLOAD_BUCKET_NAME')
+                if not payload_bucket:
+                    print("PAYLOAD_BUCKET_NAME environment variable not set")
+                    return response_data
+
+                # Generate a unique key for the payload
+                import uuid
+                from datetime import datetime
+                payload_key = f"payloads/{datetime.now().strftime('%Y-%m-%d')}/{str(uuid.uuid4())}.json"
+
+                # Store the payload in S3
+                s3_client.put_object(
+                    Bucket=payload_bucket,
+                    Key=payload_key,
+                    Body=json.dumps(response_data),
+                    ContentType='application/json'
+                )
+
+                print(f"Stored large response in S3: {payload_bucket}/{payload_key}")
+
+                # Return a reference to the stored payload
+                return {
+                    'statusCode': 200,
+                    'payload_reference': {
+                        'bucket': payload_bucket,
+                        'key': payload_key
+                    }
+                }
+            except Exception as e:
+                print(f"Error storing large response in S3: {str(e)}")
+                # Fall back to returning the full response
+                return response_data
+
+        # Return the response directly if not too large
+        return response_data
 
     except Exception as e:
         print(f"Error adding document to knowledge base: {str(e)}")
@@ -317,7 +362,7 @@ def query_knowledge_base(event):
         answer = response_body.get('completion', '')
 
         # Prepare the response with both text answer and relevant images
-        return {
+        response_data = {
             'statusCode': 200,
             'body': json.dumps({
                 'query': query,
@@ -326,6 +371,49 @@ def query_knowledge_base(event):
                 'relevant_images': relevant_images
             })
         }
+
+        # Estimate the size of the response
+        response_size = len(json.dumps(response_data))
+        print(f"Estimated response size: {response_size} bytes")
+
+        # If the response is too large (over 200KB), store it in S3
+        if response_size > 200000:
+            try:
+                # Get the payload bucket name
+                payload_bucket = os.environ.get('PAYLOAD_BUCKET_NAME')
+                if not payload_bucket:
+                    print("PAYLOAD_BUCKET_NAME environment variable not set")
+                    return response_data
+
+                # Generate a unique key for the payload
+                import uuid
+                payload_key = f"payloads/{datetime.now().strftime('%Y-%m-%d')}/{str(uuid.uuid4())}.json"
+
+                # Store the payload in S3
+                s3_client.put_object(
+                    Bucket=payload_bucket,
+                    Key=payload_key,
+                    Body=json.dumps(response_data),
+                    ContentType='application/json'
+                )
+
+                print(f"Stored large response in S3: {payload_bucket}/{payload_key}")
+
+                # Return a reference to the stored payload
+                return {
+                    'statusCode': 200,
+                    'payload_reference': {
+                        'bucket': payload_bucket,
+                        'key': payload_key
+                    }
+                }
+            except Exception as e:
+                print(f"Error storing large response in S3: {str(e)}")
+                # Fall back to returning the full response
+                return response_data
+
+        # Return the response directly if not too large
+        return response_data
 
     except Exception as e:
         print(f"Error querying knowledge base: {str(e)}")
