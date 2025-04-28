@@ -79,13 +79,13 @@ def create_knowledge_base(event):
         # Create the knowledge base
         try:
             print(f"Attempting to create knowledge base: {kb_name}")
-            # Get the OpenSearch collection ARN
-            collection_arn = os.environ.get('OPENSEARCH_COLLECTION_ARN')
-            if not collection_arn:
-                print("OPENSEARCH_COLLECTION_ARN environment variable not set")
+            # Get the Kendra index ID
+            kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
+            if not kendra_index_id:
+                print("KENDRA_INDEX_ID environment variable not set")
                 return {
                     'statusCode': 500,
-                    'body': json.dumps('OPENSEARCH_COLLECTION_ARN environment variable not set')
+                    'body': json.dumps('KENDRA_INDEX_ID environment variable not set')
                 }
 
             response = bedrock_agent.create_knowledge_base(
@@ -93,15 +93,9 @@ def create_knowledge_base(event):
                 description='Knowledge base for processed documents',
                 roleArn=os.environ.get('KNOWLEDGE_BASE_ROLE_ARN'),
                 knowledgeBaseConfiguration={
-                    'type': 'VECTOR',
-                    'vectorKnowledgeBaseConfiguration': {
-                        'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
-                    }
-                },
-                storageConfiguration={
-                    'type': 'OPENSEARCH_SERVERLESS',
-                    'opensearchServerlessConfiguration': {
-                        'collectionArn': collection_arn,
+                    'type': 'KENDRA',
+                    'kendraConfiguration': {
+                        'indexId': kendra_index_id
                     }
                 }
             )
@@ -241,7 +235,7 @@ def add_document_to_knowledge_base(event):
             # Get parameters from environment variables
             kb_name = 'DocumentProcessingKnowledgeBase'
             kb_role_arn = os.environ.get('KNOWLEDGE_BASE_ROLE_ARN')
-            collection_arn = os.environ.get('OPENSEARCH_COLLECTION_ARN')
+            kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
 
             if not kb_role_arn:
                 return {
@@ -249,10 +243,10 @@ def add_document_to_knowledge_base(event):
                     'body': json.dumps('KNOWLEDGE_BASE_ROLE_ARN environment variable not set')
                 }
 
-            if not collection_arn:
+            if not kendra_index_id:
                 return {
                     'statusCode': 500,
-                    'body': json.dumps('OPENSEARCH_COLLECTION_ARN environment variable not set')
+                    'body': json.dumps('KENDRA_INDEX_ID environment variable not set')
                 }
 
             # Create the knowledge base
@@ -263,15 +257,9 @@ def add_document_to_knowledge_base(event):
                     description='Knowledge base for processed documents',
                     roleArn=kb_role_arn,
                     knowledgeBaseConfiguration={
-                        'type': 'VECTOR',
-                        'vectorKnowledgeBaseConfiguration': {
-                            'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
-                        }
-                    },
-                    storageConfiguration={
-                        'type': 'OPENSEARCH_SERVERLESS',
-                        'opensearchServerlessConfiguration': {
-                            'collectionArn': collection_arn,
+                        'type': 'KENDRA',
+                        'kendraConfiguration': {
+                            'indexId': kendra_index_id
                         }
                     }
                 )

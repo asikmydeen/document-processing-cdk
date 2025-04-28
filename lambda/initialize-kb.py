@@ -68,12 +68,12 @@ def lambda_handler(event, context):
                 'body': json.dumps('KNOWLEDGE_BASE_ROLE_ARN environment variable not set')
             }
 
-        # Get the OpenSearch collection ARN
-        collection_arn = os.environ.get('OPENSEARCH_COLLECTION_ARN')
-        if not collection_arn:
+        # Get the Kendra index ID
+        kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
+        if not kendra_index_id:
             return {
                 'statusCode': 500,
-                'body': json.dumps('OPENSEARCH_COLLECTION_ARN environment variable not set')
+                'body': json.dumps('KENDRA_INDEX_ID environment variable not set')
             }
 
         # Create the knowledge base
@@ -84,15 +84,9 @@ def lambda_handler(event, context):
                 description='Knowledge base for processed documents',
                 roleArn=kb_role_arn,
                 knowledgeBaseConfiguration={
-                    'type': 'VECTOR',
-                    'vectorKnowledgeBaseConfiguration': {
-                        'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
-                    }
-                },
-                storageConfiguration={
-                    'type': 'OPENSEARCH_SERVERLESS',
-                    'opensearchServerlessConfiguration': {
-                        'collectionArn': collection_arn,
+                    'type': 'KENDRA',
+                    'kendraConfiguration': {
+                        'indexId': kendra_index_id
                     }
                 }
             )

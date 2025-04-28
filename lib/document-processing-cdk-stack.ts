@@ -238,6 +238,23 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       })
     );
 
+    // Add permissions for Kendra
+    bedrockKnowledgeBaseRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'kendra:Query',
+          'kendra:BatchGetDocumentStatus',
+          'kendra:DescribeIndex',
+          'kendra:ListDataSources',
+          'kendra:StartDataSourceSyncJob',
+          'kendra:DescribeDataSource',
+          'kendra:BatchPutDocument',
+          'kendra:BatchDeleteDocument'
+        ],
+        resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
+      })
+    );
+
     // Lambda role for Bedrock knowledge base integration
     const bedrockLambdaRole = new iam.Role(this, 'BedrockLambdaRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -266,6 +283,23 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'iam:PassRole',
         ],
         resources: ['*'], // Scope down in production
+      })
+    );
+
+    // Add permissions for Kendra
+    bedrockLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'kendra:Query',
+          'kendra:BatchGetDocumentStatus',
+          'kendra:DescribeIndex',
+          'kendra:ListDataSources',
+          'kendra:StartDataSourceSyncJob',
+          'kendra:DescribeDataSource',
+          'kendra:BatchPutDocument',
+          'kendra:BatchDeleteDocument'
+        ],
+        resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })
     );
 
@@ -313,6 +347,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
+        KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
       },
     });
 
@@ -575,6 +610,7 @@ def lambda_handler(event, context):
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
+        KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
       },
     });
 
