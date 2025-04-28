@@ -396,18 +396,51 @@ def add_document_to_knowledge_base(event):
                     elif 'content' in document_json:
                         text_content = document_json['content']
 
+                    # Extract any metadata from the document
+                    metadata = {}
+                    if isinstance(document_json, dict):
+                        # Extract metadata fields if they exist
+                        if 'metadata' in document_json and isinstance(document_json['metadata'], dict):
+                            metadata = document_json['metadata']
+                        elif 'document_metadata' in document_json and isinstance(document_json['document_metadata'], dict):
+                            metadata = document_json['document_metadata']
+
+                    # Create attributes for Kendra
+                    attributes = []
+                    for key, value in metadata.items():
+                        if isinstance(value, str):
+                            attributes.append({
+                                'Key': key,
+                                'Value': {
+                                    'StringValue': value
+                                }
+                            })
+
+                    # Clean up the document ID for Kendra (remove file extension)
+                    clean_doc_id = document_id
+                    if clean_doc_id.lower().endswith('.pdf'):
+                        clean_doc_id = clean_doc_id[:-4]
+
                     # Use BatchPutDocument to add the document to Kendra
                     print(f"Adding document to Kendra index: {kendra_index_id}")
+                    print(f"Document content length: {len(text_content)} characters")
+
+                    # Prepare the document with attributes
+                    document = {
+                        'Id': clean_doc_id,
+                        'Title': clean_doc_id,
+                        'ContentType': 'PLAIN_TEXT',
+                        'Blob': text_content
+                    }
+
+                    # Add attributes if we have any
+                    if attributes:
+                        document['Attributes'] = attributes
+                        print(f"Adding document with {len(attributes)} metadata attributes")
+
                     kendra_response = kendra_client.batch_put_document(
                         IndexId=kendra_index_id,
-                        Documents=[
-                            {
-                                'Id': document_id,
-                                'Title': document_id,
-                                'ContentType': 'PLAIN_TEXT',
-                                'Blob': text_content
-                            }
-                        ]
+                        Documents=[document]
                     )
 
                     job_id = f"KENDRA-{kendra_response['ResponseMetadata']['RequestId']}"
@@ -439,6 +472,7 @@ def add_document_to_knowledge_base(event):
                                 doc_status = doc_status_response['DocumentStatusList'][0]
                                 status = doc_status.get('Status', 'Unknown')
                                 print(f"Document status in Kendra: {status}")
+                                print(f"Full document status: {json.dumps(doc_status)}")
 
                                 if status == 'INDEXED':
                                     print(f"Document successfully indexed in Kendra")
@@ -447,8 +481,58 @@ def add_document_to_knowledge_base(event):
                                 elif status in ['FAILED', 'ERROR']:
                                     print(f"Document indexing failed: {doc_status.get('FailureReason', 'Unknown reason')}")
                                     break
+                                elif status == 'Unknown' and (time.time() - start_time) > 60:
+                                    # After 60 seconds of Unknown status, try to verify with a query
+                                    try:
+                                        print("Attempting to verify document availability with a query...")
+                                        # Extract some content from the document to use as a query
+                                        query_text = ""
+                                        if len(text_content) > 20:
+                                            # Use the first 100 characters as a query
+                                            query_text = text_content[:100].strip()
+                                        else:
+                                            # Fall back to document ID
+                                            query_text = document_id
+
+                                        print(f"Querying with text: '{query_text[:50]}...'")
+
+                                        # Try to query for the document to see if it's available
+                                        query_response = kendra_client.query(
+                                            IndexId=kendra_index_id,
+                                            QueryText=query_text
+                                        )
+
+                                        # Check if we got any results
+                                        if 'ResultItems' in query_response and query_response['ResultItems']:
+                                            print(f"Document found in query results! Document appears to be available.")
+                                            print(f"Query returned {len(query_response['ResultItems'])} results")
+                                            ingestion_complete = True
+                                            break
+                                        else:
+                                            print("Document not found in query results yet")
+                                    except Exception as query_error:
+                                        print(f"Error querying for document: {str(query_error)}")
                             else:
                                 print("No document status information available yet")
+
+                                # After 60 seconds with no status, try listing all documents
+                                if (time.time() - start_time) > 60 and (time.time() - start_time) < 70:
+                                    try:
+                                        print("Attempting to list documents in Kendra index...")
+                                        # Try to list documents to see if our document is there
+                                        list_response = kendra_client.list_documents(
+                                            IndexId=kendra_index_id
+                                        )
+
+                                        print(f"Found {len(list_response.get('DocumentInfoList', []))} documents in index")
+                                        # Check if our document is in the list
+                                        for doc_info in list_response.get('DocumentInfoList', []):
+                                            print(f"Document in index: {doc_info.get('DocumentId')}")
+                                            if doc_info.get('DocumentId') == document_id:
+                                                print(f"Our document found in index list!")
+                                                break
+                                    except Exception as list_error:
+                                        print(f"Error listing documents: {str(list_error)}")
 
                             # Wait before checking again
                             time.sleep(wait_interval)
@@ -456,6 +540,54 @@ def add_document_to_knowledge_base(event):
                         if not ingestion_complete:
                             print(f"Warning: Document ingestion did not complete within {max_wait_time} seconds")
                             print(f"The Step Function will continue, but the document may not be immediately available for querying")
+
+                            # Try one final query to see if the document is available
+                            try:
+                                print("Performing final verification query...")
+                                # Extract some content from the document to use as a query
+                                query_text = ""
+                                if len(text_content) > 20:
+                                    # Use the first 100 characters as a query
+                                    query_text = text_content[:100].strip()
+                                else:
+                                    # Fall back to document ID
+                                    query_text = document_id
+
+                                print(f"Final verification query with text: '{query_text[:50]}...'")
+
+                                query_response = kendra_client.query(
+                                    IndexId=kendra_index_id,
+                                    QueryText=query_text
+                                )
+
+                                if 'ResultItems' in query_response and query_response['ResultItems']:
+                                    print(f"Good news! Document found in final query results. Document appears to be available.")
+                                    print(f"Query returned {len(query_response['ResultItems'])} results")
+                                    ingestion_complete = True
+                                else:
+                                    print("Document not found in final query results")
+
+                                    # Try listing all documents one last time
+                                    try:
+                                        print("Final attempt to list documents in Kendra index...")
+                                        list_response = kendra_client.list_documents(
+                                            IndexId=kendra_index_id
+                                        )
+
+                                        print(f"Found {len(list_response.get('DocumentInfoList', []))} documents in index")
+                                        document_found = False
+                                        for doc_info in list_response.get('DocumentInfoList', []):
+                                            if doc_info.get('DocumentId') == document_id:
+                                                print(f"Our document found in index list! Status: {doc_info.get('Status')}")
+                                                document_found = True
+                                                break
+
+                                        if not document_found:
+                                            print(f"Document {document_id} not found in index document list")
+                                    except Exception as list_error:
+                                        print(f"Error listing documents: {str(list_error)}")
+                            except Exception as final_query_error:
+                                print(f"Error in final verification query: {str(final_query_error)}")
 
                         # Get final document status for logging
                         doc_status_response = kendra_client.batch_get_document_status(
@@ -470,6 +602,8 @@ def add_document_to_knowledge_base(event):
                         if 'DocumentStatusList' in doc_status_response and doc_status_response['DocumentStatusList']:
                             doc_status = doc_status_response['DocumentStatusList'][0]
                             print(f"Final document status: {json.dumps(doc_status)}")
+
+                        print(f"Document ingestion process completed. Ingestion success: {ingestion_complete}")
                     except Exception as status_error:
                         print(f"Error checking document status: {str(status_error)}")
 
