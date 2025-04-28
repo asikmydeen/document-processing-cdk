@@ -554,7 +554,7 @@ def lambda_handler(event, context):
     // Create a Lambda function to initialize the Bedrock knowledge base
     const initializeKnowledgeBaseLambda = new lambda.Function(this, 'InitializeKnowledgeBaseFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
-      handler: 'bedrock-knowledge-base.lambda_handler',
+      handler: 'initialize-kb.lambda_handler',
       code: lambda.Code.fromAsset('lambda'),
       timeout: cdk.Duration.minutes(5),
       memorySize: 256,
@@ -564,7 +564,6 @@ def lambda_handler(event, context):
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
-        OPERATION: 'create_knowledge_base',
       },
     });
 
