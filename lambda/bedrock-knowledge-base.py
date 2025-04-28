@@ -413,6 +413,66 @@ def add_document_to_knowledge_base(event):
                     job_id = f"KENDRA-{kendra_response['ResponseMetadata']['RequestId']}"
                     print(f"Document added to Kendra index with job ID: {job_id}")
 
+                    # Wait for document ingestion to complete
+                    try:
+                        import time
+                        max_wait_time = 300  # Maximum wait time in seconds (5 minutes)
+                        wait_interval = 10   # Check every 10 seconds
+                        start_time = time.time()
+                        ingestion_complete = False
+
+                        print(f"Waiting for document ingestion to complete (timeout: {max_wait_time} seconds)...")
+
+                        while (time.time() - start_time) < max_wait_time:
+                            # Check the status of the document
+                            doc_status_response = kendra_client.batch_get_document_status(
+                                IndexId=kendra_index_id,
+                                DocumentInfoList=[
+                                    {
+                                        'DocumentId': document_id
+                                    }
+                                ]
+                            )
+
+                            # Log the document status
+                            if 'DocumentStatusList' in doc_status_response and doc_status_response['DocumentStatusList']:
+                                doc_status = doc_status_response['DocumentStatusList'][0]
+                                status = doc_status.get('Status', 'Unknown')
+                                print(f"Document status in Kendra: {status}")
+
+                                if status == 'INDEXED':
+                                    print(f"Document successfully indexed in Kendra")
+                                    ingestion_complete = True
+                                    break
+                                elif status in ['FAILED', 'ERROR']:
+                                    print(f"Document indexing failed: {doc_status.get('FailureReason', 'Unknown reason')}")
+                                    break
+                            else:
+                                print("No document status information available yet")
+
+                            # Wait before checking again
+                            time.sleep(wait_interval)
+
+                        if not ingestion_complete:
+                            print(f"Warning: Document ingestion did not complete within {max_wait_time} seconds")
+                            print(f"The Step Function will continue, but the document may not be immediately available for querying")
+
+                        # Get final document status for logging
+                        doc_status_response = kendra_client.batch_get_document_status(
+                            IndexId=kendra_index_id,
+                            DocumentInfoList=[
+                                {
+                                    'DocumentId': document_id
+                                }
+                            ]
+                        )
+
+                        if 'DocumentStatusList' in doc_status_response and doc_status_response['DocumentStatusList']:
+                            doc_status = doc_status_response['DocumentStatusList'][0]
+                            print(f"Final document status: {json.dumps(doc_status)}")
+                    except Exception as status_error:
+                        print(f"Error checking document status: {str(status_error)}")
+
                 except Exception as s3_error:
                     print(f"Error getting document from S3: {str(s3_error)}")
                     raise s3_error
@@ -427,6 +487,43 @@ def add_document_to_knowledge_base(event):
 
                 job_id = ingestion_response['ingestionJob']['ingestionJobId']
                 print(f"Started ingestion job with ID: {job_id}")
+
+                # Wait for the ingestion job to complete
+                try:
+                    import time
+                    max_wait_time = 300  # Maximum wait time in seconds (5 minutes)
+                    wait_interval = 10   # Check every 10 seconds
+                    start_time = time.time()
+                    ingestion_complete = False
+
+                    print(f"Waiting for ingestion job to complete (timeout: {max_wait_time} seconds)...")
+
+                    while (time.time() - start_time) < max_wait_time:
+                        # Check the status of the ingestion job
+                        job_response = bedrock_agent.get_ingestion_job(
+                            knowledgeBaseId=kb_id,
+                            ingestionJobId=job_id
+                        )
+
+                        status = job_response['ingestionJob']['status']
+                        print(f"Ingestion job status: {status}")
+
+                        if status == 'COMPLETE':
+                            print(f"Ingestion job completed successfully")
+                            ingestion_complete = True
+                            break
+                        elif status in ['FAILED', 'STOPPED']:
+                            print(f"Ingestion job failed: {job_response['ingestionJob'].get('failureReason', 'Unknown reason')}")
+                            break
+
+                        # Wait before checking again
+                        time.sleep(wait_interval)
+
+                    if not ingestion_complete:
+                        print(f"Warning: Ingestion job did not complete within {max_wait_time} seconds")
+                        print(f"The Step Function will continue, but the document may not be immediately available for querying")
+                except Exception as job_status_error:
+                    print(f"Error checking ingestion job status: {str(job_status_error)}")
         except Exception as ingest_error:
             print(f"Error in document ingestion: {str(ingest_error)}")
             raise ingest_error

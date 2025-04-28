@@ -281,6 +281,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'bedrock-agent:CreateKnowledgeBase',
           'bedrock-agent:CreateDataSource',
           'bedrock-agent:StartIngestionJob',
+          'bedrock-agent:GetIngestionJob',
+          'bedrock-agent:ListIngestionJobs',
           'bedrock-agent:Retrieve',
           'bedrock-agent:ListKnowledgeBases',
           'bedrock-agent:ListDataSources',
@@ -288,6 +290,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'bedrock:CreateKnowledgeBase',
           'bedrock:CreateDataSource',
           'bedrock:StartIngestionJob',
+          'bedrock:GetIngestionJob',
+          'bedrock:ListIngestionJobs',
           'bedrock:Retrieve',
           'bedrock:ListKnowledgeBases',
           'bedrock:ListDataSources',
@@ -309,8 +313,11 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'kendra:Query',
           'kendra:BatchPutDocument',
           'kendra:BatchDeleteDocument',
+          'kendra:BatchGetDocumentStatus',
           'kendra:StartDataSourceSyncJob',
-          'kendra:ListDataSources'
+          'kendra:DescribeDataSource',
+          'kendra:ListDataSources',
+          'kendra:ListDataSourceSyncJobs'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })
