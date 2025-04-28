@@ -337,7 +337,7 @@ def add_document_to_knowledge_base(event):
                                 'type': 'S3',
                                 's3Configuration': {
                                     'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                                    'inclusionPrefixes': ['Smart', 'processed_']  # Include objects with common prefixes
+                                    'inclusionPrefixes': ['Smart']  # Include objects starting with "Smart"
                                 }
                             },
                             vectorIngestionConfiguration={
@@ -380,7 +380,7 @@ def add_document_to_knowledge_base(event):
                             'type': 'S3',
                             's3Configuration': {
                                 'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                                'inclusionPrefixes': ['Smart', 'processed_']  # Include objects with common prefixes
+                                'inclusionPrefixes': ['Smart']  # Include objects starting with "Smart"
                             }
                         },
                         vectorIngestionConfiguration={
