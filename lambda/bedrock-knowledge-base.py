@@ -5,17 +5,40 @@ import uuid
 from datetime import datetime
 
 # Initialize AWS clients
-try:
-    # Try both client types - some AWS regions use bedrock, others use bedrock-agent
-    bedrock = boto3.client('bedrock')
-    bedrock_agent = bedrock  # Use bedrock as the primary client
-    print("Using 'bedrock' client")
-except Exception as e:
-    print(f"Error creating bedrock client: {str(e)}")
-    bedrock_agent = boto3.client('bedrock-agent')
-    print("Using 'bedrock-agent' client")
+def get_bedrock_clients():
+    """Initialize the correct Bedrock clients based on what's available in the region."""
+    bedrock_client = None
+    bedrock_agent_client = None
 
-bedrock_runtime = boto3.client('bedrock-runtime')
+    # Try to create the bedrock-agent client first
+    try:
+        bedrock_agent_client = boto3.client('bedrock-agent')
+        print("Successfully created 'bedrock-agent' client")
+    except Exception as e:
+        print(f"Error creating bedrock-agent client: {str(e)}")
+        try:
+            # Fall back to bedrock client for regions that use this API instead
+            bedrock_client = boto3.client('bedrock')
+            bedrock_agent_client = bedrock_client  # Use the same client for both
+            print("Using 'bedrock' client for agent functions")
+        except Exception as e2:
+            print(f"Error creating bedrock client: {str(e2)}")
+            raise Exception("Failed to create any Bedrock client")
+
+    # Create the runtime client for model invocation
+    bedrock_runtime = boto3.client('bedrock-runtime')
+
+    return bedrock_agent_client, bedrock_runtime
+
+# Get the clients
+try:
+    bedrock_agent, bedrock_runtime = get_bedrock_clients()
+except Exception as e:
+    print(f"Failed to initialize Bedrock clients: {str(e)}")
+    # Define fallback values that will cause explicit errors if used
+    bedrock_agent = None
+    bedrock_runtime = None
+
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 
@@ -40,6 +63,12 @@ def lambda_handler(event, context):
 
 def create_knowledge_base(event):
     """Create a new Bedrock knowledge base."""
+    if bedrock_agent is None:
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Bedrock clients not properly initialized')
+        }
+
     try:
         # Get the knowledge base name from the event or use a default
         kb_name = event.get('knowledge_base_name', 'DocumentProcessingKnowledgeBase')
@@ -48,43 +77,54 @@ def create_knowledge_base(event):
         processed_bucket = os.environ.get('PROCESSED_BUCKET_NAME')
 
         # Create the knowledge base
-        response = bedrock_agent.create_knowledge_base(
-            name=kb_name,
-            description='Knowledge base for processed documents',
-            roleArn=os.environ.get('KNOWLEDGE_BASE_ROLE_ARN'),
-            knowledgeBaseConfiguration={
-                'type': 'VECTOR',
-                'vectorKnowledgeBaseConfiguration': {
-                    'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
+        try:
+            print(f"Attempting to create knowledge base: {kb_name}")
+            response = bedrock_agent.create_knowledge_base(
+                name=kb_name,
+                description='Knowledge base for processed documents',
+                roleArn=os.environ.get('KNOWLEDGE_BASE_ROLE_ARN'),
+                knowledgeBaseConfiguration={
+                    'type': 'VECTOR',
+                    'vectorKnowledgeBaseConfiguration': {
+                        'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
+                    }
                 }
-            }
-        )
+            )
+        except Exception as kb_error:
+            print(f"Error in create_knowledge_base call: {str(kb_error)}")
+            raise kb_error
 
         # Get the knowledge base ID
         kb_id = response['knowledgeBase']['knowledgeBaseId']
+        print(f"Created knowledge base with ID: {kb_id}")
 
         # Create a data source for the knowledge base
-        data_source_response = bedrock_agent.create_data_source(
-            knowledgeBaseId=kb_id,
-            name=f"{kb_name}DataSource",
-            description='S3 data source for processed documents',
-            dataSourceConfiguration={
-                'type': 'S3',
-                's3Configuration': {
-                    'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                    'inclusionPrefixes': ['']  # Include all objects
-                }
-            },
-            vectorIngestionConfiguration={
-                'chunkingConfiguration': {
-                    'chunkingStrategy': 'FIXED_SIZE',
-                    'fixedSizeChunkingConfiguration': {
-                        'maxTokens': 300,
-                        'overlapPercentage': 10
+        try:
+            print(f"Creating data source for knowledge base: {kb_id}")
+            data_source_response = bedrock_agent.create_data_source(
+                knowledgeBaseId=kb_id,
+                name=f"{kb_name}DataSource",
+                description='S3 data source for processed documents',
+                dataSourceConfiguration={
+                    'type': 'S3',
+                    's3Configuration': {
+                        'bucketArn': f"arn:aws:s3:::{processed_bucket}",
+                        'inclusionPrefixes': ['']  # Include all objects
+                    }
+                },
+                vectorIngestionConfiguration={
+                    'chunkingConfiguration': {
+                        'chunkingStrategy': 'FIXED_SIZE',
+                        'fixedSizeChunkingConfiguration': {
+                            'maxTokens': 300,
+                            'overlapPercentage': 10
+                        }
                     }
                 }
-            }
-        )
+            )
+        except Exception as ds_error:
+            print(f"Error in create_data_source call: {str(ds_error)}")
+            raise ds_error
 
         # Get the data source ID
         ds_id = data_source_response['dataSource']['dataSourceId']
@@ -123,6 +163,12 @@ def create_knowledge_base(event):
 
 def add_document_to_knowledge_base(event):
     """Add a document to the Bedrock knowledge base."""
+    if bedrock_agent is None:
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Bedrock clients not properly initialized')
+        }
+
     try:
         # Get the document information directly from the event
         processed_bucket = event.get('processed_bucket')
@@ -274,19 +320,24 @@ def add_document_to_knowledge_base(event):
                 }
 
         # Now we should have a valid knowledge base configuration
-
         kb_config = response['Items'][0]
         kb_id = kb_config['knowledge_base_id']
         ds_id = kb_config['data_source_id']
 
         # Start an ingestion job for the document
-        ingestion_response = bedrock_agent.start_ingestion_job(
-            knowledgeBaseId=kb_id,
-            dataSourceId=ds_id,
-            description=f'Ingestion job for {processed_key}'
-        )
+        try:
+            print(f"Starting ingestion job for knowledge base: {kb_id}, data source: {ds_id}")
+            ingestion_response = bedrock_agent.start_ingestion_job(
+                knowledgeBaseId=kb_id,
+                dataSourceId=ds_id,
+                description=f'Ingestion job for {processed_key}'
+            )
 
-        job_id = ingestion_response['ingestionJob']['ingestionJobId']
+            job_id = ingestion_response['ingestionJob']['ingestionJobId']
+            print(f"Started ingestion job with ID: {job_id}")
+        except Exception as ingest_error:
+            print(f"Error in start_ingestion_job call: {str(ingest_error)}")
+            raise ingest_error
 
         # Update the document metadata with the ingestion job ID
         document_id = os.path.splitext(os.path.basename(processed_key))[0]
@@ -381,6 +432,12 @@ def add_document_to_knowledge_base(event):
 
 def query_knowledge_base(event):
     """Query the Bedrock knowledge base."""
+    if bedrock_agent is None or bedrock_runtime is None:
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Bedrock clients not properly initialized')
+        }
+
     try:
         # Get the query from the event
         query = event.get('query')
@@ -413,16 +470,22 @@ def query_knowledge_base(event):
         kb_id = kb_config['knowledge_base_id']
 
         # Query the knowledge base
-        retrieve_response = bedrock_agent.retrieve(
-            knowledgeBaseId=kb_id,
-            retrievalQuery={
-                'text': query
-            },
-            numberOfResults=5
-        )
+        try:
+            print(f"Retrieving information from knowledge base: {kb_id} with query: {query}")
+            retrieve_response = bedrock_agent.retrieve(
+                knowledgeBaseId=kb_id,
+                retrievalQuery={
+                    'text': query
+                },
+                numberOfResults=5
+            )
 
-        # Get the retrieval results
-        retrieval_results = retrieve_response['retrievalResults']
+            # Get the retrieval results
+            retrieval_results = retrieve_response['retrievalResults']
+            print(f"Retrieved {len(retrieval_results)} results")
+        except Exception as retrieve_error:
+            print(f"Error in retrieve call: {str(retrieve_error)}")
+            raise retrieve_error
 
         # Get the search index table
         search_index_table_name = os.environ.get('SEARCH_INDEX_TABLE_NAME', table_name)
@@ -441,30 +504,36 @@ def query_knowledge_base(event):
             context += f"Source: {source}\nContent: {content}\n\n"
 
         # Generate a response using Claude
-        prompt = f"""
-        Human: I have the following question: {query}
+        try:
+            print("Generating response with Claude")
+            prompt = f"""
+            Human: I have the following question: {query}
 
-        Here is some context that might help you answer:
+            Here is some context that might help you answer:
 
-        {context}
+            {context}
 
-        Please provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer.
+            Please provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer.
 
-        Assistant:
-        """
+            Assistant:
+            """
 
-        response = bedrock_runtime.invoke_model(
-            modelId='anthropic.claude-v2',
-            body=json.dumps({
-                'prompt': prompt,
-                'max_tokens_to_sample': 4000,
-                'temperature': 0.1
-            })
-        )
+            response = bedrock_runtime.invoke_model(
+                modelId='anthropic.claude-v2',
+                body=json.dumps({
+                    'prompt': prompt,
+                    'max_tokens_to_sample': 4000,
+                    'temperature': 0.1
+                })
+            )
 
-        # Parse the response
-        response_body = json.loads(response['body'].read())
-        answer = response_body.get('completion', '')
+            # Parse the response
+            response_body = json.loads(response['body'].read())
+            answer = response_body.get('completion', '')
+            print("Generated response successfully")
+        except Exception as model_error:
+            print(f"Error invoking model: {str(model_error)}")
+            raise model_error
 
         # Prepare the response with both text answer and relevant images
         response_data = {
