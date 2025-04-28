@@ -243,7 +243,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: [
           'kendra:Retrieve',
-          'kendra:DescribeIndex'
+          'kendra:DescribeIndex',
+          'kendra:Query'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })
@@ -285,7 +286,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: [
           'kendra:Retrieve',
-          'kendra:DescribeIndex'
+          'kendra:DescribeIndex',
+          'kendra:Query'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })

@@ -86,7 +86,7 @@ def lambda_handler(event, context):
                 knowledgeBaseConfiguration={
                     'type': 'KENDRA',
                     'kendraKnowledgeBaseConfiguration': {
-                        'indexId': kendra_index_id
+                        'kendraIndexArn': f"arn:aws:kendra:us-east-1:361769603480:index/{kendra_index_id}"
                     }
                 }
             )

@@ -95,7 +95,7 @@ def create_knowledge_base(event):
                 knowledgeBaseConfiguration={
                     'type': 'KENDRA',
                     'kendraKnowledgeBaseConfiguration': {
-                        'indexId': kendra_index_id
+                        'kendraIndexArn': f"arn:aws:kendra:us-east-1:361769603480:index/{kendra_index_id}"
                     }
                 }
             )
@@ -259,7 +259,7 @@ def add_document_to_knowledge_base(event):
                     knowledgeBaseConfiguration={
                         'type': 'KENDRA',
                         'kendraKnowledgeBaseConfiguration': {
-                            'indexId': kendra_index_id
+                            'kendraIndexArn': f"arn:aws:kendra:us-east-1:361769603480:index/{kendra_index_id}"
                         }
                     }
                 )
