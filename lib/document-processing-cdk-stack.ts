@@ -225,6 +225,21 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBedrockFullAccess'),
       ],
+      inlinePolicies: {
+        'BedrockKnowledgeBasePermissions': new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: [
+                'bedrock:ListKnowledgeBases',
+                'bedrock:ListDataSources',
+                'bedrock-agent:ListKnowledgeBases',
+                'bedrock-agent:ListDataSources'
+              ],
+              resources: ['*']
+            })
+          ]
+        })
+      }
     });
 
     // Add permissions for S3
@@ -267,11 +282,15 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'bedrock-agent:CreateDataSource',
           'bedrock-agent:StartIngestionJob',
           'bedrock-agent:Retrieve',
+          'bedrock-agent:ListKnowledgeBases',
+          'bedrock-agent:ListDataSources',
           // Bedrock permissions (older API)
           'bedrock:CreateKnowledgeBase',
           'bedrock:CreateDataSource',
           'bedrock:StartIngestionJob',
           'bedrock:Retrieve',
+          'bedrock:ListKnowledgeBases',
+          'bedrock:ListDataSources',
           // Runtime permissions
           'bedrock-runtime:InvokeModel',
           // IAM permissions

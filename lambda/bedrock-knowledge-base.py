@@ -252,15 +252,39 @@ def add_document_to_knowledge_base(event):
             # Check if knowledge base already exists
             print(f"Checking if knowledge base already exists: {kb_name}")
             try:
-                # List existing knowledge bases
-                list_kb_response = bedrock_agent.list_knowledge_bases()
-                existing_kb = None
+                # Try to list existing knowledge bases
+                try:
+                    list_kb_response = bedrock_agent.list_knowledge_bases()
+                    existing_kb = None
 
-                # Check if a knowledge base with the given name already exists
-                for kb in list_kb_response.get('knowledgeBaseSummaries', []):
-                    if kb.get('name') == kb_name:
-                        existing_kb = kb
-                        break
+                    # Check if a knowledge base with the given name already exists
+                    for kb in list_kb_response.get('knowledgeBaseSummaries', []):
+                        if kb.get('name') == kb_name:
+                            existing_kb = kb
+                            break
+                except Exception as list_error:
+                    # If we can't list knowledge bases due to permissions, try to query DynamoDB first
+                    print(f"Error listing knowledge bases: {str(list_error)}. Checking DynamoDB for existing configuration.")
+                    existing_kb = None
+
+                    # Try to get the knowledge base configuration from DynamoDB
+                    kb_query_response = table.query(
+                        IndexName='DocumentIdIndex',
+                        KeyConditionExpression='document_id = :did',
+                        ExpressionAttributeValues={
+                            ':did': 'KNOWLEDGE_BASE_CONFIG'
+                        }
+                    )
+
+
+
+                    if kb_query_response['Items']:
+                        # Use the existing configuration
+                        kb_config = kb_query_response['Items'][0]
+                        existing_kb = {
+                            'knowledgeBaseId': kb_config['knowledge_base_id'],
+                            'name': kb_name
+                        }
 
                 if existing_kb:
                     # Use the existing knowledge base
@@ -268,13 +292,35 @@ def add_document_to_knowledge_base(event):
                     kb_id = existing_kb['knowledgeBaseId']
 
                     # Check if data source already exists for this knowledge base
-                    list_ds_response = bedrock_agent.list_data_sources(knowledgeBaseId=kb_id)
-                    existing_ds = None
+                    try:
+                        list_ds_response = bedrock_agent.list_data_sources(knowledgeBaseId=kb_id)
+                        existing_ds = None
 
-                    # Check if a data source already exists
-                    for ds in list_ds_response.get('dataSourceSummaries', []):
-                        existing_ds = ds
-                        break
+                        # Check if a data source already exists
+                        for ds in list_ds_response.get('dataSourceSummaries', []):
+                            existing_ds = ds
+                            break
+                    except Exception as list_ds_error:
+                        # If we can't list data sources due to permissions, try to use the one from DynamoDB
+                        print(f"Error listing data sources: {str(list_ds_error)}. Checking DynamoDB for existing data source.")
+                        existing_ds = None
+
+                        # Query DynamoDB for knowledge base configuration
+                        kb_ds_query_response = table.query(
+                            IndexName='DocumentIdIndex',
+                            KeyConditionExpression='document_id = :did',
+                            ExpressionAttributeValues={
+                                ':did': 'KNOWLEDGE_BASE_CONFIG'
+                            }
+                        )
+
+                        # If we have a knowledge base config in DynamoDB, use its data source
+                        if kb_ds_query_response['Items']:
+                            kb_config = kb_ds_query_response['Items'][0]
+                            if 'data_source_id' in kb_config:
+                                existing_ds = {
+                                    'dataSourceId': kb_config['data_source_id']
+                                }
 
                     if existing_ds:
                         # Use the existing data source
