@@ -5,7 +5,8 @@ import uuid
 from datetime import datetime
 
 # Initialize AWS clients
-bedrock = boto3.client('bedrock')
+bedrock = boto3.client('bedrock-agent')  # Use bedrock-agent for knowledge base operations
+bedrock_runtime = boto3.client('bedrock-runtime')
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 
@@ -422,7 +423,6 @@ def query_knowledge_base(event):
         relevant_images = find_relevant_images(query, search_index_table)
 
         # Use Bedrock to generate a response based on the retrieved content
-        bedrock_runtime = boto3.client('bedrock-runtime')
 
         # Prepare the context from retrieved documents
         context = ""
