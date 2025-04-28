@@ -98,37 +98,9 @@ def lambda_handler(event, context):
         kb_id = response['knowledgeBase']['knowledgeBaseId']
         print(f"Knowledge base created with ID: {kb_id}")
 
-        # Create a data source for the knowledge base
-        print(f"Creating data source for knowledge base: {kb_id}")
-        try:
-            data_source_response = bedrock_agent.create_data_source(
-                knowledgeBaseId=kb_id,
-                name=f"{kb_name}DataSource",
-                description='S3 data source for processed documents',
-                dataSourceConfiguration={
-                    'type': 'S3',
-                    's3Configuration': {
-                        'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                        'inclusionPrefixes': ['Smart']  # Include objects starting with "Smart"
-                    }
-                },
-                vectorIngestionConfiguration={
-                    'chunkingConfiguration': {
-                        'chunkingStrategy': 'FIXED_SIZE',
-                        'fixedSizeChunkingConfiguration': {
-                            'maxTokens': 300,
-                            'overlapPercentage': 10
-                        }
-                    }
-                }
-            )
-        except Exception as ds_error:
-            print(f"Error in create_data_source call: {str(ds_error)}")
-            raise ds_error
-
-        # Get the data source ID
-        ds_id = data_source_response['dataSource']['dataSourceId']
-        print(f"Data source created with ID: {ds_id}")
+        # For Kendra knowledge bases, we don't need to create a data source
+        print("This is a Kendra knowledge base, skipping data source creation")
+        ds_id = "KENDRA_MANAGED"  # Use a placeholder for the data source ID
 
         # Store the knowledge base and data source IDs in DynamoDB
         table_name = os.environ.get('METADATA_TABLE_NAME')

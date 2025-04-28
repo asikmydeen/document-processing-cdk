@@ -291,66 +291,10 @@ def add_document_to_knowledge_base(event):
                     print(f"Using existing knowledge base: {kb_name} with ID: {existing_kb['knowledgeBaseId']}")
                     kb_id = existing_kb['knowledgeBaseId']
 
-                    # Check if data source already exists for this knowledge base
-                    try:
-                        list_ds_response = bedrock_agent.list_data_sources(knowledgeBaseId=kb_id)
-                        existing_ds = None
-
-                        # Check if a data source already exists
-                        for ds in list_ds_response.get('dataSourceSummaries', []):
-                            existing_ds = ds
-                            break
-                    except Exception as list_ds_error:
-                        # If we can't list data sources due to permissions, try to use the one from DynamoDB
-                        print(f"Error listing data sources: {str(list_ds_error)}. Checking DynamoDB for existing data source.")
-                        existing_ds = None
-
-                        # Query DynamoDB for knowledge base configuration
-                        kb_ds_query_response = table.query(
-                            IndexName='DocumentIdIndex',
-                            KeyConditionExpression='document_id = :did',
-                            ExpressionAttributeValues={
-                                ':did': 'KNOWLEDGE_BASE_CONFIG'
-                            }
-                        )
-
-                        # If we have a knowledge base config in DynamoDB, use its data source
-                        if kb_ds_query_response['Items']:
-                            kb_config = kb_ds_query_response['Items'][0]
-                            if 'data_source_id' in kb_config:
-                                existing_ds = {
-                                    'dataSourceId': kb_config['data_source_id']
-                                }
-
-                    if existing_ds:
-                        # Use the existing data source
-                        print(f"Using existing data source with ID: {existing_ds['dataSourceId']}")
-                        ds_id = existing_ds['dataSourceId']
-                    else:
-                        # Create a new data source for the existing knowledge base
-                        print(f"Creating new data source for existing knowledge base: {kb_id}")
-                        data_source_response = bedrock_agent.create_data_source(
-                            knowledgeBaseId=kb_id,
-                            name=f"{kb_name}DataSource",
-                            description='S3 data source for processed documents',
-                            dataSourceConfiguration={
-                                'type': 'S3',
-                                's3Configuration': {
-                                    'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                                    'inclusionPrefixes': ['Smart']  # Include objects starting with "Smart"
-                                }
-                            },
-                            vectorIngestionConfiguration={
-                                'chunkingConfiguration': {
-                                    'chunkingStrategy': 'FIXED_SIZE',
-                                    'fixedSizeChunkingConfiguration': {
-                                        'maxTokens': 300,
-                                        'overlapPercentage': 10
-                                    }
-                                }
-                            }
-                        )
-                        ds_id = data_source_response['dataSource']['dataSourceId']
+                    # For Kendra knowledge bases, we don't need to create a data source
+                    # Kendra has its own data source management
+                    print("This is a Kendra knowledge base, skipping data source creation")
+                    ds_id = "KENDRA_MANAGED"  # Use a placeholder for the data source ID
                 else:
                     # Create a new knowledge base
                     print(f"Creating new knowledge base: {kb_name}")
@@ -370,30 +314,10 @@ def add_document_to_knowledge_base(event):
                     kb_id = kb_response['knowledgeBase']['knowledgeBaseId']
                     print(f"Knowledge base created with ID: {kb_id}")
 
-                    # Create a data source for the new knowledge base
-                    print(f"Creating data source for knowledge base: {kb_id}")
-                    data_source_response = bedrock_agent.create_data_source(
-                        knowledgeBaseId=kb_id,
-                        name=f"{kb_name}DataSource",
-                        description='S3 data source for processed documents',
-                        dataSourceConfiguration={
-                            'type': 'S3',
-                            's3Configuration': {
-                                'bucketArn': f"arn:aws:s3:::{processed_bucket}",
-                                'inclusionPrefixes': ['Smart']  # Include objects starting with "Smart"
-                            }
-                        },
-                        vectorIngestionConfiguration={
-                            'chunkingConfiguration': {
-                                'chunkingStrategy': 'FIXED_SIZE',
-                                'fixedSizeChunkingConfiguration': {
-                                    'maxTokens': 300,
-                                    'overlapPercentage': 10
-                                }
-                            }
-                        }
-                    )
-                    ds_id = data_source_response['dataSource']['dataSourceId']
+                    # For Kendra knowledge bases, we don't need to create a data source
+                    # Kendra has its own data source management
+                    print("This is a Kendra knowledge base, skipping data source creation")
+                    ds_id = "KENDRA_MANAGED"  # Use a placeholder for the data source ID
 
 
 
@@ -441,19 +365,64 @@ def add_document_to_knowledge_base(event):
         kb_id = kb_config['knowledge_base_id']
         ds_id = kb_config['data_source_id']
 
-        # Start an ingestion job for the document
+        # For Kendra knowledge bases, we need to use a different approach to add documents
         try:
-            print(f"Starting ingestion job for knowledge base: {kb_id}, data source: {ds_id}")
-            ingestion_response = bedrock_agent.start_ingestion_job(
-                knowledgeBaseId=kb_id,
-                dataSourceId=ds_id,
-                description=f'Ingestion job for {processed_key}'
-            )
+            if ds_id == "KENDRA_MANAGED":
+                print(f"This is a Kendra knowledge base. Using Kendra's document ingestion methods.")
 
-            job_id = ingestion_response['ingestionJob']['ingestionJobId']
-            print(f"Started ingestion job with ID: {job_id}")
+                # Extract the Kendra index ID from the knowledge base ARN
+                # The ARN format is: arn:aws:kendra:region:account-id:index/index-id
+                kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
+
+                # Create a Kendra client
+                kendra_client = boto3.client('kendra')
+
+                # Get the document content from S3
+                try:
+                    s3_response = s3_client.get_object(Bucket=processed_bucket, Key=processed_key)
+                    document_content = s3_response['Body'].read().decode('utf-8')
+                    document_json = json.loads(document_content)
+
+                    # Extract text content from the processed document
+                    text_content = ""
+                    if 'text_content' in document_json:
+                        text_content = document_json['text_content']
+                    elif 'content' in document_json:
+                        text_content = document_json['content']
+
+                    # Use BatchPutDocument to add the document to Kendra
+                    print(f"Adding document to Kendra index: {kendra_index_id}")
+                    kendra_response = kendra_client.batch_put_document(
+                        IndexId=kendra_index_id,
+                        Documents=[
+                            {
+                                'Id': document_id,
+                                'Title': document_id,
+                                'ContentType': 'PLAIN_TEXT',
+                                'Blob': text_content
+                            }
+                        ]
+                    )
+
+                    job_id = f"KENDRA-{kendra_response['ResponseMetadata']['RequestId']}"
+                    print(f"Document added to Kendra index with job ID: {job_id}")
+
+                except Exception as s3_error:
+                    print(f"Error getting document from S3: {str(s3_error)}")
+                    raise s3_error
+            else:
+                # For vector knowledge bases, use the standard ingestion job
+                print(f"Starting ingestion job for knowledge base: {kb_id}, data source: {ds_id}")
+                ingestion_response = bedrock_agent.start_ingestion_job(
+                    knowledgeBaseId=kb_id,
+                    dataSourceId=ds_id,
+                    description=f'Ingestion job for {processed_key}'
+                )
+
+                job_id = ingestion_response['ingestionJob']['ingestionJobId']
+                print(f"Started ingestion job with ID: {job_id}")
         except Exception as ingest_error:
-            print(f"Error in start_ingestion_job call: {str(ingest_error)}")
+            print(f"Error in document ingestion: {str(ingest_error)}")
             raise ingest_error
 
         # Update the document metadata with the ingestion job ID

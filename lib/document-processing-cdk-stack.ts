@@ -306,7 +306,11 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         actions: [
           'kendra:Retrieve',
           'kendra:DescribeIndex',
-          'kendra:Query'
+          'kendra:Query',
+          'kendra:BatchPutDocument',
+          'kendra:BatchDeleteDocument',
+          'kendra:StartDataSourceSyncJob',
+          'kendra:ListDataSources'
         ],
         resources: ['arn:aws:kendra:us-east-1:361769603480:index/4c9190f6-671c-4508-a524-a180433c2774'],
       })
