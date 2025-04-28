@@ -250,11 +250,19 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
     bedrockLambdaRole.addToPolicy(
       new iam.PolicyStatement({
         actions: [
+          // Bedrock agent permissions
           'bedrock-agent:CreateKnowledgeBase',
           'bedrock-agent:CreateDataSource',
           'bedrock-agent:StartIngestionJob',
           'bedrock-agent:Retrieve',
+          // Bedrock permissions (older API)
+          'bedrock:CreateKnowledgeBase',
+          'bedrock:CreateDataSource',
+          'bedrock:StartIngestionJob',
+          'bedrock:Retrieve',
+          // Runtime permissions
           'bedrock-runtime:InvokeModel',
+          // IAM permissions
           'iam:PassRole',
         ],
         resources: ['*'], // Scope down in production

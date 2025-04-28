@@ -5,7 +5,16 @@ import uuid
 from datetime import datetime
 
 # Initialize AWS clients
-bedrock_agent = boto3.client('bedrock-agent')  # Use bedrock-agent instead of bedrock
+try:
+    # Try both client types - some AWS regions use bedrock, others use bedrock-agent
+    bedrock = boto3.client('bedrock')
+    bedrock_agent = bedrock  # Use bedrock as the primary client
+    print("Using 'bedrock' client")
+except Exception as e:
+    print(f"Error creating bedrock client: {str(e)}")
+    bedrock_agent = boto3.client('bedrock-agent')
+    print("Using 'bedrock-agent' client")
+
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 
