@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime
 
 # Initialize AWS clients
-bedrock = boto3.client('bedrock-agent')  # Use bedrock-agent for knowledge base operations
+bedrock_agent = boto3.client('bedrock-agent')  # Use bedrock-agent instead of bedrock
 bedrock_runtime = boto3.client('bedrock-runtime')
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
@@ -39,7 +39,7 @@ def create_knowledge_base(event):
         processed_bucket = os.environ.get('PROCESSED_BUCKET_NAME')
 
         # Create the knowledge base
-        response = bedrock.create_knowledge_base(
+        response = bedrock_agent.create_knowledge_base(
             name=kb_name,
             description='Knowledge base for processed documents',
             roleArn=os.environ.get('KNOWLEDGE_BASE_ROLE_ARN'),
@@ -55,7 +55,7 @@ def create_knowledge_base(event):
         kb_id = response['knowledgeBase']['knowledgeBaseId']
 
         # Create a data source for the knowledge base
-        data_source_response = bedrock.create_data_source(
+        data_source_response = bedrock_agent.create_data_source(
             knowledgeBaseId=kb_id,
             name=f"{kb_name}DataSource",
             description='S3 data source for processed documents',
@@ -181,7 +181,7 @@ def add_document_to_knowledge_base(event):
             # Create the knowledge base
             print(f"Creating knowledge base: {kb_name}")
             try:
-                kb_response = bedrock.create_knowledge_base(
+                kb_response = bedrock_agent.create_knowledge_base(
                     name=kb_name,
                     description='Knowledge base for processed documents',
                     roleArn=kb_role_arn,
@@ -199,7 +199,7 @@ def add_document_to_knowledge_base(event):
 
                 # Create a data source for the knowledge base
                 print(f"Creating data source for knowledge base: {kb_id}")
-                data_source_response = bedrock.create_data_source(
+                data_source_response = bedrock_agent.create_data_source(
                     knowledgeBaseId=kb_id,
                     name=f"{kb_name}DataSource",
                     description='S3 data source for processed documents',
@@ -271,7 +271,7 @@ def add_document_to_knowledge_base(event):
         ds_id = kb_config['data_source_id']
 
         # Start an ingestion job for the document
-        ingestion_response = bedrock.start_ingestion_job(
+        ingestion_response = bedrock_agent.start_ingestion_job(
             knowledgeBaseId=kb_id,
             dataSourceId=ds_id,
             description=f'Ingestion job for {processed_key}'
@@ -404,7 +404,7 @@ def query_knowledge_base(event):
         kb_id = kb_config['knowledge_base_id']
 
         # Query the knowledge base
-        retrieve_response = bedrock.retrieve(
+        retrieve_response = bedrock_agent.retrieve(
             knowledgeBaseId=kb_id,
             retrievalQuery={
                 'text': query
