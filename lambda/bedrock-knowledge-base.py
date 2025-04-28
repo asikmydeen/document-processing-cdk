@@ -163,11 +163,107 @@ def add_document_to_knowledge_base(event):
             }
         )
 
+        # If knowledge base configuration not found, create it
         if not response['Items']:
-            return {
-                'statusCode': 404,
-                'body': json.dumps('Knowledge base configuration not found')
-            }
+            print("Knowledge base configuration not found. Creating new knowledge base...")
+
+            # Get parameters from environment variables
+            kb_name = 'DocumentProcessingKnowledgeBase'
+            kb_role_arn = os.environ.get('KNOWLEDGE_BASE_ROLE_ARN')
+
+            if not kb_role_arn:
+                return {
+                    'statusCode': 500,
+                    'body': json.dumps('KNOWLEDGE_BASE_ROLE_ARN environment variable not set')
+                }
+
+            # Create the knowledge base
+            print(f"Creating knowledge base: {kb_name}")
+            try:
+                kb_response = bedrock.create_knowledge_base(
+                    name=kb_name,
+                    description='Knowledge base for processed documents',
+                    roleArn=kb_role_arn,
+                    knowledgeBaseConfiguration={
+                        'type': 'VECTOR',
+                        'vectorKnowledgeBaseConfiguration': {
+                            'embeddingModelArn': 'arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1'
+                        }
+                    }
+                )
+
+                # Get the knowledge base ID
+                kb_id = kb_response['knowledgeBase']['knowledgeBaseId']
+                print(f"Knowledge base created with ID: {kb_id}")
+
+                # Create a data source for the knowledge base
+                print(f"Creating data source for knowledge base: {kb_id}")
+                data_source_response = bedrock.create_data_source(
+                    knowledgeBaseId=kb_id,
+                    name=f"{kb_name}DataSource",
+                    description='S3 data source for processed documents',
+                    dataSourceConfiguration={
+                        'type': 'S3',
+                        's3Configuration': {
+                            'bucketArn': f"arn:aws:s3:::{processed_bucket}",
+                            'inclusionPrefixes': ['']  # Include all objects
+                        }
+                    },
+                    vectorIngestionConfiguration={
+                        'chunkingConfiguration': {
+                            'chunkingStrategy': 'FIXED_SIZE',
+                            'fixedSizeChunkingConfiguration': {
+                                'maxTokens': 300,
+                                'overlapPercentage': 10
+                            }
+                        }
+                    }
+                )
+
+                # Get the data source ID
+                ds_id = data_source_response['dataSource']['dataSourceId']
+                print(f"Data source created with ID: {ds_id}")
+
+                # Generate a unique ID for the config
+                kb_config_id = str(uuid.uuid4())
+
+                # Store the knowledge base configuration in DynamoDB
+                print(f"Storing knowledge base configuration in DynamoDB")
+                table.put_item(Item={
+                    'id': kb_config_id,
+                    'document_id': 'KNOWLEDGE_BASE_CONFIG',
+                    'knowledge_base_id': kb_id,
+                    'data_source_id': ds_id,
+                    'created_at': datetime.now().isoformat(),
+                    'updated_at': datetime.now().isoformat(),
+                    'status': 'CREATED'
+                })
+
+                # Query again to get the newly created configuration
+                response = table.query(
+                    IndexName='DocumentIdIndex',
+                    KeyConditionExpression='document_id = :did',
+                    ExpressionAttributeValues={
+                        ':did': 'KNOWLEDGE_BASE_CONFIG'
+                    }
+                )
+
+                if not response['Items']:
+                    return {
+                        'statusCode': 500,
+                        'body': json.dumps('Failed to create knowledge base configuration')
+                    }
+
+                print("Successfully created and stored knowledge base configuration")
+
+            except Exception as kb_error:
+                print(f"Error creating knowledge base: {str(kb_error)}")
+                return {
+                    'statusCode': 500,
+                    'body': json.dumps(f'Error creating knowledge base: {str(kb_error)}')
+                }
+
+        # Now we should have a valid knowledge base configuration
 
         kb_config = response['Items'][0]
         kb_id = kb_config['knowledge_base_id']

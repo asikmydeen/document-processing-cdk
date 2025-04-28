@@ -303,6 +303,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
+        AUTO_CREATE_KNOWLEDGE_BASE: 'true',
       },
     });
 
@@ -564,6 +565,7 @@ def lambda_handler(event, context):
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
+        AUTO_CREATE_KNOWLEDGE_BASE: 'true',
       },
     });
 
