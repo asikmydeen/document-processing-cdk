@@ -117,6 +117,7 @@ def lambda_handler(event, context):
 
         # Store the knowledge base configuration in DynamoDB
         print(f"Storing knowledge base configuration in DynamoDB table: {table_name}")
+        from datetime import datetime
         table.put_item(Item={
             'id': kb_config_id,
             'document_id': 'KNOWLEDGE_BASE_CONFIG',

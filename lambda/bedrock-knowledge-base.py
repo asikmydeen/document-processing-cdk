@@ -334,6 +334,7 @@ def add_document_to_knowledge_base(event):
 
             # Store the knowledge base configuration in DynamoDB
             print(f"Storing knowledge base configuration in DynamoDB")
+            from datetime import datetime
             table.put_item(Item={
                 'id': kb_config_id,
                 'document_id': 'KNOWLEDGE_BASE_CONFIG',
@@ -445,6 +446,9 @@ def add_document_to_knowledge_base(event):
 
         if response['Items']:
             metadata_item = response['Items'][0]
+
+            # Import datetime for timestamp
+            from datetime import datetime
 
             table.update_item(
                 Key={
@@ -654,6 +658,7 @@ def query_knowledge_base(event):
 
                 # Generate a unique key for the payload
                 import uuid
+                from datetime import datetime
                 payload_key = f"payloads/{datetime.now().strftime('%Y-%m-%d')}/{str(uuid.uuid4())}.json"
 
                 # Store the payload in S3
