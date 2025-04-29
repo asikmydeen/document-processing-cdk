@@ -263,16 +263,34 @@ def create_image_search_indices(metadata_item, document_content):
 
     search_indices = []
 
+    # Print debug information about images
+    print(f"Creating image search indices for document: {metadata_item['document_id']}")
+    print(f"Is image document: {metadata_item.get('is_image', False)}")
+    print(f"Number of embedded images: {len(metadata_item.get('images', []))}")
+
+    # Extract text content from the document
+    document_text = document_content.get('text_content', '')
+    if not document_text and isinstance(document_content, dict):
+        # Try to find text content in nested structure
+        for key, value in document_content.items():
+            if isinstance(value, dict) and 'text_content' in value:
+                document_text = value['text_content']
+                print(f"Found text content in nested field: {key}.text_content")
+                break
+
     # If this is an image document, create indices for the text content
     if metadata_item.get('is_image', False):
         # Create a special image content index
+        image_s3_uri = f"s3://{metadata_item['original_bucket']}/{metadata_item['original_key']}"
+        print(f"Creating image content index for: {image_s3_uri}")
+
         index_item = {
             'id': str(uuid.uuid4()),
             'document_id': metadata_item['document_id'],
             'metadata_id': metadata_item['id'],
             'index_type': 'image_content',
-            'index_value': document_content.get('text_content', '')[:1000],  # Limit to 1000 chars
-            'image_s3_uri': f"s3://{metadata_item['original_bucket']}/{metadata_item['original_key']}",
+            'index_value': document_text[:1000],  # Limit to 1000 chars
+            'image_s3_uri': image_s3_uri,
             'image_description': metadata_item.get('image_description', ''),
             'created_at': datetime.now().isoformat()
         }
@@ -282,20 +300,89 @@ def create_image_search_indices(metadata_item, document_content):
         search_indices.append(index_item)
 
     # For documents with embedded images, create indices for each image
-    for image in metadata_item.get('images', []):
+    for i, image in enumerate(metadata_item.get('images', [])):
+        # Make sure we have an S3 URI for the image
+        image_s3_uri = image.get('s3_uri', '')
+        if not image_s3_uri and 'image_data' in image:
+            # If we have image data but no S3 URI, upload the image to S3
+            try:
+                # Generate a unique key for the image
+                image_key = f"images/{metadata_item['document_id']}/image_{i}_{uuid.uuid4()}.png"
+
+                # Upload the image to S3
+                s3_client.put_object(
+                    Bucket=metadata_item['processed_bucket'],
+                    Key=image_key,
+                    Body=image['image_data'],
+                    ContentType='image/png'
+                )
+
+                # Update the S3 URI
+                image_s3_uri = f"s3://{metadata_item['processed_bucket']}/{image_key}"
+                print(f"Uploaded image to S3: {image_s3_uri}")
+            except Exception as e:
+                print(f"Error uploading image to S3: {str(e)}")
+
+        if not image_s3_uri:
+            print(f"Warning: No S3 URI for image {i} in document {metadata_item['document_id']}")
+            continue
+
+        # Get text content associated with this image
+        image_text = image.get('text_content', '')
+        if not image_text:
+            # If no specific text content for this image, use a portion of the document text
+            # This is a simple approach - in a real system, you'd want to use NLP to find
+            # the most relevant text sections for each image
+            image_text = document_text[:1000]
+
+        # Create a description for the image if not present
+        image_description = image.get('description', metadata_item.get('image_description', ''))
+        if not image_description:
+            image_description = f"Image {i+1} from document {metadata_item['document_id']}"
+
+        print(f"Creating embedded image index for: {image_s3_uri}")
+        print(f"Image description: {image_description}")
+        print(f"Text content length: {len(image_text)}")
+
         index_item = {
             'id': str(uuid.uuid4()),
             'document_id': metadata_item['document_id'],
             'metadata_id': metadata_item['id'],
             'index_type': 'embedded_image',
-            'index_value': image.get('text_content', '')[:1000],  # Limit to 1000 chars
-            'image_s3_uri': image.get('s3_uri', ''),
-            'image_description': metadata_item.get('image_description', ''),
+            'index_value': image_text[:1000],  # Limit to 1000 chars
+            'image_s3_uri': image_s3_uri,
+            'image_description': image_description,
+            'image_position': i,
             'created_at': datetime.now().isoformat()
         }
 
         # Add the search index to DynamoDB
         table.put_item(Item=index_item)
         search_indices.append(index_item)
+
+        # Create additional indices for different sections of text if the document is long
+        if len(document_text) > 1000:
+            # Create indices for different sections of the document
+            section_size = 1000
+            for j in range(1, min(5, len(document_text) // section_size)):  # Up to 5 sections
+                section_start = j * section_size
+                section_text = document_text[section_start:section_start + section_size]
+
+                section_index_item = {
+                    'id': str(uuid.uuid4()),
+                    'document_id': metadata_item['document_id'],
+                    'metadata_id': metadata_item['id'],
+                    'index_type': 'embedded_image_section',
+                    'index_value': section_text,
+                    'image_s3_uri': image_s3_uri,
+                    'image_description': image_description,
+                    'image_position': i,
+                    'section': j,
+                    'created_at': datetime.now().isoformat()
+                }
+
+                # Add the section index to DynamoDB
+                table.put_item(Item=section_index_item)
+                search_indices.append(section_index_item)
 
     return search_indices

@@ -988,6 +988,14 @@ def query_knowledge_base(event):
         # Find relevant images based on the query
         relevant_images = find_relevant_images(query, search_index_table)
 
+        # Print information about the found images
+        print(f"Found {len(relevant_images)} relevant images for query: {query}")
+        for i, img in enumerate(relevant_images):
+            print(f"Image {i+1}: {img.get('image_description', 'No description')} - Score: {img.get('relevance_score', 0)}")
+            print(f"  URI: {img.get('image_s3_uri', 'No URI')}")
+            print(f"  Has presigned URL: {'Yes' if 'presigned_url' in img else 'No'}")
+            print(f"  Matched terms: {img.get('matched_terms', [])}")
+
         # Use Bedrock to generate a response based on the retrieved content
 
         # Prepare the context from retrieved documents
@@ -997,15 +1005,35 @@ def query_knowledge_base(event):
             source = result.get('location', {}).get('s3Location', {}).get('uri', 'Unknown source')
             context += f"Source: {source}\nContent: {content}\n\n"
 
+        # Add information about relevant images to the context
+        if relevant_images:
+            context += "\nRelevant images found:\n"
+            for i, img in enumerate(relevant_images[:5]):  # Include up to 5 images in the context
+                description = img.get('image_description', f"Image {i+1}")
+                preview = img.get('text_content_preview', 'No text content')
+                context += f"Image {i+1}: {description}\nText content: {preview}\n\n"
+
         # Generate a response using Claude
         try:
             print("Generating response with Claude")
+
+            # Create a prompt that includes information about images
+            image_instruction = ""
+            if relevant_images:
+                image_instruction = """
+                I've also found some images that might be relevant to your question.
+                In your answer, please mention that there are relevant images available
+                that will be displayed alongside your response.
+                """
+
             prompt = f"""
             Human: I have the following question: {query}
 
             Here is some context that might help you answer:
 
             {context}
+
+            {image_instruction}
 
             Please provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer.
 
@@ -1029,6 +1057,25 @@ def query_knowledge_base(event):
             print(f"Error invoking model: {str(model_error)}")
             raise model_error
 
+        # Format the images for the response
+        formatted_images = []
+        for img in relevant_images:
+            formatted_img = {
+                'description': img.get('image_description', 'Image'),
+                'uri': img.get('image_s3_uri', ''),
+                'relevance_score': img.get('relevance_score', 0)
+            }
+
+            # Add presigned URL if available
+            if 'presigned_url' in img:
+                formatted_img['url'] = img['presigned_url']
+
+            # Add text content preview
+            if 'text_content_preview' in img:
+                formatted_img['text_content'] = img['text_content_preview']
+
+            formatted_images.append(formatted_img)
+
         # Prepare the response with both text answer and relevant images
         response_data = {
             'statusCode': 200,
@@ -1036,7 +1083,9 @@ def query_knowledge_base(event):
                 'query': query,
                 'answer': answer,
                 'sources': [result.get('location', {}).get('s3Location', {}).get('uri', 'Unknown source') for result in retrieval_results],
-                'relevant_images': relevant_images
+                'has_images': len(formatted_images) > 0,
+                'image_count': len(formatted_images),
+                'images': formatted_images
             })
         }
 
@@ -1096,6 +1145,8 @@ def query_knowledge_base(event):
 def find_relevant_images(query, search_index_table):
     """Find images that are relevant to the query based on their text content."""
     try:
+        print(f"Finding relevant images for query: {query}")
+
         # First, scan for image content indices
         image_indices = []
 
@@ -1106,7 +1157,9 @@ def find_relevant_images(query, search_index_table):
                 ':type': 'image_content'
             }
         )
-        image_indices.extend(response.get('Items', []))
+        image_content_indices = response.get('Items', [])
+        print(f"Found {len(image_content_indices)} image_content indices")
+        image_indices.extend(image_content_indices)
 
         # Scan for embedded_image indices
         response = search_index_table.scan(
@@ -1115,43 +1168,121 @@ def find_relevant_images(query, search_index_table):
                 ':type': 'embedded_image'
             }
         )
-        image_indices.extend(response.get('Items', []))
+        embedded_image_indices = response.get('Items', [])
+        print(f"Found {len(embedded_image_indices)} embedded_image indices")
+        image_indices.extend(embedded_image_indices)
 
-        # Filter images based on query relevance
-        relevant_images = []
+        # Scan for embedded_image_section indices
+        response = search_index_table.scan(
+            FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
+            ExpressionAttributeValues={
+                ':type': 'embedded_image_section'
+            }
+        )
+        section_indices = response.get('Items', [])
+        print(f"Found {len(section_indices)} embedded_image_section indices")
+        image_indices.extend(section_indices)
+
+        print(f"Total image indices found: {len(image_indices)}")
+
+        # If we have no images, return empty list
+        if not image_indices:
+            print("No image indices found in the database")
+            return []
+
+        # Prepare query terms for matching
+        query_terms = [term.lower() for term in query.split() if len(term) > 3]  # Only use terms with more than 3 chars
+        print(f"Query terms for matching: {query_terms}")
+
+        # Score images based on relevance to the query
+        image_scores = {}
         for index in image_indices:
-            # Simple relevance check: if query terms appear in the image text content
             index_value = index.get('index_value', '').lower()
-            if any(term.lower() in index_value for term in query.split()):
-                # Get the image details
-                image_info = {
-                    'image_s3_uri': index.get('image_s3_uri', ''),
-                    'document_id': index.get('document_id', ''),
-                    'image_description': index.get('image_description', ''),
-                    'text_content_preview': index_value[:100] + '...' if len(index_value) > 100 else index_value
+            image_s3_uri = index.get('image_s3_uri', '')
+
+            if not image_s3_uri:
+                continue
+
+            # Initialize score for this image if not already done
+            if image_s3_uri not in image_scores:
+                image_scores[image_s3_uri] = {
+                    'score': 0,
+                    'index': index,
+                    'matched_terms': set()
                 }
 
-                # Generate a presigned URL for the image if it's in S3
-                if image_info['image_s3_uri'].startswith('s3://'):
-                    parts = image_info['image_s3_uri'].replace('s3://', '').split('/', 1)
-                    if len(parts) == 2:
-                        bucket, key = parts
-                        # Verify that both bucket and key are non-empty
-                        if bucket and key:
-                            try:
-                                presigned_url = s3_client.generate_presigned_url(
-                                    'get_object',
-                                    Params={'Bucket': bucket, 'Key': key},
-                                    ExpiresIn=3600  # URL valid for 1 hour
-                                )
-                                image_info['presigned_url'] = presigned_url
-                            except Exception as e:
-                                print(f"Error generating presigned URL for {image_info['image_s3_uri']}: {str(e)}")
-                        else:
-                            print(f"Warning: Empty bucket or key in S3 URI: {image_info['image_s3_uri']}")
+            # Calculate score based on term matches
+            for term in query_terms:
+                if term in index_value:
+                    # Add to the score based on the index type
+                    if index.get('index_type') == 'embedded_image':
+                        image_scores[image_s3_uri]['score'] += 3  # Higher weight for direct image text
+                    elif index.get('index_type') == 'image_content':
+                        image_scores[image_s3_uri]['score'] += 2  # Medium weight for image content
+                    else:
+                        image_scores[image_s3_uri]['score'] += 1  # Lower weight for section matches
 
-                relevant_images.append(image_info)
+                    # Record the matched term
+                    image_scores[image_s3_uri]['matched_terms'].add(term)
 
+        # Sort images by score (descending)
+        sorted_images = sorted(
+            image_scores.items(),
+            key=lambda x: x[1]['score'],
+            reverse=True
+        )
+
+        print(f"Found {len(sorted_images)} images with non-zero scores")
+
+        # Take the top 10 images
+        top_images = sorted_images[:10]
+
+        # Create the result list with image details
+        relevant_images = []
+        for image_uri, score_data in top_images:
+            if score_data['score'] == 0:
+                continue  # Skip images with zero score
+
+            index = score_data['index']
+            index_value = index.get('index_value', '')
+
+            # Get the image details
+            image_info = {
+                'image_s3_uri': image_uri,
+                'document_id': index.get('document_id', ''),
+                'image_description': index.get('image_description', ''),
+                'text_content_preview': index_value[:100] + '...' if len(index_value) > 100 else index_value,
+                'relevance_score': score_data['score'],
+                'matched_terms': list(score_data['matched_terms'])
+            }
+
+            # Add position information if available
+            if 'image_position' in index:
+                image_info['position'] = index['image_position']
+
+            # Generate a presigned URL for the image if it's in S3
+            if image_info['image_s3_uri'].startswith('s3://'):
+                parts = image_info['image_s3_uri'].replace('s3://', '').split('/', 1)
+                if len(parts) == 2:
+                    bucket, key = parts
+                    # Verify that both bucket and key are non-empty
+                    if bucket and key:
+                        try:
+                            presigned_url = s3_client.generate_presigned_url(
+                                'get_object',
+                                Params={'Bucket': bucket, 'Key': key},
+                                ExpiresIn=3600  # URL valid for 1 hour
+                            )
+                            image_info['presigned_url'] = presigned_url
+                            print(f"Generated presigned URL for image: {image_uri}")
+                        except Exception as e:
+                            print(f"Error generating presigned URL for {image_uri}: {str(e)}")
+                    else:
+                        print(f"Warning: Empty bucket or key in S3 URI: {image_uri}")
+
+            relevant_images.append(image_info)
+
+        print(f"Returning {len(relevant_images)} relevant images")
         return relevant_images
 
     except Exception as e:
