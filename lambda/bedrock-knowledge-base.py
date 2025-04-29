@@ -411,12 +411,14 @@ def add_document_to_knowledge_base(event):
                         s3_bucket = s3_configuration.get('BucketName')
                         s3_prefix = s3_configuration.get('InclusionPrefixes', [''])[0]
 
-                        if s3_bucket:
-                            print(f"Found Kendra S3 data source bucket: {s3_bucket}, prefix: {s3_prefix}")
-                            use_s3_data_source = True
-                        else:
-                            print("S3 bucket name not found in data source configuration. Falling back to BatchPutDocument.")
-                            use_s3_data_source = False
+                        # If bucket name is not found in configuration, use the known bucket name
+                        if not s3_bucket:
+                            # Use the S3 bucket from environment variable
+                            s3_bucket = os.environ.get('KENDRA_S3_BUCKET', 'aseekbot-poc-kb')
+                            print(f"Using Kendra S3 data source bucket from environment: {s3_bucket}")
+
+                        print(f"Found Kendra S3 data source bucket: {s3_bucket}, prefix: {s3_prefix}")
+                        use_s3_data_source = True
                     else:
                         print("No S3 data source found. Falling back to BatchPutDocument.")
                         use_s3_data_source = False
@@ -425,18 +427,8 @@ def add_document_to_knowledge_base(event):
                     print(f"Error checking data sources: {str(ds_error)}. Falling back to BatchPutDocument.")
                     use_s3_data_source = False
 
-                # Check what documents are already in the index
-                try:
-                    print(f"Checking existing documents in Kendra index: {kendra_index_id}")
-                    list_response = kendra_client.list_documents(
-                        IndexId=kendra_index_id
-                    )
-
-                    print(f"Found {len(list_response.get('DocumentInfoList', []))} existing documents in index")
-                    for doc_info in list_response.get('DocumentInfoList', [])[:10]:  # Show first 10 docs
-                        print(f"Existing document: {doc_info.get('DocumentId')} - Status: {doc_info.get('Status')}")
-                except Exception as list_error:
-                    print(f"Error listing existing documents: {str(list_error)}")
+                # Skip checking existing documents as list_documents is not available in this version of the SDK
+                print(f"Skipping document listing as it's not supported in this SDK version")
 
                 # Get the document content from S3
                 try:
@@ -450,7 +442,15 @@ def add_document_to_knowledge_base(event):
                     # Print the document JSON structure to help debug
                     print(f"Document JSON keys: {list(document_json.keys())}")
 
-                    if 'text_content' in document_json:
+                    # Check for document_content field which is likely to contain the full text
+                    if 'document_content' in document_json:
+                        if isinstance(document_json['document_content'], dict) and 'text_content' in document_json['document_content']:
+                            text_content = document_json['document_content']['text_content']
+                            print(f"Found document_content.text_content field with length: {len(text_content)}")
+                        elif isinstance(document_json['document_content'], str):
+                            text_content = document_json['document_content']
+                            print(f"Found document_content field with length: {len(text_content)}")
+                    elif 'text_content' in document_json:
                         text_content = document_json['text_content']
                         print(f"Found text_content field with length: {len(text_content)}")
                     elif 'content' in document_json:

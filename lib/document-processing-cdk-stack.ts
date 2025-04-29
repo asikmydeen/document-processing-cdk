@@ -393,6 +393,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
         KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
+        KENDRA_S3_BUCKET: 'aseekbot-poc-kb', // Kendra S3 data source bucket
       },
     });
 
@@ -656,6 +657,7 @@ def lambda_handler(event, context):
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
         KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
+        KENDRA_S3_BUCKET: 'aseekbot-poc-kb', // Kendra S3 data source bucket
       },
     });
 
