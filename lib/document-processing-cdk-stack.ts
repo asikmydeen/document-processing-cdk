@@ -310,9 +310,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'bedrock-runtime:InvokeModel'
         ],
         resources: [
-          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-v2',
-          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0',
-          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0'
+          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0'
         ]
       })
     );
