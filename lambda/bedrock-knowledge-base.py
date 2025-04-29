@@ -1116,19 +1116,61 @@ def query_knowledge_base(event):
             Assistant:
             """
 
-            response = bedrock_runtime.invoke_model(
-                modelId='anthropic.claude-v2',
-                body=json.dumps({
-                    'prompt': prompt,
-                    'max_tokens_to_sample': 4000,
-                    'temperature': 0.1
-                })
-            )
+            # Use Claude 3.5 Sonnet model
+            model_id = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+            print(f"Using model: {model_id}")
 
-            # Parse the response
-            response_body = json.loads(response['body'].read())
-            answer = response_body.get('completion', '')
-            print("Generated response successfully")
+            try:
+                # Try using the new Claude 3.5 format first
+                response = bedrock_runtime.invoke_model(
+                    modelId=model_id,
+                    body=json.dumps({
+                        'anthropic_version': 'bedrock-2023-05-31',
+                        'max_tokens': 4000,
+                        'temperature': 0.1,
+                        'messages': [
+                            {
+                                'role': 'user',
+                                'content': [
+                                    {
+                                        'type': 'text',
+                                        'text': f"""I have the following question: {query}
+
+Here is some context that might help you answer:
+
+{context}
+
+{image_instruction}
+
+Please provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."""
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                )
+
+                # Parse the response for Claude 3.5
+                response_body = json.loads(response['body'].read())
+                answer = response_body.get('content', [{}])[0].get('text', '')
+                print("Generated response successfully using Claude 3.5 format")
+            except Exception as claude3_error:
+                print(f"Error using Claude 3.5 format: {str(claude3_error)}. Falling back to Claude 2 format.")
+
+                # Fall back to the older Claude 2 format
+                response = bedrock_runtime.invoke_model(
+                    modelId='anthropic.claude-v2',
+                    body=json.dumps({
+                        'prompt': prompt,
+                        'max_tokens_to_sample': 4000,
+                        'temperature': 0.1
+                    })
+                )
+
+                # Parse the response for Claude 2
+                response_body = json.loads(response['body'].read())
+                answer = response_body.get('completion', '')
+                print("Generated response successfully using Claude 2 format")
         except Exception as model_error:
             print(f"Error invoking model: {str(model_error)}")
             raise model_error

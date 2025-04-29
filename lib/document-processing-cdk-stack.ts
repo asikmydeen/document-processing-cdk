@@ -295,12 +295,25 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
           'bedrock:Retrieve',
           'bedrock:ListKnowledgeBases',
           'bedrock:ListDataSources',
-          // Runtime permissions
-          'bedrock-runtime:InvokeModel',
           // IAM permissions
           'iam:PassRole',
         ],
         resources: ['*'], // Scope down in production
+      })
+    );
+
+    // Add specific permissions for invoking Bedrock models
+    bedrockLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'bedrock:InvokeModel',
+          'bedrock-runtime:InvokeModel'
+        ],
+        resources: [
+          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-v2',
+          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0',
+          'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0'
+        ]
       })
     );
 
