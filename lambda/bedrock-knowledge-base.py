@@ -39,6 +39,83 @@ except Exception as e:
     bedrock_agent = None
     bedrock_runtime = None
 
+def get_content_type(key):
+    """Determine the content type based on file extension."""
+    ext = os.path.splitext(key.lower())[1]
+    content_types = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.pdf': 'application/pdf',
+        '.tiff': 'image/tiff',
+        '.tif': 'image/tiff'
+    }
+    return content_types.get(ext, 'application/octet-stream')
+
+def create_structured_response(answer, images):
+    """Create a structured response with inline image references."""
+    # If no images, just return the text answer
+    if not images:
+        return [{'type': 'text', 'content': answer}]
+    
+    # Create a structured response with text and image blocks
+    structured_response = []
+    
+    # Add the text answer
+    structured_response.append({'type': 'text', 'content': answer})
+    
+    # Add image blocks for relevant images
+    for img in images:
+        if 'url' in img:  # Only include images with valid URLs
+            structured_response.append({
+                'type': 'image',
+                'url': img['url'],
+                'description': img['description'],
+                'relevance_score': img['relevance_score']
+            })
+    
+    return structured_response
+
+def calculate_image_relevance(query_terms, index_value, index_type):
+    """Calculate a more sophisticated relevance score for an image."""
+    score = 0
+    matched_terms = set()
+    
+    # Base score from term matches
+    for term in query_terms:
+        if term in index_value.lower():
+            # Weight based on index type
+            if index_type == 'embedded_image':
+                score += 3  # Higher weight for direct image text
+            elif index_type == 'image_content':
+                score += 2  # Medium weight for image content
+            else:
+                score += 1  # Lower weight for section matches
+            
+            matched_terms.add(term)
+    
+    # Boost score based on term density
+    if len(index_value) > 0:
+        term_density = len(matched_terms) / (len(index_value.split()) + 1)
+        score += term_density * 5
+    
+    # Boost score based on consecutive term matches
+    consecutive_matches = find_consecutive_matches(query_terms, index_value.lower())
+    score += consecutive_matches * 2
+    
+    return score, matched_terms
+
+def find_consecutive_matches(query_terms, text):
+    """Find consecutive term matches in text."""
+    consecutive_count = 0
+    query_phrase = ' '.join(query_terms)
+    
+    if query_phrase in text:
+        consecutive_count += len(query_terms)
+    
+    return consecutive_count
+
 s3_client = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 
@@ -1100,6 +1177,9 @@ def query_knowledge_base(event):
                 I've also found some images that might be relevant to your question.
                 In your answer, please mention that there are relevant images available
                 that will be displayed alongside your response.
+                
+                For each image, I'll provide a description and the text content associated with it.
+                Please refer to these images in your answer where appropriate.
                 """
 
             # Use Claude 3.5 Sonnet exclusively
@@ -1147,12 +1227,17 @@ def query_knowledge_base(event):
             # Add presigned URL if available
             if 'presigned_url' in img:
                 formatted_img['url'] = img['presigned_url']
+                # Also add a direct URL that can be used in img tags
+                formatted_img['direct_url'] = img['presigned_url']
 
             # Add text content preview
             if 'text_content_preview' in img:
                 formatted_img['text_content'] = img['text_content_preview']
 
             formatted_images.append(formatted_img)
+
+        # Create a structured response that includes image references inline
+        structured_response = create_structured_response(answer, formatted_images)
 
         # Prepare the response with both text answer and relevant images
         response_data = {
@@ -1163,7 +1248,8 @@ def query_knowledge_base(event):
                 'sources': get_sources_from_results(retrieval_results),
                 'has_images': len(formatted_images) > 0,
                 'image_count': len(formatted_images),
-                'images': formatted_images
+                'images': formatted_images,
+                'structured_response': structured_response
             })
         }
 
@@ -1241,6 +1327,45 @@ def get_sources_from_results(retrieval_results):
 
     return sources or ['No sources found']
 
+def calculate_image_relevance(query_terms, index_value, index_type):
+    """Calculate a more sophisticated relevance score for an image."""
+    score = 0
+    matched_terms = set()
+    
+    # Base score from term matches
+    for term in query_terms:
+        if term in index_value.lower():
+            # Weight based on index type
+            if index_type == 'embedded_image':
+                score += 3  # Higher weight for direct image text
+            elif index_type == 'image_content':
+                score += 2  # Medium weight for image content
+            else:
+                score += 1  # Lower weight for section matches
+            
+            matched_terms.add(term)
+    
+    # Boost score based on term density
+    if len(index_value) > 0:
+        term_density = len(matched_terms) / (len(index_value.split()) + 1)
+        score += term_density * 5
+    
+    # Boost score based on consecutive term matches
+    consecutive_matches = find_consecutive_matches(query_terms, index_value.lower())
+    score += consecutive_matches * 2
+    
+    return score, matched_terms
+
+def find_consecutive_matches(query_terms, text):
+    """Find consecutive term matches in text."""
+    consecutive_count = 0
+    query_phrase = ' '.join(query_terms)
+    
+    if query_phrase in text:
+        consecutive_count += len(query_terms)
+    
+    return consecutive_count
+
 def find_relevant_images(query, search_index_table):
     """Find images that are relevant to the query based on their text content."""
     try:
@@ -1249,38 +1374,20 @@ def find_relevant_images(query, search_index_table):
         # First, scan for image content indices
         image_indices = []
 
-        # Scan for image_content indices
-        response = search_index_table.scan(
-            FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
-            ExpressionAttributeValues={
-                ':type': 'image_content'
-            }
-        )
-        image_content_indices = response.get('Items', [])
-        print(f"Found {len(image_content_indices)} image_content indices")
-        image_indices.extend(image_content_indices)
+        # Get all image types in a single list using a helper function
+        image_types = ['image_content', 'embedded_image', 'embedded_image_section']
+        for index_type in image_types:
+            response = search_index_table.scan(
+                FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
+                ExpressionAttributeValues={
+                    ':type': index_type
+                }
+            )
+            type_indices = response.get('Items', [])
+            print(f"Found {len(type_indices)} {index_type} indices")
+            image_indices.extend(type_indices)
 
-        # Scan for embedded_image indices
-        response = search_index_table.scan(
-            FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
-            ExpressionAttributeValues={
-                ':type': 'embedded_image'
-            }
-        )
-        embedded_image_indices = response.get('Items', [])
-        print(f"Found {len(embedded_image_indices)} embedded_image indices")
-        image_indices.extend(embedded_image_indices)
-
-        # Scan for embedded_image_section indices
-        response = search_index_table.scan(
-            FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
-            ExpressionAttributeValues={
-                ':type': 'embedded_image_section'
-            }
-        )
-        section_indices = response.get('Items', [])
-        print(f"Found {len(section_indices)} embedded_image_section indices")
-        image_indices.extend(section_indices)
+        print(f"Total image indices found: {len(image_indices)}")
 
         print(f"Total image indices found: {len(image_indices)}")
 
@@ -1309,20 +1416,20 @@ def find_relevant_images(query, search_index_table):
                     'index': index,
                     'matched_terms': set()
                 }
-
-            # Calculate score based on term matches
-            for term in query_terms:
-                if term in index_value:
-                    # Add to the score based on the index type
-                    if index.get('index_type') == 'embedded_image':
-                        image_scores[image_s3_uri]['score'] += 3  # Higher weight for direct image text
-                    elif index.get('index_type') == 'image_content':
-                        image_scores[image_s3_uri]['score'] += 2  # Medium weight for image content
-                    else:
-                        image_scores[image_s3_uri]['score'] += 1  # Lower weight for section matches
-
-                    # Record the matched term
-                    image_scores[image_s3_uri]['matched_terms'].add(term)
+            
+            # Calculate score using the enhanced relevance function
+            score, matched_terms = calculate_image_relevance(
+                query_terms,
+                index_value,
+                index.get('index_type', '')
+            )
+            
+            # Add to the existing score
+            image_scores[image_s3_uri]['score'] += score
+            
+            # Add matched terms
+            for term in matched_terms:
+                image_scores[image_s3_uri]['matched_terms'].add(term)
 
         # Sort images by score (descending)
         sorted_images = sorted(
@@ -1367,12 +1474,33 @@ def find_relevant_images(query, search_index_table):
                     # Verify that both bucket and key are non-empty
                     if bucket and key:
                         try:
+                            # Handle PDF page references
+                            page_ref = None
+                            if '#page=' in key:
+                                key_parts = key.split('#page=')
+                                key = key_parts[0]
+                                if len(key_parts) > 1:
+                                    page_ref = key_parts[1]
+                            
+                            # Generate presigned URL with CORS headers
                             presigned_url = s3_client.generate_presigned_url(
                                 'get_object',
-                                Params={'Bucket': bucket, 'Key': key},
+                                Params={
+                                    'Bucket': bucket,
+                                    'Key': key,
+                                    'ResponseContentDisposition': f'inline; filename="{os.path.basename(key)}"',
+                                    'ResponseContentType': get_content_type(key)
+                                },
                                 ExpiresIn=3600  # URL valid for 1 hour
                             )
+                            
+                            # Add page reference back if it was a PDF
+                            if page_ref:
+                                presigned_url += f"#page={page_ref}"
+                                
                             image_info['presigned_url'] = presigned_url
+                            # Also add a direct URL field for easier client rendering
+                            image_info['direct_url'] = presigned_url
                             print(f"Generated presigned URL for image: {image_uri}")
                         except Exception as e:
                             print(f"Error generating presigned URL for {image_uri}: {str(e)}")
