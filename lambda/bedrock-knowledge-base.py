@@ -46,49 +46,24 @@ except Exception as e:
 
 # Define the Claude 3.5 Sonnet model ID
 CLAUDE_MODEL_ID = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+# Get the AWS region from the environment
+AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
+# Full ARN for the model
+CLAUDE_MODEL_ARN = f"arn:aws:bedrock:{AWS_REGION}::foundation-model/{CLAUDE_MODEL_ID}"
 INFERENCE_PROFILE_NAME = 'ClaudeInferenceProfile'
 
-# Function to get or create an inference profile for Claude 3.5 Sonnet
-def get_or_create_inference_profile():
-    """Get an existing inference profile or create a new one for Claude 3.5 Sonnet."""
-    if bedrock_client is None:
-        print("Bedrock client not initialized, cannot manage inference profiles")
-        return None
-    
-    try:
-        # First, check if we already have an inference profile for Claude
-        print(f"Checking for existing inference profile: {INFERENCE_PROFILE_NAME}")
-        try:
-            response = bedrock_client.list_inference_profiles()
-            for profile in response.get('inferenceProfiles', []):
-                if profile.get('name') == INFERENCE_PROFILE_NAME:
-                    print(f"Found existing inference profile: {profile.get('inferenceProfileArn')}")
-                    return profile.get('inferenceProfileArn')
-        except Exception as e:
-            print(f"Error listing inference profiles: {str(e)}")
-        
-        # If no profile exists, create one
-        print(f"Creating new inference profile for {CLAUDE_MODEL_ID}")
-        response = bedrock_client.create_inference_profile(
-            inferenceProfileName=INFERENCE_PROFILE_NAME,
-            modelSource={
-                "copyFrom": CLAUDE_MODEL_ID
-            },
-            tags=[
-                {
-                    "key": "project",
-                    "value": "document-processing"
-                }
-            ]
-        )
-        
-        inference_profile_arn = response['inferenceProfileArn']
-        print(f"Created inference profile: {inference_profile_arn}")
+# Function to get inference profile ARN from environment variable
+def get_inference_profile_arn():
+    """Get the inference profile ARN from environment variable or use direct model ID."""
+    # Check if inference profile ARN is provided as an environment variable
+    inference_profile_arn = os.environ.get('CLAUDE_INFERENCE_PROFILE_ARN')
+    if inference_profile_arn:
+        print(f"Using inference profile ARN from environment: {inference_profile_arn}")
         return inference_profile_arn
     
-    except Exception as e:
-        print(f"Error managing inference profile: {str(e)}")
-        return None
+    # If no ARN is provided, return None to fall back to direct model ID
+    print("No inference profile ARN found in environment variables")
+    return None
 
 def get_content_type(key):
     """Determine the content type based on file extension."""
@@ -1233,8 +1208,8 @@ def query_knowledge_base(event):
                 Please refer to these images in your answer where appropriate.
                 """
 
-            # Get or create an inference profile for Claude 3.5 Sonnet
-            inference_profile_arn = get_or_create_inference_profile()
+            # Get the inference profile ARN from environment variable
+            inference_profile_arn = get_inference_profile_arn()
             
             if inference_profile_arn:
                 print(f"Using inference profile: {inference_profile_arn}")
@@ -1259,27 +1234,14 @@ def query_knowledge_base(event):
                     })
                 )
             else:
-                # Fall back to direct model ID if inference profile creation fails
-                print(f"Falling back to direct model ID: {CLAUDE_MODEL_ID}")
-                response = bedrock_runtime.invoke_model(
-                    modelId=CLAUDE_MODEL_ID,
-                    body=json.dumps({
-                        'anthropic_version': 'bedrock-2023-05-31',
-                        'max_tokens': 4000,
-                        'temperature': 0.1,
-                        'messages': [
-                            {
-                                'role': 'user',
-                                'content': [
-                                    {
-                                        'type': 'text',
-                                        'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
-                                    }
-                                ]
-                            }
-                        ]
-                    })
+                # If no inference profile ARN is available, throw a clear error
+                error_message = (
+                    f"Cannot invoke Claude 3.5 Sonnet model without an inference profile. "
+                    f"Please create an inference profile for {CLAUDE_MODEL_ID} and set the "
+                    f"CLAUDE_INFERENCE_PROFILE_ARN environment variable."
                 )
+                print(error_message)
+                raise Exception(error_message)
 
             # Parse the response for Claude 3.5
             response_body = json.loads(response['body'].read())
