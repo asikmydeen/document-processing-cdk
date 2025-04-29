@@ -966,16 +966,69 @@ def query_knowledge_base(event):
         # Query the knowledge base
         try:
             print(f"Retrieving information from knowledge base: {kb_id} with query: {query}")
-            retrieve_response = bedrock_agent.retrieve(
-                knowledgeBaseId=kb_id,
-                retrievalQuery={
-                    'text': query
-                },
-                numberOfResults=5
-            )
 
-            # Get the retrieval results
-            retrieval_results = retrieve_response['retrievalResults']
+            # Check which API method is available
+            if hasattr(bedrock_agent, 'retrieve'):
+                # Use the retrieve method if available
+                retrieve_response = bedrock_agent.retrieve(
+                    knowledgeBaseId=kb_id,
+                    retrievalQuery={
+                        'text': query
+                    },
+                    numberOfResults=5
+                )
+
+                # Get the retrieval results
+                retrieval_results = retrieve_response['retrievalResults']
+            elif hasattr(bedrock_agent, 'query_knowledge_base'):
+                # Use the query_knowledge_base method if available
+                retrieve_response = bedrock_agent.query_knowledge_base(
+                    knowledgeBaseId=kb_id,
+                    text=query,
+                    numberOfResults=5
+                )
+
+                # Get the retrieval results - format may differ between APIs
+                if 'retrievalResults' in retrieve_response:
+                    retrieval_results = retrieve_response['retrievalResults']
+                elif 'results' in retrieve_response:
+                    retrieval_results = retrieve_response['results']
+                else:
+                    # Create a fallback structure if no results found
+                    print("No results found in the response. Using empty results.")
+                    retrieval_results = []
+            else:
+                # Try using the Kendra query API directly
+                print("Bedrock knowledge base query methods not available. Falling back to Kendra query.")
+                kendra_client = boto3.client('kendra')
+                kendra_index_id = os.environ.get('KENDRA_INDEX_ID')
+
+                if not kendra_index_id:
+                    raise Exception("KENDRA_INDEX_ID environment variable not set")
+
+                kendra_response = kendra_client.query(
+                    IndexId=kendra_index_id,
+                    QueryText=query
+                )
+
+                # Convert Kendra results to a format similar to Bedrock results
+                retrieval_results = []
+                for result_item in kendra_response.get('ResultItems', []):
+                    if result_item.get('Type') == 'DOCUMENT':
+                        document_text = result_item.get('DocumentExcerpt', {}).get('Text', '')
+                        document_uri = result_item.get('DocumentURI', 'Unknown source')
+
+                        retrieval_results.append({
+                            'content': {
+                                'text': document_text
+                            },
+                            'location': {
+                                's3Location': {
+                                    'uri': document_uri
+                                }
+                            }
+                        })
+
             print(f"Retrieved {len(retrieval_results)} results")
         except Exception as retrieve_error:
             print(f"Error in retrieve call: {str(retrieve_error)}")
@@ -1000,10 +1053,33 @@ def query_knowledge_base(event):
 
         # Prepare the context from retrieved documents
         context = ""
-        for result in retrieval_results:
-            content = result['content']['text']
-            source = result.get('location', {}).get('s3Location', {}).get('uri', 'Unknown source')
-            context += f"Source: {source}\nContent: {content}\n\n"
+        if retrieval_results:
+            for result in retrieval_results:
+                # Handle different result formats
+                if 'content' in result and 'text' in result['content']:
+                    content = result['content']['text']
+                elif 'document' in result:
+                    content = result.get('document', {}).get('content', '')
+                elif 'text' in result:
+                    content = result['text']
+                else:
+                    print(f"Warning: Unexpected result format: {result}")
+                    content = str(result)
+
+                # Handle different source formats
+                if 'location' in result and 's3Location' in result['location']:
+                    source = result['location']['s3Location'].get('uri', 'Unknown source')
+                elif 'documentURI' in result:
+                    source = result.get('documentURI', 'Unknown source')
+                elif 'source' in result:
+                    source = result['source']
+                else:
+                    source = 'Unknown source'
+
+                context += f"Source: {source}\nContent: {content}\n\n"
+        else:
+            context = "No relevant documents found in the knowledge base."
+            print("Warning: No retrieval results found. Using empty context.")
 
         # Add information about relevant images to the context
         if relevant_images:
@@ -1082,7 +1158,7 @@ def query_knowledge_base(event):
             'body': json.dumps({
                 'query': query,
                 'answer': answer,
-                'sources': [result.get('location', {}).get('s3Location', {}).get('uri', 'Unknown source') for result in retrieval_results],
+                'sources': get_sources_from_results(retrieval_results),
                 'has_images': len(formatted_images) > 0,
                 'image_count': len(formatted_images),
                 'images': formatted_images
@@ -1141,6 +1217,27 @@ def query_knowledge_base(event):
                 'message': f'Error querying knowledge base: {str(e)}'
             })
         }
+
+def get_sources_from_results(retrieval_results):
+    """Extract source information from retrieval results in different formats."""
+    sources = []
+    if not retrieval_results:
+        return sources
+
+    for result in retrieval_results:
+        source = None
+        # Handle different source formats
+        if 'location' in result and 's3Location' in result['location']:
+            source = result['location']['s3Location'].get('uri')
+        elif 'documentURI' in result:
+            source = result.get('documentURI')
+        elif 'source' in result:
+            source = result['source']
+
+        if source and source not in sources:
+            sources.append(source)
+
+    return sources or ['No sources found']
 
 def find_relevant_images(query, search_index_table):
     """Find images that are relevant to the query based on their text content."""
