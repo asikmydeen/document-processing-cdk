@@ -27,17 +27,68 @@ def get_bedrock_clients():
 
     # Create the runtime client for model invocation
     bedrock_runtime = boto3.client('bedrock-runtime')
+    
+    # Create the bedrock client for managing inference profiles
+    if bedrock_client is None:
+        bedrock_client = boto3.client('bedrock')
 
-    return bedrock_agent_client, bedrock_runtime
+    return bedrock_agent_client, bedrock_runtime, bedrock_client
 
 # Get the clients
 try:
-    bedrock_agent, bedrock_runtime = get_bedrock_clients()
+    bedrock_agent, bedrock_runtime, bedrock_client = get_bedrock_clients()
 except Exception as e:
     print(f"Failed to initialize Bedrock clients: {str(e)}")
     # Define fallback values that will cause explicit errors if used
     bedrock_agent = None
     bedrock_runtime = None
+    bedrock_client = None
+
+# Define the Claude 3.5 Sonnet model ID
+CLAUDE_MODEL_ID = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+INFERENCE_PROFILE_NAME = 'ClaudeInferenceProfile'
+
+# Function to get or create an inference profile for Claude 3.5 Sonnet
+def get_or_create_inference_profile():
+    """Get an existing inference profile or create a new one for Claude 3.5 Sonnet."""
+    if bedrock_client is None:
+        print("Bedrock client not initialized, cannot manage inference profiles")
+        return None
+    
+    try:
+        # First, check if we already have an inference profile for Claude
+        print(f"Checking for existing inference profile: {INFERENCE_PROFILE_NAME}")
+        try:
+            response = bedrock_client.list_inference_profiles()
+            for profile in response.get('inferenceProfiles', []):
+                if profile.get('name') == INFERENCE_PROFILE_NAME:
+                    print(f"Found existing inference profile: {profile.get('inferenceProfileArn')}")
+                    return profile.get('inferenceProfileArn')
+        except Exception as e:
+            print(f"Error listing inference profiles: {str(e)}")
+        
+        # If no profile exists, create one
+        print(f"Creating new inference profile for {CLAUDE_MODEL_ID}")
+        response = bedrock_client.create_inference_profile(
+            inferenceProfileName=INFERENCE_PROFILE_NAME,
+            modelSource={
+                "copyFrom": CLAUDE_MODEL_ID
+            },
+            tags=[
+                {
+                    "key": "project",
+                    "value": "document-processing"
+                }
+            ]
+        )
+        
+        inference_profile_arn = response['inferenceProfileArn']
+        print(f"Created inference profile: {inference_profile_arn}")
+        return inference_profile_arn
+    
+    except Exception as e:
+        print(f"Error managing inference profile: {str(e)}")
+        return None
 
 def get_content_type(key):
     """Determine the content type based on file extension."""
@@ -1182,30 +1233,53 @@ def query_knowledge_base(event):
                 Please refer to these images in your answer where appropriate.
                 """
 
-            # Use Claude 3.5 Sonnet exclusively
-            model_id = 'anthropic.claude-3-5-sonnet-20241022-v2:0'
-            print(f"Using model: {model_id}")
-
-            # Use the Claude 3.5 Sonnet with the messages format
-            response = bedrock_runtime.invoke_model(
-                modelId=model_id,
-                body=json.dumps({
-                    'anthropic_version': 'bedrock-2023-05-31',
-                    'max_tokens': 4000,
-                    'temperature': 0.1,
-                    'messages': [
-                        {
-                            'role': 'user',
-                            'content': [
-                                {
-                                    'type': 'text',
-                                    'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
-                                }
-                            ]
-                        }
-                    ]
-                })
-            )
+            # Get or create an inference profile for Claude 3.5 Sonnet
+            inference_profile_arn = get_or_create_inference_profile()
+            
+            if inference_profile_arn:
+                print(f"Using inference profile: {inference_profile_arn}")
+                # Use the inference profile ARN instead of the direct model ID
+                response = bedrock_runtime.invoke_model(
+                    modelId=inference_profile_arn,
+                    body=json.dumps({
+                        'anthropic_version': 'bedrock-2023-05-31',
+                        'max_tokens': 4000,
+                        'temperature': 0.1,
+                        'messages': [
+                            {
+                                'role': 'user',
+                                'content': [
+                                    {
+                                        'type': 'text',
+                                        'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                )
+            else:
+                # Fall back to direct model ID if inference profile creation fails
+                print(f"Falling back to direct model ID: {CLAUDE_MODEL_ID}")
+                response = bedrock_runtime.invoke_model(
+                    modelId=CLAUDE_MODEL_ID,
+                    body=json.dumps({
+                        'anthropic_version': 'bedrock-2023-05-31',
+                        'max_tokens': 4000,
+                        'temperature': 0.1,
+                        'messages': [
+                            {
+                                'role': 'user',
+                                'content': [
+                                    {
+                                        'type': 'text',
+                                        'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                )
 
             # Parse the response for Claude 3.5
             response_body = json.loads(response['body'].read())
