@@ -8,7 +8,6 @@ import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
-import { BedrockInferenceProfile } from './create-inference-profile';
 
 export class DocumentProcessingCdkStack extends cdk.Stack {
   // Public properties to expose resources to other stacks if needed
@@ -391,9 +390,6 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       })
     );
 
-    // Create the Claude inference profile
-    const claudeInferenceProfile = new BedrockInferenceProfile(this, 'ClaudeInferenceProfile');
-
     // Lambda function for Bedrock knowledge base integration
     const bedrockKnowledgeBaseLambda = new lambda.Function(this, 'BedrockKnowledgeBaseFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
@@ -410,7 +406,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
         KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
         KENDRA_S3_BUCKET: 'aseekbot-poc-kb', // Kendra S3 data source bucket
-        CLAUDE_INFERENCE_PROFILE_ARN: claudeInferenceProfile.inferenceProfileArn, // Add the inference profile ARN
+        // Note: CLAUDE_INFERENCE_PROFILE_ARN should be set manually after deployment
       },
     });
 
@@ -675,7 +671,7 @@ def lambda_handler(event, context):
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
         KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
         KENDRA_S3_BUCKET: 'aseekbot-poc-kb', // Kendra S3 data source bucket
-        CLAUDE_INFERENCE_PROFILE_ARN: claudeInferenceProfile.inferenceProfileArn, // Add the inference profile ARN
+        // Note: CLAUDE_INFERENCE_PROFILE_ARN should be set manually after deployment
       },
     });
 
@@ -737,6 +733,12 @@ def lambda_handler(event, context):
       value: bedrockKnowledgeBaseLambda.functionName,
       description: 'The name of the Lambda function for interacting with the Bedrock knowledge base',
       exportName: 'BedrockKnowledgeBaseFunctionName',
+    });
+
+    // Output a reminder to set the inference profile ARN
+    new cdk.CfnOutput(this, 'InferenceProfileReminder', {
+      value: 'Run ./create-inference-profile.sh to create an inference profile and update the Lambda function',
+      description: 'Reminder to create an inference profile for Claude 3.5 Sonnet',
     });
   }
 }

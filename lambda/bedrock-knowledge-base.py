@@ -59,11 +59,24 @@ def get_inference_profile_arn():
     inference_profile_arn = os.environ.get('CLAUDE_INFERENCE_PROFILE_ARN')
     if inference_profile_arn:
         print(f"Using inference profile ARN from environment: {inference_profile_arn}")
-        return inference_profile_arn
+        
+        # Validate that the ARN looks correct
+        if inference_profile_arn.startswith('arn:aws:bedrock:') and 'inference-profile' in inference_profile_arn:
+            return inference_profile_arn
+        else:
+            print(f"Warning: Inference profile ARN format looks incorrect: {inference_profile_arn}")
+            # Continue anyway as it might be a valid ARN in a different format
+            return inference_profile_arn
     
-    # If no ARN is provided, return None to fall back to direct model ID
+    # If no ARN is provided, return None
     print("No inference profile ARN found in environment variables")
     return None
+
+# Function to create a direct model ARN
+def get_model_arn():
+    """Create a direct model ARN for Claude 3.5 Sonnet."""
+    region = os.environ.get('AWS_REGION', 'us-east-1')
+    return f"arn:aws:bedrock:{region}::foundation-model/{CLAUDE_MODEL_ID}"
 
 def get_content_type(key):
     """Determine the content type based on file extension."""
@@ -1212,33 +1225,48 @@ def query_knowledge_base(event):
             inference_profile_arn = get_inference_profile_arn()
             
             if inference_profile_arn:
-                print(f"Using inference profile: {inference_profile_arn}")
-                # Use the inference profile ARN instead of the direct model ID
-                response = bedrock_runtime.invoke_model(
-                    modelId=inference_profile_arn,
-                    body=json.dumps({
-                        'anthropic_version': 'bedrock-2023-05-31',
-                        'max_tokens': 4000,
-                        'temperature': 0.1,
-                        'messages': [
-                            {
-                                'role': 'user',
-                                'content': [
-                                    {
-                                        'type': 'text',
-                                        'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
-                                    }
-                                ]
-                            }
-                        ]
-                    })
-                )
+                try:
+                    print(f"Using inference profile: {inference_profile_arn}")
+                    # Use the inference profile ARN instead of the direct model ID
+                    response = bedrock_runtime.invoke_model(
+                        modelId=inference_profile_arn,
+                        body=json.dumps({
+                            'anthropic_version': 'bedrock-2023-05-31',
+                            'max_tokens': 4000,
+                            'temperature': 0.1,
+                            'messages': [
+                                {
+                                    'role': 'user',
+                                    'content': [
+                                        {
+                                            'type': 'text',
+                                            'text': f"I have the following question: {query}\n\nHere is some context that might help you answer:\n\n{context}\n\n{image_instruction}\n\nPlease provide a comprehensive answer based on the context provided. If the context doesn't contain enough information to answer the question, please say so. Include references to the sources in your answer."
+                                        }
+                                    ]
+                                }
+                            ]
+                        })
+                    )
+                except Exception as e:
+                    print(f"Error invoking model with inference profile: {str(e)}")
+                    # If using the inference profile fails, we need to create one manually
+                    error_message = (
+                        f"Failed to invoke Claude 3.5 Sonnet with inference profile. "
+                        f"Error: {str(e)}. "
+                        f"Please create an inference profile manually using the AWS console or CLI: "
+                        f"aws bedrock create-inference-profile --inference-profile-name ClaudeInferenceProfile "
+                        f"--model-source copyFrom={get_model_arn()}"
+                    )
+                    raise Exception(error_message)
             else:
                 # If no inference profile ARN is available, throw a clear error
                 error_message = (
                     f"Cannot invoke Claude 3.5 Sonnet model without an inference profile. "
                     f"Please create an inference profile for {CLAUDE_MODEL_ID} and set the "
-                    f"CLAUDE_INFERENCE_PROFILE_ARN environment variable."
+                    f"CLAUDE_INFERENCE_PROFILE_ARN environment variable. "
+                    f"You can create one manually using the AWS console or CLI: "
+                    f"aws bedrock create-inference-profile --inference-profile-name ClaudeInferenceProfile "
+                    f"--model-source copyFrom={get_model_arn()}"
                 )
                 print(error_message)
                 raise Exception(error_message)
