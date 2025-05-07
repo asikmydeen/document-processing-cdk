@@ -3,7 +3,22 @@ import os
 import boto3
 import uuid
 import urllib.parse
+import shutil
+import tempfile
 from datetime import datetime
+import sys
+
+# Lambda automatically adds /opt/bin to PATH and /opt/python to sys.path
+# No need for manual path manipulation if layer is structured correctly.
+# Print paths for debugging during initial setup.
+print(f"Initial PATH: {os.environ.get('PATH')}")
+print(f"Initial sys.path: {sys.path}")
+# Ensure /opt/bin is in PATH for Poppler, Lambda should do this.
+# If not, this indicates a deeper environment issue or a very unusual Lambda runtime.
+if '/opt/bin' not in os.environ.get('PATH', '').split(':'):
+    print("Warning: /opt/bin was not found in PATH automatically. Adding it.")
+    os.environ['PATH'] = f"/opt/bin:{os.environ.get('PATH', '')}"
+    print(f"Updated PATH: {os.environ.get('PATH')}")
 
 # Custom exception classes
 class ValidationError(Exception):
@@ -24,19 +39,22 @@ def get_file_extension(key: str) -> str:
     _, file_extension = os.path.splitext(key)
     return file_extension.lower()
 
-def process_document(bucket: str, key: str) -> dict:
+def process_document(bucket: str, key: str, enable_image_extraction: bool = True) -> dict:
     """Process document using AWS Textract based on file type."""
     file_extension = get_file_extension(key)
 
+    print(f"Processing document with file extension: {file_extension}")
+    print(f"Image extraction enabled: {enable_image_extraction}")
+
     # Determine document type and processing method
     if file_extension in ['.pdf', '.png', '.jpg', '.jpeg', '.tiff', '.tif']:
-        return process_document_with_textract(bucket, key)
+        return process_document_with_textract(bucket, key, enable_image_extraction)
     elif file_extension in ['.csv', '.txt']:
         return process_text_document(bucket, key)
     elif file_extension in ['.xlsx', '.xls']:
-        return process_excel_document(bucket, key)
+        return process_excel_document(bucket, key, enable_image_extraction)
     elif file_extension in ['.doc', '.docx']:
-        return process_word_document(bucket, key)
+        return process_word_document(bucket, key, enable_image_extraction)
     else:
         return {
             'status': 'error',
@@ -48,10 +66,14 @@ def process_document(bucket: str, key: str) -> dict:
             'images': []
         }
 
-def process_document_with_textract(bucket: str, key: str) -> dict:
+def process_document_with_textract(bucket: str, key: str, enable_image_extraction: bool = True) -> dict:
     """Process document using AWS Textract."""
     file_extension = get_file_extension(key)
     is_image = file_extension in ['.png', '.jpg', '.jpeg', '.tiff', '.tif']
+
+    print(f"Processing document with Textract: {key}")
+    print(f"File is an image: {is_image}")
+    print(f"Image extraction enabled: {enable_image_extraction}")
 
     # For PDFs, use document analysis
     if file_extension == '.pdf':
@@ -136,8 +158,19 @@ def process_document_with_textract(bucket: str, key: str) -> dict:
             else:
                 break
 
-        # Extract images from the detection blocks
-        images = extract_images_from_blocks(detection_blocks, bucket, key)
+        # Extract images from the detection blocks if enabled
+        if enable_image_extraction:
+            print(f"Extracting images from PDF: {key}")
+            try:
+                images = extract_images_from_blocks(detection_blocks, bucket, key)
+                print(f"Successfully extracted {len(images)} images from PDF")
+            except Exception as img_error:
+                print(f"Error extracting images from PDF: {str(img_error)}")
+                # Continue with empty images list if extraction fails
+                images = []
+        else:
+            print("Image extraction disabled - skipping PDF image extraction")
+            images = []
 
     # For images, use document detection
     else:
@@ -202,17 +235,17 @@ def process_text_document(bucket: str, key: str) -> dict:
         'is_image': False
     }
 
-def process_excel_document(bucket: str, key: str) -> dict:
+def process_excel_document(bucket: str, key: str, enable_image_extraction: bool = True) -> dict:
     """Process Excel documents."""
     # For Excel files, we'll use Textract to extract tables
-    result = process_document_with_textract(bucket, key)
+    result = process_document_with_textract(bucket, key, enable_image_extraction)
     result['is_image'] = False
     return result
 
-def process_word_document(bucket: str, key: str) -> dict:
+def process_word_document(bucket: str, key: str, enable_image_extraction: bool = True) -> dict:
     """Process Word documents."""
     # For Word files, we'll use Textract to extract text, tables, and forms
-    result = process_document_with_textract(bucket, key)
+    result = process_document_with_textract(bucket, key, enable_image_extraction)
     result['is_image'] = False
     return result
 
@@ -321,50 +354,126 @@ def extract_forms_from_blocks(blocks: list) -> list:
     return forms
 
 def extract_images_from_blocks(blocks: list, bucket: str, key: str) -> list:
-    """Extract images from Textract blocks."""
-    images = []
+    """Extract images from Textract blocks (primarily for PDFs) using PyMuPDF."""
+    images_metadata = []
+    
     try:
-        # Group blocks by page
-        pages = {}
-        for block in blocks:
-            if 'Page' in block:
-                page_num = block['Page']
-                if page_num not in pages:
-                    pages[page_num] = []
-                pages[page_num].append(block)
+        import fitz  # PyMuPDF
+        print("Successfully imported fitz (PyMuPDF).")
+    except ImportError as import_err:
+        print(f"CRITICAL: Failed to import fitz (PyMuPDF): {str(import_err)}")
+        print("Ensure 'PyMuPDF' package is correctly installed in the Lambda layer.")
+        # Return a single error entry if PyMuPDF itself can't be imported
+        return [{'error': 'PyMuPDF (fitz) library not available or import failed', 'details': str(import_err), 'source_key': key}]
+    except Exception as general_import_err:
+        print(f"CRITICAL: An unexpected error occurred during PyMuPDF import: {str(general_import_err)}")
+        return [{'error': 'Unexpected error during PyMuPDF import', 'details': str(general_import_err), 'source_key': key}]
 
-        # Look for pages that might contain images
-        for page_num, page_blocks in pages.items():
-            # Check if this page has a significant number of non-text blocks
-            # or has specific patterns that suggest it contains images
+    # Textract `blocks` are passed but not directly used by PyMuPDF for image extraction from the original PDF.
+    # PyMuPDF will open the PDF directly from S3.
+    # We can use the page information from blocks if needed to decide which pages to process,
+    # but for full image extraction, PyMuPDF iterates through pages itself.
 
-            # Simple heuristic: If a page has fewer text blocks than average, it might contain images
-            text_blocks = [block for block in page_blocks if block['BlockType'] in ['LINE', 'WORD']]
+    # Create a temporary file to download the PDF to
+    with tempfile.NamedTemporaryFile(suffix=".pdf") as temp_pdf_file:
+        try:
+            print(f"Downloading s3://{bucket}/{key} to {temp_pdf_file.name}")
+            s3_client.download_file(bucket, key, temp_pdf_file.name)
+            pdf_document = fitz.open(temp_pdf_file.name)
+        except Exception as e:
+            print(f"Error opening PDF s3://{bucket}/{key} with PyMuPDF: {str(e)}")
+            images_metadata.append({
+                'source_bucket': bucket,
+                'source_key': key,
+                'extraction_error': f"Failed to open PDF: {str(e)}"
+            })
+            return images_metadata # Return early if PDF can't be opened
 
-            # If this page has text, create an image entry
-            if text_blocks:
-                text_content = ""
-                for block in text_blocks:
-                    if 'Text' in block:
-                        text_content += block['Text'] + '\n'
+        print(f"Processing PDF {key} with {len(pdf_document)} pages using PyMuPDF.")
+        for page_num in range(len(pdf_document)):
+            page_info = {
+                'source_bucket': bucket,
+                'source_key': key,
+                'page_number': page_num + 1, # 1-indexed for user display
+                'file_type': '.pdf'
+                # 'text_content' could be added here if we also extract text per page with PyMuPDF
+            }
+            try:
+                image_list = pdf_document[page_num].get_images(full=True)
+                if not image_list:
+                    # No images on this page, or Textract didn't identify this page as having image content
+                    # We can still add a page entry if desired, or skip if only pages with images are needed.
+                    # For now, let's assume we only care about pages where PyMuPDF finds images.
+                    # If Textract blocks indicated content, we might still want a record.
+                    # This part depends on whether 'blocks' should guide which pages to report on.
+                    # For simplicity, we'll only report if PyMuPDF extracts an image.
+                    pass
 
-                # Create an image entry for this page
-                image_info = {
-                    'source_bucket': bucket,
-                    'source_key': key,
-                    'page_number': page_num,
-                    'file_type': '.pdf',
-                    'text_content': text_content,
-                    's3_uri': f"s3://{bucket}/{key}#page={page_num}"
-                }
-                images.append(image_info)
+                for img_index, img_props in enumerate(image_list):
+                    xref = img_props[0]
+                    base_image = pdf_document.extract_image(xref)
+                    image_bytes = base_image["image"]
+                    image_ext = base_image["ext"]
+                    
+                    # Sanitize file extension
+                    if not image_ext or len(image_ext) > 4:
+                        image_ext = "png" # Default to png if extension is weird
 
-        print(f"Found {len(images)} potential images in PDF")
-        return images
+                    extracted_image_s3_key = f"extracted_images/{os.path.basename(key).split('.')[0]}_page{page_num + 1}_img{img_index + 1}.{image_ext}"
 
-    except (KeyError, IndexError) as e:
-        print(f"Error extracting images from blocks: {str(e)}")
-        return []
+                    with tempfile.NamedTemporaryFile(suffix=f".{image_ext}") as temp_img_file:
+                        temp_img_file.write(image_bytes)
+                        temp_img_file.flush() # Ensure all data is written before S3 upload
+
+                        s3_client.upload_file(
+                            temp_img_file.name,
+                            bucket, # Assuming processedBucket is the target for extracted images
+                            extracted_image_s3_key,
+                            ExtraArgs={'ContentType': f'image/{image_ext}'}
+                        )
+                    
+                    # Create a new entry for each successfully extracted image
+                    # This is different from the pdf2image approach which created one image per page.
+                    # PyMuPDF extracts individual embedded images.
+                    image_entry = {
+                        'source_bucket': bucket,
+                        'source_key': key,
+                        'page_number': page_num + 1,
+                        'image_index_on_page': img_index + 1,
+                        'extracted_image_s3_uri': f"s3://{bucket}/{extracted_image_s3_key}",
+                        'extracted_image_key': extracted_image_s3_key,
+                        'original_image_extension': image_ext,
+                        's3_uri': f"s3://{bucket}/{key}#page={page_num+1}" # Reference to original PDF page
+                    }
+                    images_metadata.append(image_entry)
+                    print(f"Extracted image {img_index + 1} from page {page_num + 1} of {key} to {extracted_image_s3_key}")
+
+            except Exception as page_err:
+                err_msg = f"Error processing page {page_num + 1} of {key} with PyMuPDF: {str(page_err)}"
+                print(err_msg)
+                # Add error info for this specific page if it fails
+                page_info['extraction_error'] = err_msg
+                images_metadata.append(page_info) # Append page_info with error
+
+        pdf_document.close()
+
+    if not images_metadata and len(pdf_document) > 0 : # If no images were extracted but PDF was processed
+        images_metadata.append({
+            'source_bucket': bucket,
+            'source_key': key,
+            'info': 'PDF processed by PyMuPDF, but no images were extracted or an error occurred early.',
+            'page_count': len(pdf_document) if 'pdf_document' in locals() else 0
+        })
+    elif not images_metadata: # PDF could not be opened or had 0 pages
+         images_metadata.append({
+            'source_bucket': bucket,
+            'source_key': key,
+            'info': 'PDF could not be opened or was empty.'
+        })
+
+
+    print(f"PyMuPDF processing for {key} resulted in {len(images_metadata)} image/page entries.")
+    return images_metadata
 
 def generate_metadata_with_bedrock(document_content: dict) -> dict:
     """Generate metadata using Amazon Bedrock."""
@@ -400,19 +509,30 @@ def generate_metadata_with_bedrock(document_content: dict) -> dict:
     }}
     """
 
-    # Call Bedrock with Claude model
+    # Call Bedrock with Claude 3.5 Sonnet model
+    # Get the Bedrock model ID from environment variable, with a default
+    bedrock_model_id = os.environ.get('BEDROCK_MODEL_ID', 'us.anthropic.claude-3-5-sonnet-20240620-v1:0')
+    print(f"Using Bedrock model ID: {bedrock_model_id}")
+
     response = bedrock_runtime.invoke_model(
-        modelId='anthropic.claude-v2',  # Using Claude v2 model
+        modelId=bedrock_model_id,
         body=json.dumps({
-            "prompt": f"\n\nHuman: {prompt}\n\nAssistant:",
-            "max_tokens_to_sample": 4000,
-            "temperature": 0.1
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": 4000,
+            "temperature": 0.1,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
         })
     )
 
-    # Parse the response
+    # Parse the response - Claude 3.5 Sonnet uses a different response format
     response_body = json.loads(response['body'].read())
-    completion = response_body.get('completion', '')
+    # Get the content from the assistant's message
+    completion = response_body.get('content', [{}])[0].get('text', '')
 
     # Extract the JSON part from the completion
     try:
@@ -510,8 +630,12 @@ def lambda_handler(event, context):
             raise ValidationError('Missing bucket or key parameter')
 
         try:
+            # Check if image extraction is enabled
+            enable_image_extraction = event.get('enable_image_extraction', True)
+            print(f"Image extraction enabled: {enable_image_extraction}")
+
             # Process the document
-            document_content = process_document(bucket, key)
+            document_content = process_document(bucket, key, enable_image_extraction)
 
             # Generate metadata using Bedrock
             metadata = generate_metadata_with_bedrock(document_content)
@@ -528,7 +652,8 @@ def lambda_handler(event, context):
                     'processed_key': processed_key,
                     'metadata': metadata,
                     'is_image': document_content.get('is_image', False),
-                    'images': document_content.get('images', [])
+                    'images': document_content.get('images', []),
+                    'image_extraction_enabled': enable_image_extraction
                 })
             }
         except TextractParseError as e:

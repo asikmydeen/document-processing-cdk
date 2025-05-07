@@ -106,13 +106,19 @@ def create_structured_response(answer, images):
     
     # Add image blocks for relevant images
     for img in images:
-        if 'url' in img:  # Only include images with valid URLs
-            structured_response.append({
+        if 'presigned_url' in img:  # Only include images with valid URLs
+            image_block = {
                 'type': 'image',
-                'url': img['url'],
+                'url': img['presigned_url'],
                 'description': img['description'],
                 'relevance_score': img['relevance_score']
-            })
+            }
+            
+            # Add additional metadata if available
+            if 'pdf_page_uri' in img:
+                image_block['source_pdf'] = img['pdf_page_uri']
+                
+            structured_response.append(image_block)
     
     return structured_response
 
@@ -1314,7 +1320,7 @@ def query_knowledge_base(event):
                 'image_count': len(formatted_images),
                 'images': formatted_images,
                 'structured_response': structured_response
-            })
+            }, default=str)  # Use default=str to handle any non-serializable objects
         }
 
         # Estimate the size of the response
@@ -1439,21 +1445,44 @@ def find_relevant_images(query, search_index_table):
         image_indices = []
 
         # Get all image types in a single list using a helper function
-        image_types = ['image_content', 'embedded_image', 'embedded_image_section']
+        # Include 'pdf_page_image' type to find PDF page references that have extracted images
+        image_types = ['image_content', 'embedded_image', 'embedded_image_section', 'pdf_page_image']
         for index_type in image_types:
-            response = search_index_table.scan(
-                FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
-                ExpressionAttributeValues={
-                    ':type': index_type
-                }
-            )
-            type_indices = response.get('Items', [])
-            print(f"Found {len(type_indices)} {index_type} indices")
-            image_indices.extend(type_indices)
+            try:
+                # First try a query on the index type
+                response = search_index_table.scan(
+                    FilterExpression='attribute_exists(image_s3_uri) AND index_type = :type',
+                    ExpressionAttributeValues={
+                        ':type': index_type
+                    }
+                )
+                type_indices = response.get('Items', [])
+                print(f"Found {len(type_indices)} {index_type} indices")
+                
+                # If we didn't find any indices, try a more general scan
+                if not type_indices:
+                    print(f"No {index_type} indices found with image_s3_uri, trying general scan")
+                    response = search_index_table.scan(
+                        FilterExpression='index_type = :type',
+                        ExpressionAttributeValues={
+                            ':type': index_type
+                        }
+                    )
+                    type_indices = response.get('Items', [])
+                    print(f"Found {len(type_indices)} {index_type} indices with general scan")
+                
+                image_indices.extend(type_indices)
+            except Exception as e:
+                print(f"Error scanning for {index_type} indices: {str(e)}")
 
         print(f"Total image indices found: {len(image_indices)}")
-
-        print(f"Total image indices found: {len(image_indices)}")
+        
+        # Debug: Print some sample indices to understand their structure
+        if image_indices:
+            print("Sample image index:")
+            sample_index = image_indices[0]
+            for key, value in sample_index.items():
+                print(f"  {key}: {value}")
 
         # If we have no images, return empty list
         if not image_indices:
@@ -1466,9 +1495,16 @@ def find_relevant_images(query, search_index_table):
 
         # Score images based on relevance to the query
         image_scores = {}
+        extracted_image_map = {}  # Map PDF page URIs to their extracted image URIs
+        
         for index in image_indices:
             index_value = index.get('index_value', '').lower()
             image_s3_uri = index.get('image_s3_uri', '')
+            
+            # If this is a PDF page with an extracted image, store the mapping
+            if index.get('index_type') == 'pdf_page_image' and 'extracted_image_s3_uri' in index:
+                extracted_image_map[image_s3_uri] = index['extracted_image_s3_uri']
+                print(f"Found PDF page with extracted image: {image_s3_uri} -> {index['extracted_image_s3_uri']}")
 
             if not image_s3_uri:
                 continue
@@ -1503,28 +1539,71 @@ def find_relevant_images(query, search_index_table):
         )
 
         print(f"Found {len(sorted_images)} images with non-zero scores")
+        
+        # Debug: Print the top scoring images
+        for i, (image_uri, score_data) in enumerate(sorted_images[:3]):
+            if i == 0:
+                print(f"Top scoring image: {image_uri}")
+                print(f"Score: {score_data['score']}")
+                print(f"Matched terms: {score_data['matched_terms']}")
+                print(f"Index type: {score_data['index'].get('index_type', 'unknown')}")
 
-        # Take the top 10 images
-        top_images = sorted_images[:10]
+        # Take only the top 1 image if its score is greater than 0
+        top_images = []
+        if sorted_images and sorted_images[0][1]['score'] > 0:
+            top_images = sorted_images[:1]
+            print(f"Selected top 1 image with score: {sorted_images[0][1]['score']}")
+        else:
+            print("No images found with a relevance score greater than 0, or no images scored.")
 
         # Create the result list with image details
         relevant_images = []
-        for image_uri, score_data in top_images:
-            if score_data['score'] == 0:
-                continue  # Skip images with zero score
+        processed_uris = set()  # Track which URIs we've already processed
+        
+        for image_uri, score_data in top_images: # This loop will now run at most once
+            # The check for score_data['score'] == 0 is now implicitly handled by the top_images selection
 
             index = score_data['index']
             index_value = index.get('index_value', '')
-
+            
+            # Check if this is a PDF page that has an extracted image
+            extracted_image_uri = extracted_image_map.get(image_uri)
+            
+            # Also check if the index itself has an extracted image URI
+            if not extracted_image_uri and 'extracted_image_s3_uri' in index:
+                extracted_image_uri = index['extracted_image_s3_uri']
+                print(f"Found extracted image URI in index: {extracted_image_uri}")
+            
+            # If we have an extracted image, use that instead of the PDF page
+            primary_uri = extracted_image_uri if extracted_image_uri else image_uri
+            
+            # Skip if we've already processed this URI
+            if primary_uri in processed_uris:
+                print(f"Skipping already processed URI: {primary_uri}")
+                continue
+                
+            processed_uris.add(primary_uri)
+            print(f"Processing image URI: {primary_uri}")
+            
             # Get the image details
             image_info = {
-                'image_s3_uri': image_uri,
+                'image_s3_uri': primary_uri,
                 'document_id': index.get('document_id', ''),
                 'image_description': index.get('image_description', ''),
                 'text_content_preview': index_value[:100] + '...' if len(index_value) > 100 else index_value,
                 'relevance_score': score_data['score'],
                 'matched_terms': list(score_data['matched_terms'])
             }
+            
+            # If we're using an extracted image, also store the original PDF page URI
+            if extracted_image_uri:
+                image_info['pdf_page_uri'] = image_uri
+                print(f"Using extracted image {extracted_image_uri} instead of PDF page {image_uri}")
+                
+            # Add any additional metadata from the index
+            for key, value in index.items():
+                if key not in image_info and key not in ['id', 'document_id', 'metadata_id', 'index_type', 'index_value', 'created_at']:
+                    image_info[key] = value
 
             # Add position information if available
             if 'image_position' in index:
@@ -1551,11 +1630,11 @@ def find_relevant_images(query, search_index_table):
                                 'get_object',
                                 Params={
                                     'Bucket': bucket,
-                                    'Key': key,
-                                    'ResponseContentDisposition': f'inline; filename="{os.path.basename(key)}"',
-                                    'ResponseContentType': get_content_type(key)
+                                    'Key': key
+                                    # 'ResponseContentDisposition': f'inline; filename="{os.path.basename(key)}"',
+                                    # 'ResponseContentType': get_content_type(key)
                                 },
-                                ExpiresIn=3600  # URL valid for 1 hour
+                                ExpiresIn=60  # URL valid for 60 seconds - FOR DEBUGGING
                             )
                             
                             # Add page reference back if it was a PDF
@@ -1565,15 +1644,23 @@ def find_relevant_images(query, search_index_table):
                             image_info['presigned_url'] = presigned_url
                             # Also add a direct URL field for easier client rendering
                             image_info['direct_url'] = presigned_url
-                            print(f"Generated presigned URL for image: {image_uri}")
+                            print(f"Generated presigned URL for image {image_info['image_s3_uri']}: {presigned_url}") # Log the full URL
                         except Exception as e:
-                            print(f"Error generating presigned URL for {image_uri}: {str(e)}")
+                            print(f"Error generating presigned URL for {image_info['image_s3_uri']}: {str(e)}")
                     else:
-                        print(f"Warning: Empty bucket or key in S3 URI: {image_uri}")
+                        print(f"Warning: Empty bucket or key in S3 URI: {image_info['image_s3_uri']}")
 
             relevant_images.append(image_info)
 
         print(f"Returning {len(relevant_images)} relevant images")
+        
+        # Debug: Print the first image's details
+        if relevant_images:
+            print("First relevant image details:")
+            for key, value in relevant_images[0].items():
+                if key not in ['presigned_url', 'direct_url']:
+                    print(f"  {key}: {value}")
+        
         return relevant_images
 
     except Exception as e:

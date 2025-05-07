@@ -1,0 +1,1255 @@
+{
+  "document_id": "Smart FAQs.pdf",
+  "original_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+  "original_key": "Smart FAQs.pdf",
+  "processing_timestamp": "2025-04-30T02:21:50.436847",
+  "document_content": {
+    "status": "success",
+    "document_type": ".pdf",
+    "text_content": "Smart FAQs\n[External Users]\nWHAT IS RFQ?\nA. RFQ means Request for Quotation. As a supplier, you can receive bid invitations, submit quotations, engage in real-time\ncommunication with procurement teams, track bid status, and view award decisions.\nWHAT IS RFI?\nA. RFI means Request for Information. As a supplier, you can receive enquiries from procurement teams and provide a\nresponse (in the form of questionnaire reply, templated or supporting document uploads, or post correspondence). This allows\nbuyers to gather essential information from suppliers, including bidding details, forecasts, compliance documentation, and\nother relevant data to evaluate supplier capabilities.\nHOW DO YOU ACCESS SMART?\nA. You can access SMART by using this URL: https://aws.argo.ocean-wave.aws.a2z.com/smart In the \"Vendor sign in\"\nsection enter your email address and password which you setup for the SMaRT portal, then click 'Sign In\" button. You will\nreceive an authentication code via email to complete your login process. New users will also get welcome email from AWS\nInfrastructure portal to set up password.\naws\nSupply Chain\nSign in with corporate Amazon ID\nOr\nVendor sign in\nEmail address\nnyekanm+1@amazon.com\nPassword\nSign in\nForgot password?\nHaving trouble signing in?\nCorporate users Vendor users\nYour AWS Infra Application Authentication Code\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nTuesday, March 11, 2025 at 10:16 AM\nN\nTo: nyekanm+1@amazon.com\nTo ensure your account's security, we've implemented multi-factor authentication. Use the code below to login and access your AWS Infra\nApplication. Your code will expire after 15 minutes.\nAuthentication Code: 43edf4\nExpires at: Tue, 11 Mar 2025 17:31:25 GMT\nIf you did not initiate this request or you suspect any unauthorized access, please change your password immediately. This is a system\ngenerated email. Replies will not be read or answered.\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nWHAT HAPPENS WHEN YOU FORGOT YOUR ACCOUNT PASSWORD?\nA. If you have forgotten your account password, please click on the forgot password link, enter your registered email, click\nsend and you should receive an email to reset your password.\naws\nSupply Chain\nEnter the registered email address to\nreceive an authentication code for\npassword reset.\nRegistered email address\nnyekanm+1@amazon.com\nIf entered email is\nregistered, you will receive\nan email with the\nauthentication code.\nSend\nYou will receive a temporary code to complete your password reset via email.\nYour AWS Infra Portal forgotten password request\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 12:46 PM\nN\nTo: nyekanm+2@amazon.com\nDear User,\nYou recently requested a temporary code in order to complete a password reset. To authorize and proceed with this request, please copy\nthe following code on the confirmation screen:\n737460\nThis code will expire in 1 day(s). Please do not reply to this email. Please do not forward this email or share this code with anyone. If you\nneed assistance or did not make this request, please contact infra-portal-login@amazon.com.\nThank you,\nAWS Infra Supply Chain Portal\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nAfter receiving this code, please head back to the portal, add your temporary code and new password to login.\nNOTE: Please be mindful of the password rules: *Valid passwords must include: at least 8 characters, a special character, a\nnumber, an uppercase letter, and a lowercase letter\nAfter successfully resetting your password, you should see a message that password reset was successful and you can log in\nwith your email and new password. You will then be prompted to add the new authentication code that will be emailed to you.\naws\nSupply Chain\nAn authentication code was sent to\nnyekanm+2@amazon.com\n.\nPlease try again if you don't receive email within 10\nminutes.\nAuthentication Code\nSubmit\ni\nHaving trouble signing in?\nYour AWS Infra Application Authentication Code\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 12:53 PM\nN\nTo: nyekanm+2@amazon.com\nTo ensure your account's security, we've implemented multi-factor authentication. Use the code below to login and access your AWS Infra\nApplication. Your code will expire after 15 minutes.\nAuthentication Code: f90dc2\nExpires at: Thu, 03 Apr 2025 20:07:36 GMT\nIf you did not initiate this request or you suspect any unauthorized access, please change your password immediately. This is a system\ngenerated email. Replies will not be read or answered.\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nAfter adding your new authentication code and submitting it, you should now be able to log\nback into your account.\nAWS Infra\nHello\nInfra Portal\nWelcome to the Infra Portal\nTo access your tools, please select an option from the navigation bar on the left.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve Data Exchange\nShipments\nSupplier Procurement\nTownsend PLM\nWHAT TO DO IF I'M STILL HAVING TROUBLE LOGGING IN?\nA. If you are still having issues logging into your account, head down to the section that say \"Having trouble signing in?\"\nand select \"Vendor users\".\naws\nSupply Chain\nSign in with corporate Amazon ID\nOr\nVendor sign in\nEmail address\nEmail address\nPassword\nPassword\nSign in\nForgot password?\nHaving trouble signing in?\nCorporate users Vendor users\nYou will need to send an email to this address: infra-portal-login@amazon.com\nWHAT DOES EACH COLUMN MEAN ON THE DASHBOARD?\nA. There are 7 columns you will see on your dashboard when you log into your account. They are: \"Request ID\", \"Name\",\n\"Buyer\", \"Request Status\", \"Created At\", \"Deadline For Supplier\", and \"Awarded At\".\nHome > SMART > Dashboard\nSMART\nEvents (2)\na\nFilter events by text, property or value\n<\n1\n@\nRequest ID\nName\nBuyer\nRequest Status\n&\nCreated At\nDeadline For Supplier\nAwarded At\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nnyekanm\nPublished\n2025-03-13\n2025-03-27\nRFXREQ-RFI-54859a85\nTEST_RFI_MN_CLONE\nnyekanm\nPublished\n2025-03-11\n2025-03-31\nRequest ID - This column contains the ID of the RFI or RFQ. When you click on the RFI ID you will be brought to a page that\ndisplay all the information of the RFI including, but not limited to, the Name of the RFI, the status, who is the Buyer, Required\nanswer date and an overview.\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-03-13 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-03-27 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just a TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n3/11/2025 10:13 AM PDT (You accepted to participate in this RFI)\n3/11/2025 10:14 AM PDT (from TESTSX)\nHi PCM, accept the Tenders\nupdate.png\n3/11/2025 11:57 AM PDT (from AWS)\nThanks for participating in the new Tenders\nReply\nH1 H2\nSans Serif\n:\nB\nI\n\"\nNormal\n:\nIII E E 8\nTx\nReply RFI\nFiles to upload\nor drag and drop files here\nT Choose files\nMaximum upload file size: 10 GB.\nSend\nName - This column specifies the name of the RFI.\nBuyer - This column will specify who is the Buyer that is requesting the RFI from the Supplier.\nRequest Status -\nCreated At - This specifies the date the RFI was created.\nDeadline for Supplier - This Specifies the last day the Supplier has until they must submit their RFI.\nAwarded At - This will let you know if you were awarded a bid or rejected.\nWHAT ARE THE SEARCH AND FILTERING OPTIONS?\nA. There are a few filtering options in SMART. \"Status for Supplier\", \"Request ID\", \"Buyer\", \"Name\", \"Type\", \"Active At\"\nStatus for Supplier - This column can be filtered using the \"Equals\" option to display specific RFQ or RFI statuses.\nIt\nrepresents the current state of a Supplier's response to RFQ.\nPending Response - indicates Supplier have not yet accepted or rejected the published RFQ.\nSubmitted - confirms supplier has submitted (published) their quotes for the RFQ.\nDeclined - shows supplier has declined to participate in the RFQ\nCancelled - indicates buyer cancelled the published RFQ.\nAwarded - displays when buyer has awarded the supplier's quote. Note: Amazon's formal acceptance of your quote will not be\nin effect until a Work Order or Purchase Order is executed.\"\nPartially Awarded - indicates partial award of RFQ (not applicable for DCSP suppliers).\nNot Considered - indicates buyer did not select the supplier's quote, i.e. unsuccessful bid..\nRecalled - indicates previously awarded RFQ has been withdrawn by a buyer\nRequest ID - A unique identifier automatically generated by the system for each RFQ. Users can filter Request IDs using four\noptions: Equals (matches exact ID).\nName - This column allows vendors to filter RFQs by name using four search options: Equals (matches exact name).\nType - The system has two event categories: RFI (Request for Information) and RFQ (Request for Quotation). You can filter by\ntype using Equals (selects specific event type) or Does not equal (excludes specific event type).\nActive at - You can filter the activation date using three options: Equals (matches specific date), Greater than or equal (shows\ndates after selected), and Less than or equal (shows dates before selected).\nHOW DO I PARTICIPATE IN A RFI?\nA. To participate in the RFI, you will be invited via email. When you utilize this function first time, you must accept the terms\nand conditions before proceeding.\nTerms of agreement\nBy continuing you agree to the Privacy Notice (2and the following:\nContinue\nArgo Site Terms\nLast updated: December 3, 2024\nWelcome to the Argo site, through which you can access various services (together the \"ArgoSite\"). Amazon .com Services LLC and/or its affiliates (\"Amazon\") provides the Argo Site to you subject to the following terms of use (\"Site Terms\") By visiting the\nArgo Site, you accept the Site Terms Please read them carefully. You represent to us that you are lawfully able to enter into contracts (e.g., you are not minor). If you are entering into this Agreement for an entity, such as the company you work for you\nrepresent to us that you have legal authority to bind that entity.\nPRIVACY\nPlease review the AWS Privacy Notice, which also governs your visit to the Argo Site, to understand our practices Amazon handles any personal information relating to you in accordance with the AWS Privacy Notice. The Argo Site enables you to view and\nupdate certain information related to your account If you have access to personal information of others, you must comply with the AWS Privacy Notice.\nIf\nyou\nhave any concern about privacy related to the Argo Site, please contact us at aws-scm-ux@amazon.co with thorough description, and we will try to resolve the issue for you. You may also contact us at the address noted below.\nAmazon Web Services Inc.\nP.O. Box 81226\nSeattle, WA 98108-1226\nhttps://aws.amazon.com\nCONFIDENTIALITY\nThe Argo Site and its content is Amazon confidential information subject to applicable nondisclosure agreements You will take all reasonable measures to avoid unauthorized disclosure, dissemination or use of the Argo Site or its content, including those\nmeasures you take to protect your own confidential information of similar nature. You are responsible for appropriately configuring security, access and other settings for your account, and content you provide. You must not disclose any confidential\ninformation to third party except in accordance with Amazon's express written agreement.\nELECTRONIC COMMUNICATIONS\nWhen you visit the Argo Site or send e-mails to us, you are communicating with us electronically. You consent to receive communications from us electronically We will communicate with you by e-mail or by posting notices on the Argo Site. You agree that\nall agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.\nCOPYRIGHT\nAll content included on the Argo Site, such as text. graphics, logos, button icons, images, audio clips, digital downloads, data compilations, and software, is the property of Amazon or its suppliers and protected by United States and international copyright\nlaws. The compilation of all content on the Argo Site the exclusive property of Amazon and protected by U.S. and international copyright laws All software used on the Argo Site is the property of Amazon or its software suppliers and protected by United\nStates and international copyright laws.\nTRADEMARKS\nAmazon graphics, logos, page headers, button icons, scripts, and service names are trademarks, registered trademarks or trade dress of Amazon in the U.S. and/or other countries Amazon's trademarks and trade dress may not be used in connection with\nany product or service that is not AWS's and may not be used in any manner that likely to cause confusion, or in any manner that disparages or discredits Amazon All other trademarks not owned by Amazon that appear on this Site are the property of\ntheir respective owners, who may or may not be affiliated with or connected to Amazon.\nPATENTS\nOne or more patents owned by Amazon may apply to the Argo Site and to the features and services accessible via the Argo Site. Portions of the Argo Site may operate under license of one or more patents\nLICENSE AND SITE ACCESS\nAmazon grants you limited license to access and use the Argo Site only in connection with providing products or services to Amazon. We use the Argo Site to manage these activities, and use, share and keep related information and content for this\npurpose.\nThis license does not include any resale or commercial use of the Argo Site or its contents; any derivative use of the Argo Site or its contents: any downloading or copying of account information; or any use of data mining robots, or similar data gathering\nand extraction tools. You may not download (other than page caching) or modify the Argo Site or any portion of it. except with express written consent of Amazon.\nThe Argo Site or any portion of the Argo Site may not be reproduced duplicated copied, sold resold visited or otherwise exploited for any commercial purpose without express written consent of Amazon You may not frame or utilize framing techniques\nto\nenclose any trademark logo, or other proprietary information (including images, text, page layout, or form) of Amazon without express written consent You may not use any meta tags or any other \"hidden text utilizing Amazon's name or trademarks\nwithout the express written consent of Amazon Any unauthorized use terminates the permission or license granted by Amazon\nYOUR ACCOUNT\nIf\nyou use the Argo Site, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer, and you agree to accept responsibility for all activities that occur under your account or password If\nAmazon has concerns with your use or activity relating to the Argo Site, or if you are in breach of applicable laws or Site Terms, Amazon reserves the right to take action, including without limitation by refusing service, terminating accounts, or removing\nor\nediting content in its discretion You may at any time immediately cease using the Argo Site, terminate your accounts, or remove or edit certain content (as permitted) using the tools and settings we make available to you\nUSAGE AND CONTENT\nHeard\ninformation foodback questions and other the Arne Site illegal obscana threatening fraud false micleading invacture privacy infrincina of preparts rights\ncould\nOnce you hit continue, you will be brought to the SMART dashboard. Click on the RFI link to be taken to the main RFI page\nthat you are invited to. Please click on the radio button to explicitly let buyer know if you are participating or declining to\nparticipate in the RFI.\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nHome > SMART > Dashboard > RFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponse\nPlease let us know your interest in participation:\nintend to participate in this RFI\ndecline to participate in this RFI\nSend my response\n(You cannot change your decision once response is sent.)\nA pop up will appear. Please confirm or cancel your response. The buyer will be notified of your response.\nYou are accessing the non -production environment of this tool, which is intended for testing and demo purposes.\nHome\n>\nSMART\nDashboard\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend png\nOverview\nConfirm participation\nRElax, This just TEST\nYou confirm that you intend to participate in this RFI. You cannot change your decision\nonce response sent.\nBuyer correspondence\nCancel\nConfirm\nHELLO TEst\nHi Vendor pls ReSponD\nResponse\nPlease let us know your Interest in participation:\nIntend to participate in this RFI\ndecline to participate in this RFI\nSend my response\n(You cannot change your decision once response is sent.)\nAfter confirming you are participating in the RFI, you will be brought to the main dashboard. You can also see some important\ninformation of the RFI like the current status, Request ID, Name, Type, Buyer Name, Category, Project, Begin Date, Required\nanswer date, Region/Cluster, and Documents from Buyer. You and the Buyer will also be able to communicate through this\nDashboard.\nHome > SMART > Dashboard > RFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\n1 Published\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n4/4/2025 12:15 PM PDT (You accepted to participate in this RFI)\n4/4/2025 12:23 PM PDT (from ABBCIV)\nHi\nReply\nH1 H2\nSans Serif\n:\nNormal\n:\nEEEE8I\nReply RFI\nFiles upload\nor drag and drop files here\nT Choose files\nMaximum upload file size: 10 GB.\nSend\nAt the bottom of the screen you will be able to upload all documents for the RFI.\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n4/4/2025 12:15 PM PDT (You accepted to participate in this RFI)\n4/4/2025 12:23 PM PDT (from ABBCIV)\nHi\nReply\nH1 H2\nSans Serif\n:\nB\nI\nU\nS\nNormal\n:\nIII\nIII\nIII\nTx\nThese are my documents.\nFiles to upload\nor drag and drop files here\nIt\nChoose files\nMaximum upload file size: 10 GB\n74c907b7-2d21-463f-a0a7-e7de38f4db75_9_FAILED.cS\nX\nACx_DI_Migration of CxA Qualification Records onto Procore_R05_20251601.docx\nX\nSend\nAfter all docs are uploaded. Buyer will be notified via email that you are participating in the RFI and they will be able to see\nyour documents and messages. They can also respond to your messages and you can see it on your dashboard.\nWHAT HAPPENS IF I DON'T WITH TO PARTICIPATE IN A RFI?\nA. On your main dashboard you can choose to decline participation and Send your response.\nAWS Infra\nHello nyekanm+1@amazon.com\nIII\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nO\nHome > SMART > Dashboard > RFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nBMS\n0407test\n2025-04-09 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-17 23:59\nAB\n74c907b7-2d21-463f-a0a7\ne7de38f4db75_8_FAILED.csv\nOverview\nBuyer correspondence\nHello Suppliers\nThis just test.\nResponse\nPlease let us know your interest in participation:\nintend to participate in this RFI\ndecline to participate in this RFI\nSend my response\nin once response sent.)\nA pop up will show, just click on Confirm.\nConfirm participation\nX\nYou confirm that you decline to participate in this RFI. You cannot change your decision\nonce response is sent.\nCancel\nConfirm\nAfter confirmation, the Buyer will receive an email stating that the RFI request was declined.\nAmazon - Test has responded to bid for Mac0407Test\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 1:41PM\nN\nTo: Nyekan, Mac\nHello,\nThis email is to inform you regarding the change in RFI Mac0407Test from supplier Test.\nSupplier Test has declined to participate in RFI Mac0407Test.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may\nbe confidential and/or proprietary material for the use of the intended addressee(s) only. If you are not an intended\naddressee, note that any disclosure, copying, distribution, or use of the contents of this message is prohibited. If you\nhave received this email in error, please notify the sender by reply email and delete the message and its attachments\nfrom all computers. Thank you for your cooperation.\nWhen you log into the dashboard the status of the RFI will show that you declined it.\nAWS Infra\nHello nyekanm+5@amazon.com\nE\ni\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\n1\nHome > SMART > Dashboard > RFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nBMS\n0407test\n2025-04-09 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-17 23:59\nAB\n74c907b7-2d21-463f-a0a7-\ne7de38f4db75_8_FAILED.cSV\nOverview\nBuyer correspondence\nHello Suppliers\nThis just test.\nResponses\n4/7/2025 1:23 PM PDT (You declined to participate in this RFI)\n\u00a9 2008 2025 Amazon Web Services, Inc. or its affiliates All rights reserved. Privacy Notice Site Terms\nWILL I BE NOTIFIED IF ANY CHANGES HAPPENS TO AN RFI OR RFQ?\nA. Yes, If a buyer modifies an RFI or cancels it, you will receive an auto-notification via email.\nWHAT HAPPENS IF A RFI IS COMPLETED OR CANCELLED?\nA. If an RFI is cancelled, you can view all correspondence between you and the buyer on the RFI's main dashboard. However,\nthe reply function will be deactivated, and you will no longer have the option to send new responses. If a buyer completes an\nRFI, the reply function also will be deactivated.\nHOW DO I KNOW IF I WAS SELECTED AS A BID CANDIDATE?\nA. If you are selected for a bid, you will receive a RFQ invite via email. You can click the link in the email to access the smart\nplatform: https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\n[EXTERNAL] Amazon - RFQ-Test has been published\nReply\nReply All\nForward\nno_reply@infra.amazon.com\nN\nTo olgashi+testfsh@amazon.com\nThu 3/13/2025 11:46 A\ni\nClick here to download pictures. To help protect your privacy, Outlook prevented automatic download of some pictures in this message.\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event RFQ-Test.\nRFx RFQ-Test has been published.\nThe due date for the RFx is: 2025-03-15 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf\nyou encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary\nmaterial for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its\nattachments from all computers. Thank you for your cooperation.\nHOW DO I PARTICIPATE IN A RFQ?\nA. When a new RFQ is published, you will be notified via email. Please click on the link in the email to go to your\ndashboard. https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\n[EXTERNAL] Amazon - Newtest_Mac_RFQ has been published\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 10:44 PM\nN\nTo: nyekanm+5@amazon.com\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event Newtest Mac RFQ.\nRFx Newtest_Mac_RFQ has been published.\nThe due date for the RFx is: 2025-04-13 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nNext click on SMART on the left hand\nAWS Infra\nHello nyekanm+6@amazon.com\nInfra Portal\nWelcome to the Infra Portal\ni\nTo access your tools, please select an option from the navigation bar on the left.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve Data Exchange\nShipments\nSupplier Procurement\nTownsend PLM\nThe main dashboard will show the RFQ(s) you have been invited to. From here you can click on the RFQ ID under the\nRequest ID column.\nIII\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nO\nHome > SMART > Dashboard\nSMART\nEvents (1)\nFilter events by text, property or value\n<\nDeadline For\nRequest ID\nName\nBuyer\nA\nRequest Status\nCreated At\nAwarded At\nSupplier\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nnyekanm\nPublished\n2025-04-07\n2025-04-12\nThe page displays Bid Details and Bid Documents tabs, while the right panel contains Conversation, Announcements, and\nDocuments features. This page also displays the current round the RFQ is in, Begin date, deadline, and any important\ndocuments the Buyer may have provided. You can see the Instructions for next steps appear below the RFQ ID.\nE\nRFXREQ-RFQ-efb7ab45\nAWS (Newtest_Mac_RFQ)\n>\nO\nD\nPlease begin the process by navigating to \"Manage Bid' to 'Initiate Bid or 'Decline Bid' If bid is initiated, please read the terms & conditions and\nproceed to Step 1 for an overview of the Bid request.\nConversation\nAnnouncements\nDocuments\nRequest detail\nRound\nManage bid\nType your message\nRequest ID\nName\nType\nBuyer\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nT\nChoose file\nSend\nBegin date\nSupplier deadline\nRegion/Cluster\nDays remaining\n4/7/2025 12:00AM PDT\n4/12/2025 11:59 PM PDT (6 days,\nAB\n6\nWatermark attachhment PDF will be watermarked with \"Amazon\n1 hour, minutes remaining)\nConfidential\" and supplier.\n0 1,500\nQuote template\nDocument\nDCSP_Global_Bid_quote_template\n74c907b7-2d21-463f-a0a7-\nSMaRT _Custom.xl.xx\ne7de38f4db75_8_FAILED.csv\nII\nNo messages\nYou don't have any messages from AWS.\nOverview\nBid details\nBid documents\nBid ID\nBid status\nSupplier\nBid quotes\nABBKRA\nTotal acquisition cost\nNext select manage bid to either initiate bid or decline it.\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nHome > SMART >\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nPlease begin the process by navigating to 'Manage Bid' to 'Initiate Bid' or 'Decline Bid'. If bid is initiated, please read\nX\nthe terms & conditions and proceed to Step 1 for an overview of the Bid request.\nRequest detail\nRound 1\nManage bid\nRequest ID\nName\nType\nBuye\nInitiate Bid\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyek\nEdit Bid\nBegin date\nSupplier deadline\nRegion/Cluster\nDays\nPublish Bid\n4/7/2025 12:00 AM PDT\n4/12/2025 11:59 PM PDT\nAB\n5\nWithdraw Bid\n(5 days, 14 hours, 52\nminutes remaining)\nDecline Bid\nQuote template\nDocument\nDCSP_Global_Bid_quote_t\n74c907b7-2d21-463f-a0a7-\nemplate_SMaRT_Custom.x\ne7de38f4db75_8_FAILED.csv\nlsx\nOverview\nTo participate in the RFQ, click \"Initiate Bid\". The bidding process consists of four steps: General Information, Quotes,\nDocuments, and Review and Create.\nAWS Infra\nHello nyekanm+6@amazon.com\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 Initiate Bid\nIII\n1\nStep 1\nGeneral Information\nGeneral Information\nStep 2\nQuotes\nRequest Type\nStep optional\nRequest ID\nRequest Type\nDocuments\nRFXREQ-RFQ-efb7ab45\nRFQ\nStep 4\nReview and Create\nRequest Information\nRequest Name\nRegion\nNewtest_Mac_RFQ\nAB\nBegin Date\nDeadline For Supplier\n4/7/2025 12:00 AM PDT\n4/12/2025 11:59 PM PDT (5 days, 14 hours, 45 minutes remaining)\nOverview\nOverview\nProcess Details\nProcess Details\nGeneral information - On this page, you can review all details of the RFQ. The Request Type informs you of the type of\nrequest that it is. The request information section provides important information like, The name of the RFQ, the Region,\nWhen it begins and the Deadline for Supplier to complete their bid. Read the overview section for any important details\nconcerning the RFQ. Read the process detail section for any RFQ specific instructions/guidelines. The Bidder Template\nsection is where the Buyer uploaded the bid quotes. And the Participation confirmation section is an information section\ninforming you that if you want to participate in the bid you should click Save & Next or if you dont want to participate click exit.\nQuotes - On the Quotes page, you well need to download the Quote file, populate mandatory fields, marked with * and upload\nthe completed file. Save & Next when done\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nx\nIII\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Initiate Bid\nStep\nGeneral Information\nQuotes\nStep\nQuotes\nPlease download the bid quote template and populate the mandatory fields and upload the completed file. If there is an error, please rectify and\ntry again.\nStep optional\nDocuments\nStep\nBidder Quote Template\nReview and Create\nQuote File\nRegion\nDCSP_Global_Bid_quote_template_SMaRT_Custom.xlsx\nAB\nQuotes Uploaded by You (0)\nAdd Quote\nList of quote versions in response to request.\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\nNo quotes\nNo quotes found.\nExit\nPrevious\nSave Next\nAdd Quote\nX\nFile(s) to upload\nDCSP_Global_Bid_quote_template_SMaRT_Custom (2).xlsx uploaded successfully.\nChoose file\nUpload quote as Excel Workbook (.xlsx) file\nDCSP_Global_Bid_quote_template_SMaRT_Custom( (2).xlsx\nX\n14.86 KB\n2025-04-07T10:03:13\nDescription optional\nDescribe the quotes for keeping track of things.\nCancel\nSubmit\nAfter clicking submit check the status of your upload to see if it was completed or if it failed.\nQuotes Uploaded by You (2)\nAdd Quote\nList of quote versions in response to request.\n<\n1\n>\nYOU\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\n*\nDownload the\nDCSP_Global_Bid_\nerror report to add\nquote_template_S\n2\n*\nFAILED\n2025-03-13\nError Report\nress the validation\nMaRT_Custom\nerrors and try agai\n(5).xlsx\nn.\nQuotes Uploaded by You (1)\nAdd Quote\nList of quote versions in response to request.\n<\n1\n>\n&\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\nDCSP_Global_Bid_\nquote_template_S\n1\nCOMPLETED\n2025-04-07\nMaRT_Custom\n(2).xlsx\nIf\nthe upload shows \"Failed\" status, select \"Error Report\" to view the specific issues. Make the necessary corrections to your\nQuote file following the provided instructions. If status was completed, please click on Save & Next.\nDocuments - The Documents section if completely optional. If you have any supporting documents to upload, here is where\nyou will do it. Click on the Add Documents button to add additional documents.\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\nO You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nx\ni\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep\nGeneral Information\nDocuments-optional\nStep 2\nQuotes\nOriginal Documents by Buyer (1)\nList of documents to supplement the Bid.\nStep optional\nDocuments\na\nStep\nType\nAttachment Name\nCreated Time(UTC)\nReview and Create\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48.\nDocuments Uploaded by You (0)\nRemove Document(s)\nAdd Document(s)\nList of documents in response to request.\n<\nType\nAttachment Name\nCreated Time(UTC)\nNo documents\nNo documents found.\nExit\nPrevious\nSave Next\nUpload your additional documents and click on submit(if there is any).\nAdd Document(s)\nX\nFile(s) to upload\n1 file(s) uploaded\nChoose files\nMaximum upload file size: 5 GB.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nDocument Type\nType for this document.\nMiscellaneous/Others\nCancel\nSubmit\nAfter submitting the document(s), you can either remove them or click on Save & Next.\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\n1\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep 1\nGeneral Information\nDocuments optional\nStep\nQuotes\nOriginal Documents by Buyer (1)\nList of documents to supplement the Bid.\nStep 3- optional\nO\nDocuments\na\n<\nStep 4\nType\nAttachment Name\nCreated Time(UTC)\nReview and Create\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48\nDocuments Uploaded by You (1)\nRemove Document(s)\nAdd Document(s)\nList of documents in response to request.\n<\nType\nA\nAttachment Name\nCreated Time(UTC)\nMiscellan.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nExit\nPrevious\nSave Next\nReview and Create - This is the last page in the bidding process. Review your quote carefully. To make changes, click \"Edit\" on\nthe relevant section. Once you have verified all information is correct, click \"Confirm\" and Save as draft.\nAWS Infra\nHello nyekanm+6@amazon.com\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nX\nIII\ni\nHome >\nSMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep\nGeneral Information\nReview and Create\nStep 2\nQuotes\nEdit\nQuotes\nStep optional\nDocuments\nLatest Quote\nVersion\nQuotes\nStatus\nUpload Date\nStep\n1\nDCSP_Global_Bid_quote_templa\nV\nCOMPLETED\n2025-04-07\no\nReview and Create\nte_SMaRT_Custom(2).xlsx\nReport\nError Message\nDescription\nDocuments\nEdit\nDocument Entries (1)\nList of documents in response to request.\na\n<\nType\nA\nAttachment Name\nCreated Time(UTC)\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csV\n2025-04-07T17:12:58\nExit\nPrevious\nConfirm\nConfirm\nX\nUser\nnyekanm+6@amazon.com\nCancel\nSave as draft\nWHAT HAPPENS AFTER I SAVE MY BID?\nA. After you have successfully Save your bid as a draft you will be brought back to the main RFQ dashboard. Here you can\neither edit your bid or publish it.\nAWS Infra\nnyekanm+6@amazon.com\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45\nE\nAWS (Newtest_Mac_RFQ)\ni\nRFXREQ-RFQ-efb7ab45\nO\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under \"Manage bid' to submit\n<\nConversation\nAnnouncements\n>\nthe bid.\nType your message\nRequest detail\nRound\nManage bid\nRequest ID\nName\nType\nInitiate Bid\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit Bid\nChoose file\nSend\nefb7ab45\nPublish Bid\nWatermark attachhment PDF will be watermarked\nBegin date\nSupplier deadline\nRegion/Cluster\nWithdraw Bid\nII\nwith \"Amazon Confidential\" and supplier.\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\nPDT\nPDT (5 days, 13 hours,\nDecline Bid\n0/ 1,500\n41 minutes\nremaining)\nNo messages\nYou don't have any messages from AWS.\nQuote template\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.cSv\nustom.xlsx\nOverview\nBid details\nBid documents\nIf all the information about your bid is correct, you can select the Publish Bid option.\nPublish Bid\nX\nChecking if quote file is in good state to publish. If so, click on 'Publish' to submit this\nbid for review. If the 'Publish' is disabled, check the following steps:\nQuote\nSuccess\nCancel\nPublish\nHere the system will checking if the quote file is good. If the system deems everything to be ok you can now publish your bid.\nPublish Bid\nX\nChecking if quote file is in good state to publish. If so, click on 'Publish' to submit this\nbid for review. If the 'Publish' is disabled, check the following steps:\nQuote\nSuccess\nCancel\nPublish\nYou bid has now been publish for the current round.\nHome SMART > Dashboard RFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nSuccessfully published bid for current round\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under 'Manage bid' to submit\nthe bid.\nRequest detail\nRound\nManage bid\nRequest ID\nName\nType\nBuyer\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nefb7ab45\nBegin date\nSupplier deadline\nRegion/Cluster\nDays remaining\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\n5\nPDT\nPDT (5 days, 13 hours,\n35 minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nte_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter your bid is Published, you and the Buyer will receive an email notification.\nAmazon - ABBKRA has responded to bid for Newtest_Mac_RFQ\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 10:24 AM\nN\nTo: nyekanm+5@amazon.com\nHello,\nThis email is to inform you regarding the change in sourcing event Newtest Mac RFQ from supplier\nABBKRA\nThank you for submitting your bid. To review your bid, click the link provided above. Otherwise, we will\ncontact you if we have further questions.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nCAN I WITHDRAW MY BID AFTER IT HAS BEEN PUBLISHED?\nA. Yes you can withdraw your bid after it has been published. Head to the main RFQ dashboard and select Withdraw Bid from\nthe Manage Bid dropdown\nHome\nSMART\n>\nDashboard\nRFXREQ-RFQ-efb7ab45\nAWS (Newtest_Mac_RFQ)\nRFXREQ-RFQ-efb7ab45\nO\nSuccessfully published bid for current round\n<\nConversation\nAnnouncements\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under \"Manage bid' to submit\nX\nthe bid.\nType your message\nRequest detail\nRound\nManage bid\nChoose file\nSend\nRequest ID\nName\nType\nInitiate Bid\nWatermark attachhment PDF will be watermarked\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit Bid\nII\nwith \"Amazon Confidential\" and supplier.\nefb7ab45\nPublish Bid\n/1,500\nBegin date\nSupplier deadline\nRegion/Cluster\nWithdraw Bid\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\nNo messages\nPDT\nPDT (5 days, 13 hours,\nDecline Bid\nYou don't have any messages from AWS.\n35 minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bld_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter withdrawing your bid, you and the Buyer will receive an email of your withdrawal.\nWHAT HAPPENS IF MY BID IS SELECTED?\nA. If your bid is selected, the status can be changed to \"Soft-Awarded\" / \"Awarded\" and you'll receive an email notification.\n\"Soft-Awarded\" status indicates that some qualifications are still pending completion. When you are fully compliant at the time\nof selection, your bid status will be updated to \"Awarded\".\n[EXTERNAL] AMAZON CONFIDENTIAL - Successful Bidder Shortlist\nNotice\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 10:34 AM\nN\nTo: nyekanm+5@amazon.com\nHello,\nThis email is to inform you regarding the decision made in sourcing event Newtest Mac RFQ.\nThank you for your time and effort in submitting your response to Newtest_Mac_RFQ. I am pleased\nto\ninform that your bid is shortlisted by Amazon Web Services (AWS). Amazon's formal acceptance of your\nquote will not be in effect until your work order is executed by both parties.\nWe look forward to working with you on this project.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nSMART\nEvents (1)\nQ Filter events by text, property or value\nnyekanm\nand\nRFQ\nClear filters\n<\n1\n8\nDeadline For\nRequest ID\nName\nBuyer\nD\nRequest Status\nA\nCreated At\nAwarded At\nSupplier\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nnyekanm\nSoft_Awarded\n2025-04-07\n2025-04-12\nefb7ab45\nWHAT HAPPENS IF MY BID IS NOT SELECTED?\nA. If the bid is awarded to another supplier you'll receive a \"Supplier Bid Rejected Notice\" via email, informing you of your bid\nstatus. Both the buyer and co-manager will receive email confirmation when non-selected suppliers are notified of their\nrejection.\n[EXTERNAL] AMAZON CONFIDENTIAL - Supplier Bid Rejected Notice\nReply\nReply All\nForward\nno_reply@infra.amazon.com\nN\nTo olgashi+testfsh@amazon.com\nMon 3/10/2025 8:11\nClick here to download pictures. To help protect your privacy, Outlook prevented automatic download of some pictures in this message.\nHello,\nThis email is to inform you regarding the decision made in sourcing event RFQ 1 os.\nThank you for your time and effort in submitting your response to RFQ_1_os. After careful review of all submissions, Amazon has selected another firm as\nthe successful bidder for this project. Pursuant to the Nondisclosure Agreement between your company and Amazon, you are required to return or\ndestroy all tangible materials embodying Confidential Information (in any form and including, without limitation, all summaries, copies and excerpts of\nConfidential Information) related to this RFx.\nWe encourage your participation in future solicitations and appreciate your interest in this project.NOTE: Amazon reserves the right to invite your\ncompany back into this project in the future, if needed.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary\nmaterial for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its\nattachments from all computers. Thank you for your cooperation.\nWHAT HAPPENS IF BUYER INITIATE NEW ROUND?\nA. If a Buyer initiates a new round you will be notified via email.\n[EXTERNAL] Amazon - Newtest_Mac_RFQ_CLONE new round\npublished\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 10:47 AM\nN\nTo: nyekanm+5@amazon.com\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event Newtest Mac RFQ CLONE.\nA new round of the RFx Newtest_Mac_RFQ_CLONE has been published.\nThe due date for the RFx is: 2025-04-25 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf\nyou encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nYou then decide to initiate a bid or decline the bid.\n17 laws-beta.argo.ocean-wave.aws.a2z.com/smart/supplier/view/RFXREQ-RFQ-382d2e69\nFinish update\n:\nAll Bookmarks\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\n1\nYou are accessing the non-production environment of this tool, which Is Intended for testing and\nX\nAWS (Newtest_Mac_RFQ_CLONE)\ndemo purposes.\nO\nHome > SMART > Dashboard > RFXREQ-RFQ-382d2e69\n<\nConversation\nAnnouncements\nRFXREQ-RFQ-382d2e69\nType your message\n1\nPlease begin the process by navigating to 'Manage Bid to 'Initiate Bid or Decline Bid' If bid is\ninitiated, please read the terms & conditions and proceed to Step for an overview of the Bid\nrequest.\nT\nChoose file\nSend\nRequest detail\nRound\nManage bid\nWatermark attachhment PDF will be watermarked\nII\nwith \"Amazon Confidential\" and supplier.\nRequest ID\nName\nType\nInitiate Bid\n1,500\nRFXREQ-RFQ-\nNewtest_Mac_RFQ_CL\nRFQ\nEdit Bid\n382d2e69\nONE\nPublish Bid\nNo messages\nBegin date\nSupplier deadline\nRegion/Cluster\nYou don't have any messages from AWS.\nWithdraw Bid\n4/18/2025 12:00 AM\n4/24/2025 11:59 PM\nAB\nPDT\nPDT (17 days, 13\nDecline Bid\nhours, minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bld_quo\nt_template_SMaRT_C\nustom (1).xlsx\nOverview\n\u00a9 2008 2025, Amazon Web Services, Privacy Notice\nREF: https://amazon.awsapps.com/workdocs-\nnazon/index.html#/document/a2a7111809bebbac8daa53a5d703b23e8ee304fc5b4794f4fe4e13ad4482032\n",
+    "tables": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ],
+    "forms": [
+      {
+        "A.": "You can access SMART by using this URL: https://aws.argo.ocean-wave.aws.a2z.com/smart In the \"Vendor sign section enter your email address and password which you setup for the SMaRT portal, then click 'Sign In\" button. You receive an authentication code via email to complete your login process. New users will also get welcome email from"
+      },
+      {
+        "WHAT IS RFQ?": "A. RFQ means Request for Quotation. As a supplier, you can receive bid invitations, submit quotations, engage in real-time communication with procurement teams, track bid status, and view award decisions."
+      },
+      {
+        "WHAT IS RFI?": "A. RFI means Request for Information. As a supplier, you can receive enquiries from procurement teams and provide a response (in the form of questionnaire reply, templated or supporting document uploads, or post correspondence). This allows buyers to gather essential information from suppliers, including bidding details, forecasts, compliance documentation, and other relevant data to evaluate supplier capabilities."
+      },
+      {
+        "Expires at:": "Tue, 11 Mar 2025 17:31:25 GMT"
+      },
+      {
+        "Email address": "nyekanm+1@amazon.com"
+      },
+      {
+        "To:": "nyekanm+1@amazon.com"
+      },
+      {
+        "WHAT HAPPENS WHEN YOU FORGOT YOUR ACCOUNT": "PASSWORD?"
+      },
+      {
+        "Authentication Code:": "43edf4"
+      },
+      {
+        "Sign in with corporate Amazon ID": "Or"
+      },
+      {
+        "Having trouble signing in?": "Corporate users Vendor users"
+      },
+      {
+        "Registered email address": "nyekanm+1@amazon.com"
+      },
+      {
+        "Today": "at 12:46 PM"
+      },
+      {
+        "You recently requested a temporary code in order to complete a password reset. To authorize and proceed with this request, please copy the following code on the confirmation screen:": "737460"
+      },
+      {
+        "To:": "nyekanm+2@amazon.com"
+      },
+      {
+        "Thank you,": "AWS Infra Supply Chain Portal"
+      },
+      {
+        "Your AWS Infra Application Authentication Code": "no_reply@infra.amazon.com<no_reply@infra.amazon.com>"
+      },
+      {
+        "Expires at:": "Thu, 03 Apr 2025 20:07:36 GMT"
+      },
+      {
+        "An authentication code was sent to": "nyekanm+2@amazon.com ."
+      },
+      {
+        "Authentication Code:": "f90dc2"
+      },
+      {
+        "To:": "nyekanm+2@amazon.com"
+      },
+      {
+        "Today": "at 12:53 PM"
+      },
+      {
+        "A. If you are still having issues logging into your account, head down to the section that say \"Having trouble signing in?\" and select \"Vendor users\".": "aws"
+      },
+      {
+        "WHAT DOES EACH COLUMN MEAN ON THE DASHBOARD?": "A. There are 7 columns you will see on your dashboard when you log into your account. They are: \"Request ID\", \"Name\", \"Buyer\", \"Request Status\", \"Created At\", \"Deadline For Supplier\", and \"Awarded At\"."
+      },
+      {
+        "You will need to send an email to this address:": "infra-portal-login@amazon.com"
+      },
+      {
+        "Sign in with corporate Amazon ID": "Or"
+      },
+      {
+        "Home": "SMART"
+      },
+      {
+        "Document": "Screenshot 2025-02-07 at 3.02.43 PM.png send.png"
+      },
+      {
+        "Sans Serif": ": B I \""
+      },
+      {
+        "Name": "TEST_RFI_MN"
+      },
+      {
+        "Category": "View all selected categories"
+      },
+      {
+        "Required answer date": "23:59"
+      },
+      {
+        "Overview": "RElax, This is just a TEST"
+      },
+      {
+        "Project": "TESTING"
+      },
+      {
+        "Region/Cluster": "View all selected regions"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Begin date": "2025-03-13 00:00"
+      },
+      {
+        "Deadline for Supplier -": "This Specifies the last day the Supplier has until they must submit their RFI."
+      },
+      {
+        "Name": "This column specifies the name of the RFI."
+      },
+      {
+        "Request Status": "&"
+      },
+      {
+        "Awarded At -": "will let you know if you were awarded a bid or rejected."
+      },
+      {
+        "Created At -": "This specifies the date the RFI was created."
+      },
+      {
+        "Status": "Published"
+      },
+      {
+        "Buyer correspondence": "Hi Vendor pls ReSponD"
+      },
+      {
+        "Buyer": "This column will specify who is the Buyer that is requesting the RFI from the Supplier."
+      },
+      {
+        "Normal": "III E E 8 Tx"
+      },
+      {
+        "Dashboard": "> >"
+      },
+      {
+        "update.png": "3/11/2025 11:57 AM PDT (from AWS)"
+      },
+      {
+        "Files to upload": "T Choose files Maximum upload file size: 10 GB."
+      },
+      {
+        "PATENTS": "One or more patents owned by Amazon may apply to the Argo Site and to the features and services accessible via the Argo Site. Portions of the Argo Site may operate under license of one or more patents"
+      },
+      {
+        "YOUR ACCOUNT": "If you use the Argo Site, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer, and you agree to accept responsibility for all activities that occur under your account or password If Amazon has concerns with your use or activity relating to the Argo Site, or if you are in breach of applicable laws or Site Terms, Amazon reserves the right to take action, including without limitation by refusing service, terminating accounts, or removing or editing content in its discretion You may at any time immediately cease using the Argo Site, terminate your accounts, or remove or edit certain content (as permitted) using the tools and settings we make available to you"
+      },
+      {
+        "USAGE AND CONTENT": "Heard information foodback questions and other the Arne Site illegal obscana threatening fraud false micleading invacture privacy infrincina of preparts rights could"
+      },
+      {
+        "TRADEMARKS": "Amazon graphics, logos, page headers, button icons, scripts, and service names are trademarks, registered trademarks or trade dress of Amazon in the U.S. and/or other countries Amazon's trademarks and trade dress may not be used in connection with any product or service that is not AWS's and may not be used in any manner that likely to cause confusion, or in any manner that disparages or discredits Amazon All other trademarks not owned by Amazon that appear on this Site are the property of their respective owners, who may or may not be affiliated with or connected to Amazon."
+      },
+      {
+        "LICENSE AND SITE ACCESS": "Amazon grants you limited license to access and use the Argo Site only in connection with providing products or services to Amazon. We use the Argo Site to manage these activities, and use, share and keep related information and content for this purpose. This license does not include any resale or commercial use of the Argo Site or its contents; any derivative use of the Argo Site or its contents: any downloading or copying of account information; or any use of data mining robots, or similar data gathering and extraction tools. You may not download (other than page caching) or modify the Argo Site or any portion of it. except with express written consent of Amazon. The Argo Site or any portion of the Argo Site may not be reproduced duplicated copied, sold resold visited or otherwise exploited for any commercial purpose without express written consent of Amazon You may not frame or utilize framing techniques to enclose any trademark logo, or other proprietary information (including images, text, page layout, or form) of Amazon without express written consent You may not use any meta tags or any other \"hidden text utilizing Amazon's name or trademarks without the express written consent of Amazon Any unauthorized use terminates the permission or license granted by Amazon"
+      },
+      {
+        "Name": "This column allows vendors to filter RFQs by name using four search options: Equals (matches exact name)."
+      },
+      {
+        "Recalled -": "indicates previously awarded RFQ has been withdrawn by a buyer"
+      },
+      {
+        "Partially Awarded": "indicates partial award of RFQ (not applicable for DCSP suppliers)."
+      },
+      {
+        "Not Considered -": "indicates buyer did not select the supplier's quote, i.e. unsuccessful bid.."
+      },
+      {
+        "Declined -": "shows supplier has declined to participate in the RFQ"
+      },
+      {
+        "Cancelled -": "indicates buyer cancelled the published RFQ."
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Region/Cluster": "View all selected regions"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Project": "TESTING"
+      },
+      {
+        "Required answer date": "2025-04-12 23:59"
+      },
+      {
+        "Required answer date": "2025-04-12 23:59"
+      },
+      {
+        "Category": "View all selected categories"
+      },
+      {
+        "Category": "View all selected categories"
+      },
+      {
+        "Document": "Screenshot 2025-02-07 at 3.02.43 PM.png send png"
+      },
+      {
+        "Begin date": "2025-04-06 00:00"
+      },
+      {
+        "Document": "Screenshot 2025-02-07 at 3.02.43 PM.png send.png"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "Region/Cluster": "View all selected regions"
+      },
+      {
+        "Begin date": "2025-04-06 00:00"
+      },
+      {
+        "Name": "TEST_RFI_MN"
+      },
+      {
+        "Project": "TESTING"
+      },
+      {
+        "Name": "TEST_RFI_MN"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Cancel": "Confirm"
+      },
+      {
+        "Home": "> SMART > > RFXREQ-RFI-1d829425"
+      },
+      {
+        "Buyer correspondence": "Hi Vendor pls ReSponD"
+      },
+      {
+        "Buyer correspondence": "Hi Vendor pls ReSponD"
+      },
+      {
+        "Overview": "RElax, This is just TEST"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Overview": "RElax, This just TEST"
+      },
+      {
+        "SMART": ">"
+      },
+      {
+        "Overview": "RElax, This just TEST"
+      },
+      {
+        "Normal": ": EEEE8I"
+      },
+      {
+        "Buyer correspondence": "Hi Vendor pls ReSponD"
+      },
+      {
+        "Project": "TESTING"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Begin date": "2025-04-06 00:00"
+      },
+      {
+        "Required answer date": "2025-04-12 23:59"
+      },
+      {
+        "Status": "1 Published"
+      },
+      {
+        "Region/Cluster": "View all selected regions"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "Document": "Screenshot 2025-02-07 at 3.02.43 PM.png send.png"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Name": "TEST_RFI_MN"
+      },
+      {
+        "Category": "View all selected categories"
+      },
+      {
+        "Maximum upload file size:": "10 GB."
+      },
+      {
+        "Responses": "4/4/2025 12:15 PM PDT (You accepted to participate in this RFI) Hi"
+      },
+      {
+        "Dashboard >": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "and drop files here": "T files"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Category": "View all selected categories"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-1d829425"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Overview": "RElax, This is just TEST"
+      },
+      {
+        "Name": "TEST_RFI_MN"
+      },
+      {
+        "Region/Cluster": "View all selected regions"
+      },
+      {
+        "Status": "Published"
+      },
+      {
+        "Required answer date": "2025-04-12 23:59"
+      },
+      {
+        "Begin date": "2025-04-06 00:00"
+      },
+      {
+        "Project": "TESTING"
+      },
+      {
+        "Document": "Screenshot 2025-02-07 at 3.02.43 PM.png send.png"
+      },
+      {
+        "Normal": ": III III III Tx"
+      },
+      {
+        "size: 10 GB": "74c907b7-2d21-463f-a0a7-e7de38f4db75_9_FAILED.cS"
+      },
+      {
+        "Buyer correspondence": "Hi Vendor pls ReSponD"
+      },
+      {
+        "Sans Serif": ": B I U S"
+      },
+      {
+        "Responses": "4/4/2025 12:15 PM PDT (You accepted to participate in this RFI) Hi"
+      },
+      {
+        "WHAT HAPPENS IF I DON'T WITH TO PARTICIPATE IN A RFI?": "A. On your main dashboard you can choose to decline participation and Send your response."
+      },
+      {
+        "Required answer date": "2025-04-17 23:59"
+      },
+      {
+        "Name": "Mac0407Test"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-dfde7b7c"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Category": "BMS"
+      },
+      {
+        "Begin date": "2025-04-09 00:00"
+      },
+      {
+        "Buyer correspondence": "This just test."
+      },
+      {
+        "Status": "Published"
+      },
+      {
+        "Home": ">"
+      },
+      {
+        "Document": "e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "Project": "0407test"
+      },
+      {
+        "AWS": "Infra"
+      },
+      {
+        "Confirm participation": "X"
+      },
+      {
+        ">": "RFXREQ-RFI-dfde7b7c"
+      },
+      {
+        "To:": "Nyekan, Mac"
+      },
+      {
+        "Today at": "1:41PM"
+      },
+      {
+        "If you encounter any issues or have questions, please send an email to": "help-ninja@amazon.com"
+      },
+      {
+        "Required answer date": "2025-04-17 23:59"
+      },
+      {
+        "Document": "74c907b7-2d21-463f-a0a7- e7de38f4db75_8_FAILED.cSV"
+      },
+      {
+        "Name": "Mac0407Test"
+      },
+      {
+        "Request ID": "RFXREQ-RFI-dfde7b7c"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Type": "RFI"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Category": "BMS"
+      },
+      {
+        "Begin date": "2025-04-09 00:00"
+      },
+      {
+        "Project": "0407test"
+      },
+      {
+        "Buyer correspondence": "This just test."
+      },
+      {
+        "Status": "Published"
+      },
+      {
+        "Responses": "4/7/2025 1:23 PM PDT (You declined to participate in this RFI)"
+      },
+      {
+        "Home": "> SMART"
+      },
+      {
+        "Hello": "nyekanm+5@amazon.com"
+      },
+      {
+        "HOW DO I KNOW IF I WAS SELECTED AS A BID CANDIDATE?": "A. If you are selected for a bid, you will receive a RFQ invite via email. You can click the link in the email to access the smart https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/"
+      },
+      {
+        "WHAT HAPPENS IF A RFI IS COMPLETED OR CANCELLED?": "A. If an RFI is cancelled, you can view all correspondence between you and the buyer on the RFI's main dashboard. However, the reply function will be deactivated, and you will no longer have the option to send new responses. If a buyer completes an RFI, the reply function also will be deactivated."
+      },
+      {
+        "Dashboard >": "RFXREQ-RFI-dfde7b7c"
+      },
+      {
+        "Additional questions?": "help-ninja@amazon.com"
+      },
+      {
+        "Today": "at 10:44 PM"
+      },
+      {
+        "To": "olgashi+testfsh@amazon.com"
+      },
+      {
+        "Best regards,": "Data Center Services Procurement"
+      },
+      {
+        "HOW DO I PARTICIPATE IN A RFQ?": "A. When a new RFQ is published, you will be notified via email. Please click on the link in the email to go to your dashboard. https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/"
+      },
+      {
+        "To:": "nyekanm+5@amazon.com"
+      },
+      {
+        "Additional questions?": "help-ninja@amazon.com Data Center Services Procurement Amazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary material for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the contents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its attachments from all computers. Thank you for your cooperation."
+      },
+      {
+        "The due date for the RFx is:": "2025-03-15 06:59:00 AM GMT."
+      },
+      {
+        "RFx RFQ-Test": "has been published."
+      },
+      {
+        "The due date for the RFx is:": "2025-04-13 06:59:00 AM GMT."
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Deadline For Awarded Supplier": "2025-04-12"
+      },
+      {
+        "Conversation": "T Choose file"
+      },
+      {
+        "SMART": "Self-Serve Data Exchange"
+      },
+      {
+        "Supplier": "ABBKRA"
+      },
+      {
+        "You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.": "> SMART > Dashboard"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Supplier deadline": "4/12/2025 11:59 PM PDT (6 days,"
+      },
+      {
+        "Days remaining": "6"
+      },
+      {
+        "Begin date": "4/7/2025 12:00AM PDT"
+      },
+      {
+        "Quote template": "DCSP_Global_Bid_quote_template SMaRT _Custom.xl.xx"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Published": "2025-04-07"
+      },
+      {
+        "No messages": "You don't have any messages from AWS."
+      },
+      {
+        "Step optional": "Documents"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Buye": "nyek"
+      },
+      {
+        "Document": "74c907b7-2d21-463f-a0a7- e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Begin Date": "4/7/2025 12:00 AM PDT"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Region": "AB"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Begin date": "4/7/2025 12:00 AM PDT"
+      },
+      {
+        "Deadline For Supplier": "4/12/2025 11:59 PM PDT (5 days, 14 hours, 45 minutes remaining)"
+      },
+      {
+        "Request Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Supplier deadline": "4/12/2025 11:59 PM PDT (5 days, 14 hours, 52 minutes remaining)"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Request Type": "RFQ"
+      },
+      {
+        "Days": "5"
+      },
+      {
+        "Step": "2"
+      },
+      {
+        "Edit Bid": "Withdraw Bid Decline Bid"
+      },
+      {
+        "Hello": "nyekanm+6@amazon.com"
+      },
+      {
+        "Quote template": "DCSP_Global_Bid_quote_t emplate_SMaRT_Custom.x lsx"
+      },
+      {
+        "General information": "On this page, you can review all details of the RFQ. The Request Type informs you of the type of"
+      },
+      {
+        "To participate in the RFQ, click \"Initiate Bid\". The bidding process consists of four steps:": "General Information, Quotes,"
+      },
+      {
+        "Step": "optional"
+      },
+      {
+        "Dashboard": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Region": "AB"
+      },
+      {
+        "Quote File": "DCSP_Global_Bid_quote_template_SMaRT_Custom.xlsx"
+      },
+      {
+        "Description optional": "Describe the quotes for keeping track of things."
+      },
+      {
+        "Upload quote as Excel Workbook (.xlsx) file": "DCSP_Global_Bid_quote_template_SMaRT_Custom( (2).xlsx 14.86 KB 2025-04-07T10:03:13"
+      },
+      {
+        "File(s) to upload": "DCSP_Global_Bid_quote_template_SMaRT_Custom (2).xlsx uploaded successfully."
+      },
+      {
+        "Exit": "Previous Save Next"
+      },
+      {
+        "Cancel": "Submit"
+      },
+      {
+        "Step 2": "Quotes"
+      },
+      {
+        "Home >": "SMART"
+      },
+      {
+        "Quotes": "DCSP_Global_Bid_ quote_template_S"
+      },
+      {
+        "Hello": "nyekanm+6@amazon.com"
+      },
+      {
+        "Dashboard": "> RFXREQ-RFQ-efb7ab45 > Edit Bid"
+      },
+      {
+        "Error Report": "ress the validation errors and try agai n."
+      },
+      {
+        "Exit": "Save Next"
+      },
+      {
+        "COMPLETED": "2025-04-07"
+      },
+      {
+        "Documents": "- The Documents section if completely optional. If you have any supporting documents to upload, here is where you will do it. Click on the Add Documents button to add additional documents."
+      },
+      {
+        "MISC": "74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV"
+      },
+      {
+        "Documents Uploaded by You (0)": "List of documents in response to request."
+      },
+      {
+        "FAILED": "2025-03-13"
+      },
+      {
+        "Quotes Uploaded by You": "(1)"
+      },
+      {
+        "Upload your additional documents and click on submit(if there": "is any)."
+      },
+      {
+        "Type": "a"
+      },
+      {
+        "Step 3- optional Documents": "O"
+      },
+      {
+        "Miscellan.": "74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "Home": "> SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid"
+      },
+      {
+        "MISC": "74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV"
+      },
+      {
+        "Attachment Name": "A"
+      },
+      {
+        "Review and Create -": "This is the last page in the bidding process. Review your quote carefully. To make changes, click \"Edit\" on the relevant section. Once you have verified all information is correct, click \"Confirm\" and Save as draft."
+      },
+      {
+        "Cancel": "Submit"
+      },
+      {
+        "Exit": "Previous Save Next"
+      },
+      {
+        "Type for this document.": "Miscellaneous/Others"
+      },
+      {
+        "Documents Uploaded by You": "List of documents in response to request."
+      },
+      {
+        "Choose files": "74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "Document Entries": "(1) List of documents in response to request. a"
+      },
+      {
+        "User": "nyekanm+6@amazon.com"
+      },
+      {
+        "Time(UTC)": "2025-04-07T17:12:58"
+      },
+      {
+        "Created": "<"
+      },
+      {
+        "Quotes": "DCSP_Global_Bid_quote_templa te_SMaRT_Custom(2).xlsx"
+      },
+      {
+        "Cancel": "Save as draft"
+      },
+      {
+        "Status": "V COMPLETED"
+      },
+      {
+        "Upload Date": "2025-04-07"
+      },
+      {
+        "Type": "A"
+      },
+      {
+        "MISC": "74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csV"
+      },
+      {
+        "Dashboard": ">"
+      },
+      {
+        "Hello": "nyekanm+6@amazon.com"
+      },
+      {
+        "Version": "1"
+      },
+      {
+        "WHAT HAPPENS AFTER I SAVE MY BID?": "A. After you have successfully Save your bid as a draft you will be brought back to the main RFQ dashboard. Here you can either edit your bid or publish it."
+      },
+      {
+        "AWS": "Infra"
+      },
+      {
+        "SMART": ">"
+      },
+      {
+        "RFXREQ-RFQ-efb7ab45": ">"
+      },
+      {
+        "Decline Bid": "1,500"
+      },
+      {
+        "Begin date": "4/7/2025 12:00 AM PDT"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ- efb7ab45"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Document": "74c907b7-2d21-463f-a0a7- e7de38f4db75_8_FAILED.cSv"
+      },
+      {
+        "Home": "> SMART"
+      },
+      {
+        "Checking if quote file is in good state to publish. If so, click on 'Publish' to submit this bid for review. If the 'Publish' is disabled, check the following steps:": "Quote"
+      },
+      {
+        "Supplier deadline": "4/12/2025 11:59 PM PDT (5 days, 13 hours,"
+      },
+      {
+        "Checking if quote file is in good state to publish. If so, click on 'Publish' to submit this bid for review. If the 'Publish' is disabled, check the following steps:": "Success"
+      },
+      {
+        "Dashboard": "RFXREQ-RFQ-efb7ab45"
+      },
+      {
+        "Quote template": "DCSP_Global_Bid_quo ite_template_SMaRT_C ustom.xlsx"
+      },
+      {
+        "Publish Bid": "X"
+      },
+      {
+        "Publish Bid": "X"
+      },
+      {
+        "Conversation": "<"
+      },
+      {
+        "No messages": "You don't have any messages from AWS."
+      },
+      {
+        "Announcements": ">"
+      },
+      {
+        "Today at": "10:24 AM"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Buyer": "nyekanm"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Begin date": "4/7/2025 12:00 AM PDT"
+      },
+      {
+        "Days remaining": "5"
+      },
+      {
+        "Document": "74c907b7-2d21-463f-a0a7- e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Supplier deadline": "4/12/2025 11:59 PM PDT (5 days, 13 hours, 35 minutes remaining)"
+      },
+      {
+        "To:": "nyekanm+5@amazon.com"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ- efb7ab45"
+      },
+      {
+        "Additional questions?": "help-ninja@amazon.com Best regards, Data Center Services Procurement Amazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary material for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the contents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its attachments from all computers. Thank you for your cooperation."
+      },
+      {
+        "Quote template": "DCSP_Global_Bid_quo te_template_SMaRT_C ustom.xlsx"
+      },
+      {
+        "Publish Bid": "/1,500"
+      },
+      {
+        "Notice": "no_reply@infra.amazon.com <no_reply@infra.amazon.com>"
+      },
+      {
+        "Today at": "10:34 AM"
+      },
+      {
+        "Supplier deadline": "4/12/2025 11:59 PM PDT (5 days, 13 hours, 35 minutes remaining)"
+      },
+      {
+        "Begin date": "4/7/2025 12:00 AM PDT"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ- efb7ab45"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Document": "74c907b7-2d21-463f-a0a7- e7de38f4db75_8_FAILED.csv"
+      },
+      {
+        "WHAT HAPPENS IF MY BID IS SELECTED?": "A. If your bid is selected, the status can be changed to \"Soft-Awarded\" / \"Awarded\" and you'll receive an email notification. \"Soft-Awarded\" status indicates that some qualifications are still pending completion. When you are fully compliant at the time of selection, your bid status will be updated to \"Awarded\"."
+      },
+      {
+        "Best regards,": "Data Center Services Procurement"
+      },
+      {
+        "To:": "nyekanm+5@amazon.com"
+      },
+      {
+        "No messages": "You don't have any messages from AWS."
+      },
+      {
+        "Quote template": "DCSP_Global_Bld_quo ite_template_SMaRT_C ustom.xlsx"
+      },
+      {
+        "AWS": "(Newtest_Mac_RFQ)"
+      },
+      {
+        "Conversation": "<"
+      },
+      {
+        "If you encounter any issues or have questions, please send an email to": "help-ninja@amazon.com"
+      },
+      {
+        "Additional questions?": "If you encounter any issues or have questions, please send an email to help-ninja@amazon.com"
+      },
+      {
+        "To": "olgashi+testfsh@amazon.com"
+      },
+      {
+        "WHAT HAPPENS IF MY BID IS NOT SELECTED?": "A. If the bid is awarded to another supplier you'll receive a \"Supplier Bid Rejected Notice\" via email, informing you of your bid status. Both the buyer and co-manager will receive email confirmation when non-selected suppliers are notified of their rejection."
+      },
+      {
+        "WHAT HAPPENS IF BUYER INITIATE NEW ROUND?": "A. If a Buyer initiates a new round you will be notified via email."
+      },
+      {
+        "Hello": "nyekanm+6@amazon.com"
+      },
+      {
+        "Watermark": "attachhment PDF will be watermarked with \"Amazon Confidential\" and supplier. 1,500"
+      },
+      {
+        "Home": "17 laws-beta.argo.ocean-wave.aws.a2z.com/smart/supplier/view/RFXREQ-RFQ-382d2e69 demo purposes. > SMART > Dashboard > RFXREQ-RFQ-382d2e69"
+      },
+      {
+        "Additional questions?": "If you help-ninja@amazon.com"
+      },
+      {
+        "The due date for the RFx is:": "2025-04-25 06:59:00 AM GMT."
+      },
+      {
+        "To:": "nyekanm+5@amazon.com"
+      },
+      {
+        "Request ID": "RFXREQ-RFQ-"
+      },
+      {
+        "Quote template": "DCSP_Global_Bld_quo t_template_SMaRT_C ustom (1).xlsx"
+      },
+      {
+        "Supplier deadline": "4/24/2025 11:59 PM PDT (17 days, 13"
+      },
+      {
+        "Type": "RFQ"
+      },
+      {
+        "Region/Cluster": "AB"
+      },
+      {
+        "Begin date": "4/18/2025 12:00 AM"
+      },
+      {
+        "Name": "Newtest_Mac_RFQ_CL"
+      },
+      {
+        "REF:": "https://amazon.awsapps.com/workdocs-"
+      },
+      {
+        "Today at": "10:47 AM"
+      },
+      {
+        "A new round of the RFx": "Newtest_Mac_RFQ_CLONE has been published."
+      },
+      {
+        "No messages": "You don't have any messages from AWS."
+      },
+      {
+        "[EXTERNAL] Amazon -": "Newtest_Mac_RFQ_CLONE"
+      },
+      {
+        "\u00a9 2008 2025,": "Amazon Web Services, Privacy Notice"
+      }
+    ],
+    "images": [
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 1,
+        "file_type": ".pdf",
+        "text_content": "Smart FAQs\n[External Users]\nWHAT IS RFQ?\nA. RFQ means Request for Quotation. As a supplier, you can receive bid invitations, submit quotations, engage in real-time\ncommunication with procurement teams, track bid status, and view award decisions.\nWHAT IS RFI?\nA. RFI means Request for Information. As a supplier, you can receive enquiries from procurement teams and provide a\nresponse (in the form of questionnaire reply, templated or supporting document uploads, or post correspondence). This allows\nbuyers to gather essential information from suppliers, including bidding details, forecasts, compliance documentation, and\nother relevant data to evaluate supplier capabilities.\nHOW DO YOU ACCESS SMART?\nA. You can access SMART by using this URL: https://aws.argo.ocean-wave.aws.a2z.com/smart In the \"Vendor sign in\"\nsection enter your email address and password which you setup for the SMaRT portal, then click 'Sign In\" button. You will\nreceive an authentication code via email to complete your login process. New users will also get welcome email from AWS\nInfrastructure portal to set up password.\nSmart\nFAQs\n[External\nUsers]\nWHAT\nIS\nRFQ?\nA.\nRFQ\nmeans\nRequest\nfor\nQuotation.\nAs\na\nsupplier,\nyou\ncan\nreceive\nbid\ninvitations,\nsubmit\nquotations,\nengage\nin\nreal-time\ncommunication\nwith\nprocurement\nteams,\ntrack\nbid\nstatus,\nand\nview\naward\ndecisions.\nWHAT\nIS\nRFI?\nA.\nRFI\nmeans\nRequest\nfor\nInformation.\nAs\na\nsupplier,\nyou\ncan\nreceive\nenquiries\nfrom\nprocurement\nteams\nand\nprovide\na\nresponse\n(in\nthe\nform\nof\nquestionnaire\nreply,\ntemplated\nor\nsupporting\ndocument\nuploads,\nor\npost\ncorrespondence).\nThis\nallows\nbuyers\nto\ngather\nessential\ninformation\nfrom\nsuppliers,\nincluding\nbidding\ndetails,\nforecasts,\ncompliance\ndocumentation,\nand\nother\nrelevant\ndata\nto\nevaluate\nsupplier\ncapabilities.\nHOW\nDO\nYOU\nACCESS\nSMART?\nA.\nYou\ncan\naccess\nSMART\nby\nusing\nthis\nURL:\nhttps://aws.argo.ocean-wave.aws.a2z.com/smart\nIn\nthe\n\"Vendor\nsign\nin\"\nsection\nenter\nyour\nemail\naddress\nand\npassword\nwhich\nyou\nsetup\nfor\nthe\nSMaRT\nportal,\nthen\nclick\n'Sign\nIn\"\nbutton.\nYou\nwill\nreceive\nan\nauthentication\ncode\nvia\nemail\nto\ncomplete\nyour\nlogin\nprocess.\nNew\nusers\nwill\nalso\nget\nwelcome\nemail\nfrom\nAWS\nInfrastructure\nportal\nto\nset\nup\npassword.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=1"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 2,
+        "file_type": ".pdf",
+        "text_content": "aws\nX\nSupply Chain\nSign in with corporate Amazon ID\nOr\nVendor sign in\nEmail address\nnyekanm+1@amazon.com\nPassword\nSign in\nForgot password?\nHaving trouble signing in?\nCorporate users Vendor users\nYour AWS Infra Application Authentication Code\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nTuesday, March 11, 2025 at 10:16 AM\nN\nTo: nyekanm+1@amazon.com\nTo ensure your account's security, we've implemented multi-factor authentication. Use the code below to login and access your AWS Infra\nApplication. Your code will expire after 15 minutes.\nAuthentication Code: 43edf4\nExpires at: Tue, 11 Mar 2025 17:31:25 GMT\nIf you did not initiate this request or you suspect any unauthorized access, please change your password immediately. This is a system\ngenerated email. Replies will not be read or answered.\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nWHAT HAPPENS WHEN YOU FORGOT YOUR ACCOUNT PASSWORD?\naws\nX\nSupply\nChain\nSign\nin\nwith\ncorporate\nAmazon\nID\nOr\nVendor\nsign\nin\nEmail\naddress\nnyekanm+1@amazon.com\nPassword\nSign\nin\nForgot\npassword?\nHaving\ntrouble\nsigning\nin?\nCorporate\nusers\nVendor\nusers\nYour\nAWS\nInfra\nApplication\nAuthentication\nCode\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nTuesday,\nMarch\n11,\n2025\nat\n10:16\nAM\nN\nTo:\nnyekanm+1@amazon.com\nTo\nensure\nyour\naccount's\nsecurity,\nwe've\nimplemented\nmulti-factor\nauthentication.\nUse\nthe\ncode\nbelow\nto\nlogin\nand\naccess\nyour\nAWS\nInfra\nApplication.\nYour\ncode\nwill\nexpire\nafter\n15\nminutes.\nAuthentication\nCode:\n43edf4\nExpires\nat:\nTue,\n11\nMar\n2025\n17:31:25\nGMT\nIf\nyou\ndid\nnot\ninitiate\nthis\nrequest\nor\nyou\nsuspect\nany\nunauthorized\naccess,\nplease\nchange\nyour\npassword\nimmediately.\nThis\nis\na\nsystem\ngenerated\nemail.\nReplies\nwill\nnot\nbe\nread\nor\nanswered.\nAmazon\nWeb\nServices,\nInc.\nis\na\nsubsidiary\nof\nAmazon.com,\nInc.\nAmazon.com\nis\na\nregistered\ntrademark\nof\nAmazon.com.\nThis\nmessage\nwas\nproduced\nand\ndistributed\nby\nAmazon\nWeb\nServices,\nInc.\nor\nits\naffiliates\n410\nTerry\nAve.\nNorth,\nSeattle,\nWA\n98109.\n\u00a9\n2023,\nAmazon\nWeb\nServices,\nInc.\nAll\nrights\nreserved.\nRead\nour\nPrivacy\nNotice.\nWHAT\nHAPPENS\nWHEN\nYOU\nFORGOT\nYOUR\nACCOUNT\nPASSWORD?\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=2"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 3,
+        "file_type": ".pdf",
+        "text_content": "A. If you have forgotten your account password, please click on the forgot password link, enter your registered email, click\nsend and you should receive an email to reset your password.\naws\nX\nSupply Chain\nEnter the registered email address to\nreceive an authentication code for\npassword reset.\nRegistered email address\nnyekanm+1@amazon.com\nIf entered email is\nregistered, you will receive\nan email with the\nauthentication code.\nSend\nYou will receive a temporary code to complete your password reset via email.\nYour AWS Infra Portal forgotten password request\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 12:46 PM\nN\nTo: nyekanm+2@amazon.com\nDear User,\nYou recently requested a temporary code in order to complete a password reset. To authorize and proceed with this request, please copy\nthe following code on the confirmation screen:\n737460\nThis code will expire in 1 day(s). Please do not reply to this email. Please do not forward this email or share this code with anyone. If you\nneed assistance or did not make this request, please contact infra-portal-login@amazon.com.\nThank you,\nAWS Infra Supply Chain Portal\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nAfter receiving this code, please head back to the portal, add your temporary code and new password to login.\nNOTE: Please be mindful of the password rules: *Valid passwords must include: at least 8 characters, a special character, a\nnumber, an uppercase letter, and a lowercase letter\nAfter successfully resetting your password, you should see a message that password reset was successful and you can log in\nwith your email and new password. You will then be prompted to add the new authentication code that will be emailed to you.\nA.\nIf\nyou\nhave\nforgotten\nyour\naccount\npassword,\nplease\nclick\non\nthe\nforgot\npassword\nlink,\nenter\nyour\nregistered\nemail,\nclick\nsend\nand\nyou\nshould\nreceive\nan\nemail\nto\nreset\nyour\npassword.\naws\nX\nSupply\nChain\nEnter\nthe\nregistered\nemail\naddress\nto\nreceive\nan\nauthentication\ncode\nfor\npassword\nreset.\nRegistered\nemail\naddress\nnyekanm+1@amazon.com\nIf\nentered\nemail\nis\nregistered,\nyou\nwill\nreceive\nan\nemail\nwith\nthe\nauthentication\ncode.\nSend\nYou\nwill\nreceive\na\ntemporary\ncode\nto\ncomplete\nyour\npassword\nreset\nvia\nemail.\nYour\nAWS\nInfra\nPortal\nforgotten\npassword\nrequest\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday\nat\n12:46\nPM\nN\nTo:\nnyekanm+2@amazon.com\nDear\nUser,\nYou\nrecently\nrequested\na\ntemporary\ncode\nin\norder\nto\ncomplete\na\npassword\nreset.\nTo\nauthorize\nand\nproceed\nwith\nthis\nrequest,\nplease\ncopy\nthe\nfollowing\ncode\non\nthe\nconfirmation\nscreen:\n737460\nThis\ncode\nwill\nexpire\nin\n1\nday(s).\nPlease\ndo\nnot\nreply\nto\nthis\nemail.\nPlease\ndo\nnot\nforward\nthis\nemail\nor\nshare\nthis\ncode\nwith\nanyone.\nIf\nyou\nneed\nassistance\nor\ndid\nnot\nmake\nthis\nrequest,\nplease\ncontact\ninfra-portal-login@amazon.com.\nThank\nyou,\nAWS\nInfra\nSupply\nChain\nPortal\nAmazon\nWeb\nServices,\nInc.\nis\na\nsubsidiary\nof\nAmazon.com,\nInc.\nAmazon.com\nis\na\nregistered\ntrademark\nof\nAmazon.com.\nThis\nmessage\nwas\nproduced\nand\ndistributed\nby\nAmazon\nWeb\nServices,\nInc.\nor\nits\naffiliates\n410\nTerry\nAve.\nNorth,\nSeattle,\nWA\n98109.\n\u00a9\n2023,\nAmazon\nWeb\nServices,\nInc.\nAll\nrights\nreserved.\nRead\nour\nPrivacy\nNotice.\nAfter\nreceiving\nthis\ncode,\nplease\nhead\nback\nto\nthe\nportal,\nadd\nyour\ntemporary\ncode\nand\nnew\npassword\nto\nlogin.\nNOTE:\nPlease\nbe\nmindful\nof\nthe\npassword\nrules:\n*Valid\npasswords\nmust\ninclude:\nat\nleast\n8\ncharacters,\na\nspecial\ncharacter,\na\nnumber,\nan\nuppercase\nletter,\nand\na\nlowercase\nletter\nAfter\nsuccessfully\nresetting\nyour\npassword,\nyou\nshould\nsee\na\nmessage\nthat\npassword\nreset\nwas\nsuccessful\nand\nyou\ncan\nlog\nin\nwith\nyour\nemail\nand\nnew\npassword.\nYou\nwill\nthen\nbe\nprompted\nto\nadd\nthe\nnew\nauthentication\ncode\nthat\nwill\nbe\nemailed\nto\nyou.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=3"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 4,
+        "file_type": ".pdf",
+        "text_content": "aws\nX\nSupply Chain\nAn authentication code was sent to\nnyekanm+2@amazon.com\n.\nPlease try again if you don't receive email within 10\nminutes.\nAuthentication Code\nSubmit\ni\nHaving trouble signing in?\nYour AWS Infra Application Authentication Code\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 12:53 PM\nN\nTo: nyekanm+2@amazon.com\nTo ensure your account's security, we've implemented multi-factor authentication. Use the code below to login and access your AWS Infra\nApplication. Your code will expire after 15 minutes.\nAuthentication Code: f90dc2\nExpires at: Thu, 03 Apr 2025 20:07:36 GMT\nIf you did not initiate this request or you suspect any unauthorized access, please change your password immediately. This is a system\ngenerated email. Replies will not be read or answered.\nAmazon Web Services, Inc. is a subsidiary of Amazon.com, Inc. Amazon.com is a registered trademark of Amazon.com. This message was\nproduced and distributed by Amazon Web Services, Inc. or its affiliates 410 Terry Ave. North, Seattle, WA 98109.\n\u00a9 2023, Amazon Web Services, Inc. All rights reserved. Read our Privacy Notice.\nAfter adding your new authentication code and submitting it, you should now be able to log\nback into your account.\naws\nX\nSupply\nChain\nAn\nauthentication\ncode\nwas\nsent\nto\nnyekanm+2@amazon.com\n.\nPlease\ntry\nagain\nif\nyou\ndon't\nreceive\nemail\nwithin\n10\nminutes.\nAuthentication\nCode\nSubmit\ni\nHaving\ntrouble\nsigning\nin?\nYour\nAWS\nInfra\nApplication\nAuthentication\nCode\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday\nat\n12:53\nPM\nN\nTo:\nnyekanm+2@amazon.com\nTo\nensure\nyour\naccount's\nsecurity,\nwe've\nimplemented\nmulti-factor\nauthentication.\nUse\nthe\ncode\nbelow\nto\nlogin\nand\naccess\nyour\nAWS\nInfra\nApplication.\nYour\ncode\nwill\nexpire\nafter\n15\nminutes.\nAuthentication\nCode:\nf90dc2\nExpires\nat:\nThu,\n03\nApr\n2025\n20:07:36\nGMT\nIf\nyou\ndid\nnot\ninitiate\nthis\nrequest\nor\nyou\nsuspect\nany\nunauthorized\naccess,\nplease\nchange\nyour\npassword\nimmediately.\nThis\nis\na\nsystem\ngenerated\nemail.\nReplies\nwill\nnot\nbe\nread\nor\nanswered.\nAmazon\nWeb\nServices,\nInc.\nis\na\nsubsidiary\nof\nAmazon.com,\nInc.\nAmazon.com\nis\na\nregistered\ntrademark\nof\nAmazon.com.\nThis\nmessage\nwas\nproduced\nand\ndistributed\nby\nAmazon\nWeb\nServices,\nInc.\nor\nits\naffiliates\n410\nTerry\nAve.\nNorth,\nSeattle,\nWA\n98109.\n\u00a9\n2023,\nAmazon\nWeb\nServices,\nInc.\nAll\nrights\nreserved.\nRead\nour\nPrivacy\nNotice.\nAfter\nadding\nyour\nnew\nauthentication\ncode\nand\nsubmitting\nit,\nyou\nshould\nnow\nbe\nable\nto\nlog\nback\ninto\nyour\naccount.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=4"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 5,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nHello\nInfra Portal\nWelcome to the Infra Portal\nTo access your tools, please select an option from the navigation bar on the left.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve Data Exchange\nShipments\nSupplier Procurement\nTownsend PLM\nWHAT TO DO IF I'M STILL HAVING TROUBLE LOGGING IN?\nA. If you are still having issues logging into your account, head down to the section that say \"Having trouble signing in?\"\nand select \"Vendor users\".\naws\nX\nSupply Chain\nSign in with corporate Amazon ID\nOr\nVendor sign in\nEmail address\nEmail address\nPassword\nPassword\nSign in\nForgot password?\nHaving trouble signing in?\nCorporate users Vendor users\nYou will need to send an email to this address: infra-portal-login@amazon.com\nWHAT DOES EACH COLUMN MEAN ON THE DASHBOARD?\nA. There are 7 columns you will see on your dashboard when you log into your account. They are: \"Request ID\", \"Name\",\n\"Buyer\", \"Request Status\", \"Created At\", \"Deadline For Supplier\", and \"Awarded At\".\nAWS Infra\nHello\nInfra\nPortal\nWelcome\nto\nthe\nInfra\nPortal\nTo\naccess\nyour\ntools,\nplease\nselect\nan\noption\nfrom\nthe\nnavigation\nbar\non\nthe\nleft.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve\nData\nExchange\nShipments\nSupplier\nProcurement\nTownsend\nPLM\nWHAT\nTO\nDO\nIF\nI'M\nSTILL\nHAVING\nTROUBLE\nLOGGING\nIN?\nA.\nIf\nyou\nare\nstill\nhaving\nissues\nlogging\ninto\nyour\naccount,\nhead\ndown\nto\nthe\nsection\nthat\nsay\n\"Having\ntrouble\nsigning\nin?\"\nand\nselect\n\"Vendor\nusers\".\naws\nX\nSupply\nChain\nSign\nin\nwith\ncorporate\nAmazon\nID\nOr\nVendor\nsign\nin\nEmail\naddress\nEmail\naddress\nPassword\nPassword\nSign\nin\nForgot\npassword?\nHaving\ntrouble\nsigning\nin?\nCorporate\nusers\nVendor\nusers\nYou\nwill\nneed\nto\nsend\nan\nemail\nto\nthis\naddress:\ninfra-portal-login@amazon.com\nWHAT\nDOES\nEACH\nCOLUMN\nMEAN\nON\nTHE\nDASHBOARD?\nA.\nThere\nare\n7\ncolumns\nyou\nwill\nsee\non\nyour\ndashboard\nwhen\nyou\nlog\ninto\nyour\naccount.\nThey\nare:\n\"Request\nID\",\n\"Name\",\n\"Buyer\",\n\"Request\nStatus\",\n\"Created\nAt\",\n\"Deadline\nFor\nSupplier\",\nand\n\"Awarded\nAt\".\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=5"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 6,
+        "file_type": ".pdf",
+        "text_content": "Home > SMART > Dashboard\nSMART\nEvents (2)\na\nFilter events by text, property or value\n<\n1\n@\nRequest ID\nName\nBuyer\nRequest Status\n&\nCreated At\nDeadline For Supplier\nAwarded At\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nnyekanm\nPublished\n2025-03-13\n2025-03-27\nRFXREQ-RFI-54859a85\nTEST_RFI_MN_CLONE\nnyekanm\nPublished\n2025-03-11\n2025-03-31\nRequest ID - This column contains the ID of the RFI or RFQ. When you click on the RFI ID you will be brought to a page that\ndisplay all the information of the RFI including, but not limited to, the Name of the RFI, the status, who is the Buyer, Required\nanswer date and an overview.\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-03-13 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-03-27 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just a TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n3/11/2025 10:13 AM PDT (You accepted to participate in this RFI)\n3/11/2025 10:14 AM PDT (from TESTSX)\nHi PCM, accept the Tenders\nupdate.png\n3/11/2025 11:57 AM PDT (from AWS)\nThanks for participating in the new Tenders\nReply\nH1 H2\nSans Serif\n:\nB\nI\n\"\nNormal\n:\nIII E E 8\nTx\nReply RFI\nFiles to upload\nor drag and drop files here\nT Choose files\nMaximum upload file size: 10 GB.\nSend\nName - This column specifies the name of the RFI.\nBuyer - This column will specify who is the Buyer that is requesting the RFI from the Supplier.\nRequest Status -\nCreated At - This specifies the date the RFI was created.\nDeadline for Supplier - This Specifies the last day the Supplier has until they must submit their RFI.\nAwarded At - This will let you know if you were awarded a bid or rejected.\nWHAT ARE THE SEARCH AND FILTERING OPTIONS?\nHome\n>\nSMART\n>\nDashboard\nSMART\nEvents\n(2)\na\nFilter\nevents\nby\ntext,\nproperty\nor\nvalue\n<\n1\n@\nRequest\nID\nName\nBuyer\nRequest\nStatus\n&\nCreated\nAt\nDeadline\nFor\nSupplier\nAwarded\nAt\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nnyekanm\nPublished\n2025-03-13\n2025-03-27\nRFXREQ-RFI-54859a85\nTEST_RFI_MN_CLONE\nnyekanm\nPublished\n2025-03-11\n2025-03-31\nRequest\nID\n-\nThis\ncolumn\ncontains\nthe\nID\nof\nthe\nRFI\nor\nRFQ.\nWhen\nyou\nclick\non\nthe\nRFI\nID\nyou\nwill\nbe\nbrought\nto\na\npage\nthat\ndisplay\nall\nthe\ninformation\nof\nthe\nRFI\nincluding,\nbut\nnot\nlimited\nto,\nthe\nName\nof\nthe\nRFI,\nthe\nstatus,\nwho\nis\nthe\nBuyer,\nRequired\nanswer\ndate\nand\nan\noverview.\nTEST_RFI_MN\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nView\nall\nselected\ncategories\nTESTING\n2025-03-13\n00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-03-27\n23:59\nView\nall\nselected\nregions\nScreenshot\n2025-02-07\nat\n3.02.43\nPM.png\nsend.png\nOverview\nRElax,\nThis\nis\njust\na\nTEST\nBuyer\ncorrespondence\nHELLO\nTEst\nHi\nVendor\npls\nReSponD\nResponses\n3/11/2025\n10:13\nAM\nPDT\n(You\naccepted\nto\nparticipate\nin\nthis\nRFI)\n3/11/2025\n10:14\nAM\nPDT\n(from\nTESTSX)\nHi\nPCM,\naccept\nthe\nTenders\nupdate.png\n3/11/2025\n11:57\nAM\nPDT\n(from\nAWS)\nThanks\nfor\nparticipating\nin\nthe\nnew\nTenders\nReply\nH1\nH2\nSans\nSerif\n:\nB\nI\n\"\nNormal\n:\nIII\nE\nE\n8\nTx\nReply\nRFI\nFiles\nto\nupload\nor\ndrag\nand\ndrop\nfiles\nhere\nT\nChoose\nfiles\nMaximum\nupload\nfile\nsize:\n10\nGB.\nSend\nName\n-\nThis\ncolumn\nspecifies\nthe\nname\nof\nthe\nRFI.\nBuyer\n-\nThis\ncolumn\nwill\nspecify\nwho\nis\nthe\nBuyer\nthat\nis\nrequesting\nthe\nRFI\nfrom\nthe\nSupplier.\nRequest\nStatus\n-\nCreated\nAt\n-\nThis\nspecifies\nthe\ndate\nthe\nRFI\nwas\ncreated.\nDeadline\nfor\nSupplier\n-\nThis\nSpecifies\nthe\nlast\nday\nthe\nSupplier\nhas\nuntil\nthey\nmust\nsubmit\ntheir\nRFI.\nAwarded\nAt\n-\nThis\nwill\nlet\nyou\nknow\nif\nyou\nwere\nawarded\na\nbid\nor\nrejected.\nWHAT\nARE\nTHE\nSEARCH\nAND\nFILTERING\nOPTIONS?\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=6"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 7,
+        "file_type": ".pdf",
+        "text_content": "A. There are a few filtering options in SMART. \"Status for Supplier\", \"Request ID\", \"Buyer\", \"Name\", \"Type\", \"Active At\"\nStatus for Supplier - This column can be filtered using the \"Equals\" option to display specific RFQ or RFI statuses.\nIt\nrepresents the current state of a Supplier's response to RFQ.\nPending Response - indicates Supplier have not yet accepted or rejected the published RFQ.\nSubmitted - confirms supplier has submitted (published) their quotes for the RFQ.\nDeclined - shows supplier has declined to participate in the RFQ\nCancelled - indicates buyer cancelled the published RFQ.\nAwarded - displays when buyer has awarded the supplier's quote. Note: Amazon's formal acceptance of your quote will not be\nin effect until a Work Order or Purchase Order is executed.\"\nPartially Awarded - indicates partial award of RFQ (not applicable for DCSP suppliers).\nNot Considered - indicates buyer did not select the supplier's quote, i.e. unsuccessful bid..\nRecalled - indicates previously awarded RFQ has been withdrawn by a buyer\nRequest ID - A unique identifier automatically generated by the system for each RFQ. Users can filter Request IDs using four\noptions: Equals (matches exact ID).\nName - This column allows vendors to filter RFQs by name using four search options: Equals (matches exact name).\nType - The system has two event categories: RFI (Request for Information) and RFQ (Request for Quotation). You can filter by\ntype using Equals (selects specific event type) or Does not equal (excludes specific event type).\nActive at - You can filter the activation date using three options: Equals (matches specific date), Greater than or equal (shows\ndates after selected), and Less than or equal (shows dates before selected).\nHOW DO I PARTICIPATE IN A RFI?\nA. To participate in the RFI, you will be invited via email. When you utilize this function first time, you must accept the terms\nand conditions before proceeding.\nTerms of agreement\nBy continuing you agree to the Privacy Notice (2and the following:\nContinue\nArgo Site Terms\nLast updated: December 3, 2024\nWelcome to the Argo site, through which you can access various services (together the \"ArgoSite\"). Amazon .com Services LLC and/or its affiliates (\"Amazon\") provides the Argo Site to you subject to the following terms of use (\"Site Terms\") By visiting the\nArgo Site, you accept the Site Terms Please read them carefully. You represent to us that you are lawfully able to enter into contracts (e.g., you are not minor). If you are entering into this Agreement for an entity, such as the company you work for you\nrepresent to us that you have legal authority to bind that entity.\nPRIVACY\nPlease review the AWS Privacy Notice, which also governs your visit to the Argo Site, to understand our practices Amazon handles any personal information relating to you in accordance with the AWS Privacy Notice. The Argo Site enables you to view and\nupdate certain information related to your account If you have access to personal information of others, you must comply with the AWS Privacy Notice.\nIf\nyou\nhave any concern about privacy related to the Argo Site, please contact us at aws-scm-ux@amazon.co with thorough description, and we will try to resolve the issue for you. You may also contact us at the address noted below.\nAmazon Web Services Inc.\nP.O. Box 81226\nSeattle, WA 98108-1226\nhttps://aws.amazon.com\nCONFIDENTIALITY\nThe Argo Site and its content is Amazon confidential information subject to applicable nondisclosure agreements You will take all reasonable measures to avoid unauthorized disclosure, dissemination or use of the Argo Site or its content, including those\nmeasures you take to protect your own confidential information of similar nature. You are responsible for appropriately configuring security, access and other settings for your account, and content you provide. You must not disclose any confidential\ninformation to third party except in accordance with Amazon's express written agreement.\nELECTRONIC COMMUNICATIONS\nWhen you visit the Argo Site or send e-mails to us, you are communicating with us electronically. You consent to receive communications from us electronically We will communicate with you by e-mail or by posting notices on the Argo Site. You agree that\nall agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.\nCOPYRIGHT\nAll content included on the Argo Site, such as text. graphics, logos, button icons, images, audio clips, digital downloads, data compilations, and software, is the property of Amazon or its suppliers and protected by United States and international copyright\nlaws. The compilation of all content on the Argo Site the exclusive property of Amazon and protected by U.S. and international copyright laws All software used on the Argo Site is the property of Amazon or its software suppliers and protected by United\nStates and international copyright laws.\nTRADEMARKS\nAmazon graphics, logos, page headers, button icons, scripts, and service names are trademarks, registered trademarks or trade dress of Amazon in the U.S. and/or other countries Amazon's trademarks and trade dress may not be used in connection with\nany product or service that is not AWS's and may not be used in any manner that likely to cause confusion, or in any manner that disparages or discredits Amazon All other trademarks not owned by Amazon that appear on this Site are the property of\ntheir respective owners, who may or may not be affiliated with or connected to Amazon.\nPATENTS\nOne or more patents owned by Amazon may apply to the Argo Site and to the features and services accessible via the Argo Site. Portions of the Argo Site may operate under license of one or more patents\nLICENSE AND SITE ACCESS\nAmazon grants you limited license to access and use the Argo Site only in connection with providing products or services to Amazon. We use the Argo Site to manage these activities, and use, share and keep related information and content for this\npurpose.\nThis license does not include any resale or commercial use of the Argo Site or its contents; any derivative use of the Argo Site or its contents: any downloading or copying of account information; or any use of data mining robots, or similar data gathering\nand extraction tools. You may not download (other than page caching) or modify the Argo Site or any portion of it. except with express written consent of Amazon.\nThe Argo Site or any portion of the Argo Site may not be reproduced duplicated copied, sold resold visited or otherwise exploited for any commercial purpose without express written consent of Amazon You may not frame or utilize framing techniques\nto\nenclose any trademark logo, or other proprietary information (including images, text, page layout, or form) of Amazon without express written consent You may not use any meta tags or any other \"hidden text utilizing Amazon's name or trademarks\nwithout the express written consent of Amazon Any unauthorized use terminates the permission or license granted by Amazon\nYOUR ACCOUNT\nIf\nyou use the Argo Site, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer, and you agree to accept responsibility for all activities that occur under your account or password If\nAmazon has concerns with your use or activity relating to the Argo Site, or if you are in breach of applicable laws or Site Terms, Amazon reserves the right to take action, including without limitation by refusing service, terminating accounts, or removing\nor\nediting content in its discretion You may at any time immediately cease using the Argo Site, terminate your accounts, or remove or edit certain content (as permitted) using the tools and settings we make available to you\nUSAGE AND CONTENT\nHeard\ninformation foodback questions and other the Arne Site illegal obscana threatening fraud false micleading invacture privacy infrincina of preparts rights\ncould\nA.\nThere\nare\na\nfew\nfiltering\noptions\nin\nSMART.\n\"Status\nfor\nSupplier\",\n\"Request\nID\",\n\"Buyer\",\n\"Name\",\n\"Type\",\n\"Active\nAt\"\nStatus\nfor\nSupplier\n-\nThis\ncolumn\ncan\nbe\nfiltered\nusing\nthe\n\"Equals\"\noption\nto\ndisplay\nspecific\nRFQ\nor\nRFI\nstatuses.\nIt\nrepresents\nthe\ncurrent\nstate\nof\na\nSupplier's\nresponse\nto\nRFQ.\nPending\nResponse\n-\nindicates\nSupplier\nhave\nnot\nyet\naccepted\nor\nrejected\nthe\npublished\nRFQ.\nSubmitted\n-\nconfirms\nsupplier\nhas\nsubmitted\n(published)\ntheir\nquotes\nfor\nthe\nRFQ.\nDeclined\n-\nshows\nsupplier\nhas\ndeclined\nto\nparticipate\nin\nthe\nRFQ\nCancelled\n-\nindicates\nbuyer\ncancelled\nthe\npublished\nRFQ.\nAwarded\n-\ndisplays\nwhen\nbuyer\nhas\nawarded\nthe\nsupplier's\nquote.\nNote:\nAmazon's\nformal\nacceptance\nof\nyour\nquote\nwill\nnot\nbe\nin\neffect\nuntil\na\nWork\nOrder\nor\nPurchase\nOrder\nis\nexecuted.\"\nPartially\nAwarded\n-\nindicates\npartial\naward\nof\nRFQ\n(not\napplicable\nfor\nDCSP\nsuppliers).\nNot\nConsidered\n-\nindicates\nbuyer\ndid\nnot\nselect\nthe\nsupplier's\nquote,\ni.e.\nunsuccessful\nbid..\nRecalled\n-\nindicates\npreviously\nawarded\nRFQ\nhas\nbeen\nwithdrawn\nby\na\nbuyer\nRequest\nID\n-\nA\nunique\nidentifier\nautomatically\ngenerated\nby\nthe\nsystem\nfor\neach\nRFQ.\nUsers\ncan\nfilter\nRequest\nIDs\nusing\nfour\noptions:\nEquals\n(matches\nexact\nID).\nName\n-\nThis\ncolumn\nallows\nvendors\nto\nfilter\nRFQs\nby\nname\nusing\nfour\nsearch\noptions:\nEquals\n(matches\nexact\nname).\nType\n-\nThe\nsystem\nhas\ntwo\nevent\ncategories:\nRFI\n(Request\nfor\nInformation)\nand\nRFQ\n(Request\nfor\nQuotation).\nYou\ncan\nfilter\nby\ntype\nusing\nEquals\n(selects\nspecific\nevent\ntype)\nor\nDoes\nnot\nequal\n(excludes\nspecific\nevent\ntype).\nActive\nat\n-\nYou\ncan\nfilter\nthe\nactivation\ndate\nusing\nthree\noptions:\nEquals\n(matches\nspecific\ndate),\nGreater\nthan\nor\nequal\n(shows\ndates\nafter\nselected),\nand\nLess\nthan\nor\nequal\n(shows\ndates\nbefore\nselected).\nHOW\nDO\nI\nPARTICIPATE\nIN\nA\nRFI?\nA.\nTo\nparticipate\nin\nthe\nRFI,\nyou\nwill\nbe\ninvited\nvia\nemail.\nWhen\nyou\nutilize\nthis\nfunction\nfirst\ntime,\nyou\nmust\naccept\nthe\nterms\nand\nconditions\nbefore\nproceeding.\nTerms\nof\nagreement\nBy\ncontinuing\nyou\nagree\nto\nthe\nPrivacy\nNotice\n(2and\nthe\nfollowing:\nContinue\nArgo\nSite\nTerms\nLast\nupdated:\nDecember\n3,\n2024\nWelcome\nto\nthe\nArgo\nsite,\nthrough\nwhich\nyou\ncan\naccess\nvarious\nservices\n(together\nthe\n\"ArgoSite\").\nAmazon\n.com\nServices\nLLC\nand/or\nits\naffiliates\n(\"Amazon\")\nprovides\nthe\nArgo\nSite\nto\nyou\nsubject\nto\nthe\nfollowing\nterms\nof\nuse\n(\"Site\nTerms\")\nBy\nvisiting\nthe\nArgo\nSite,\nyou\naccept\nthe\nSite\nTerms\nPlease\nread\nthem\ncarefully.\nYou\nrepresent\nto\nus\nthat\nyou\nare\nlawfully\nable\nto\nenter\ninto\ncontracts\n(e.g.,\nyou\nare\nnot\nminor).\nIf\nyou\nare\nentering\ninto\nthis\nAgreement\nfor\nan\nentity,\nsuch\nas\nthe\ncompany\nyou\nwork\nfor\nyou\nrepresent\nto\nus\nthat\nyou\nhave\nlegal\nauthority\nto\nbind\nthat\nentity.\nPRIVACY\nPlease\nreview\nthe\nAWS\nPrivacy\nNotice,\nwhich\nalso\ngoverns\nyour\nvisit\nto\nthe\nArgo\nSite,\nto\nunderstand\nour\npractices\nAmazon\nhandles\nany\npersonal\ninformation\nrelating\nto\nyou\nin\naccordance\nwith\nthe\nAWS\nPrivacy\nNotice.\nThe\nArgo\nSite\nenables\nyou\nto\nview\nand\nupdate\ncertain\ninformation\nrelated\nto\nyour\naccount\nIf\nyou\nhave\naccess\nto\npersonal\ninformation\nof\nothers,\nyou\nmust\ncomply\nwith\nthe\nAWS\nPrivacy\nNotice.\nIf\nyou\nhave\nany\nconcern\nabout\nprivacy\nrelated\nto\nthe\nArgo\nSite,\nplease\ncontact\nus\nat\naws-scm-ux@amazon.co\nwith\nthorough\ndescription,\nand\nwe\nwill\ntry\nto\nresolve\nthe\nissue\nfor\nyou.\nYou\nmay\nalso\ncontact\nus\nat\nthe\naddress\nnoted\nbelow.\nAmazon\nWeb\nServices\nInc.\nP.O.\nBox\n81226\nSeattle,\nWA\n98108-1226\nhttps://aws.amazon.com\nCONFIDENTIALITY\nThe\nArgo\nSite\nand\nits\ncontent\nis\nAmazon\nconfidential\ninformation\nsubject\nto\napplicable\nnondisclosure\nagreements\nYou\nwill\ntake\nall\nreasonable\nmeasures\nto\navoid\nunauthorized\ndisclosure,\ndissemination\nor\nuse\nof\nthe\nArgo\nSite\nor\nits\ncontent,\nincluding\nthose\nmeasures\nyou\ntake\nto\nprotect\nyour\nown\nconfidential\ninformation\nof\nsimilar\nnature.\nYou\nare\nresponsible\nfor\nappropriately\nconfiguring\nsecurity,\naccess\nand\nother\nsettings\nfor\nyour\naccount,\nand\ncontent\nyou\nprovide.\nYou\nmust\nnot\ndisclose\nany\nconfidential\ninformation\nto\nthird\nparty\nexcept\nin\naccordance\nwith\nAmazon's\nexpress\nwritten\nagreement.\nELECTRONIC\nCOMMUNICATIONS\nWhen\nyou\nvisit\nthe\nArgo\nSite\nor\nsend\ne-mails\nto\nus,\nyou\nare\ncommunicating\nwith\nus\nelectronically.\nYou\nconsent\nto\nreceive\ncommunications\nfrom\nus\nelectronically\nWe\nwill\ncommunicate\nwith\nyou\nby\ne-mail\nor\nby\nposting\nnotices\non\nthe\nArgo\nSite.\nYou\nagree\nthat\nall\nagreements,\nnotices,\ndisclosures\nand\nother\ncommunications\nthat\nwe\nprovide\nto\nyou\nelectronically\nsatisfy\nany\nlegal\nrequirement\nthat\nsuch\ncommunications\nbe\nin\nwriting.\nCOPYRIGHT\nAll\ncontent\nincluded\non\nthe\nArgo\nSite,\nsuch\nas\ntext.\ngraphics,\nlogos,\nbutton\nicons,\nimages,\naudio\nclips,\ndigital\ndownloads,\ndata\ncompilations,\nand\nsoftware,\nis\nthe\nproperty\nof\nAmazon\nor\nits\nsuppliers\nand\nprotected\nby\nUnited\nStates\nand\ninternational\ncopyright\nlaws.\nThe\ncompilation\nof\nall\ncontent\non\nthe\nArgo\nSite\nthe\nexclusive\nproperty\nof\nAmazon\nand\nprotected\nby\nU.S.\nand\ninternational\ncopyright\nlaws\nAll\nsoftware\nused\non\nthe\nArgo\nSite\nis\nthe\nproperty\nof\nAmazon\nor\nits\nsoftware\nsuppliers\nand\nprotected\nby\nUnited\nStates\nand\ninternational\ncopyright\nlaws.\nTRADEMARKS\nAmazon\ngraphics,\nlogos,\npage\nheaders,\nbutton\nicons,\nscripts,\nand\nservice\nnames\nare\ntrademarks,\nregistered\ntrademarks\nor\ntrade\ndress\nof\nAmazon\nin\nthe\nU.S.\nand/or\nother\ncountries\nAmazon's\ntrademarks\nand\ntrade\ndress\nmay\nnot\nbe\nused\nin\nconnection\nwith\nany\nproduct\nor\nservice\nthat\nis\nnot\nAWS's\nand\nmay\nnot\nbe\nused\nin\nany\nmanner\nthat\nlikely\nto\ncause\nconfusion,\nor\nin\nany\nmanner\nthat\ndisparages\nor\ndiscredits\nAmazon\nAll\nother\ntrademarks\nnot\nowned\nby\nAmazon\nthat\nappear\non\nthis\nSite\nare\nthe\nproperty\nof\ntheir\nrespective\nowners,\nwho\nmay\nor\nmay\nnot\nbe\naffiliated\nwith\nor\nconnected\nto\nAmazon.\nPATENTS\nOne\nor\nmore\npatents\nowned\nby\nAmazon\nmay\napply\nto\nthe\nArgo\nSite\nand\nto\nthe\nfeatures\nand\nservices\naccessible\nvia\nthe\nArgo\nSite.\nPortions\nof\nthe\nArgo\nSite\nmay\noperate\nunder\nlicense\nof\none\nor\nmore\npatents\nLICENSE\nAND\nSITE\nACCESS\nAmazon\ngrants\nyou\nlimited\nlicense\nto\naccess\nand\nuse\nthe\nArgo\nSite\nonly\nin\nconnection\nwith\nproviding\nproducts\nor\nservices\nto\nAmazon.\nWe\nuse\nthe\nArgo\nSite\nto\nmanage\nthese\nactivities,\nand\nuse,\nshare\nand\nkeep\nrelated\ninformation\nand\ncontent\nfor\nthis\npurpose.\nThis\nlicense\ndoes\nnot\ninclude\nany\nresale\nor\ncommercial\nuse\nof\nthe\nArgo\nSite\nor\nits\ncontents;\nany\nderivative\nuse\nof\nthe\nArgo\nSite\nor\nits\ncontents:\nany\ndownloading\nor\ncopying\nof\naccount\ninformation;\nor\nany\nuse\nof\ndata\nmining\nrobots,\nor\nsimilar\ndata\ngathering\nand\nextraction\ntools.\nYou\nmay\nnot\ndownload\n(other\nthan\npage\ncaching)\nor\nmodify\nthe\nArgo\nSite\nor\nany\nportion\nof\nit.\nexcept\nwith\nexpress\nwritten\nconsent\nof\nAmazon.\nThe\nArgo\nSite\nor\nany\nportion\nof\nthe\nArgo\nSite\nmay\nnot\nbe\nreproduced\nduplicated\ncopied,\nsold\nresold\nvisited\nor\notherwise\nexploited\nfor\nany\ncommercial\npurpose\nwithout\nexpress\nwritten\nconsent\nof\nAmazon\nYou\nmay\nnot\nframe\nor\nutilize\nframing\ntechniques\nto\nenclose\nany\ntrademark\nlogo,\nor\nother\nproprietary\ninformation\n(including\nimages,\ntext,\npage\nlayout,\nor\nform)\nof\nAmazon\nwithout\nexpress\nwritten\nconsent\nYou\nmay\nnot\nuse\nany\nmeta\ntags\nor\nany\nother\n\"hidden\ntext\nutilizing\nAmazon's\nname\nor\ntrademarks\nwithout\nthe\nexpress\nwritten\nconsent\nof\nAmazon\nAny\nunauthorized\nuse\nterminates\nthe\npermission\nor\nlicense\ngranted\nby\nAmazon\nYOUR\nACCOUNT\nIf\nyou\nuse\nthe\nArgo\nSite,\nyou\nare\nresponsible\nfor\nmaintaining\nthe\nconfidentiality\nof\nyour\naccount\nand\npassword\nand\nfor\nrestricting\naccess\nto\nyour\ncomputer,\nand\nyou\nagree\nto\naccept\nresponsibility\nfor\nall\nactivities\nthat\noccur\nunder\nyour\naccount\nor\npassword\nIf\nAmazon\nhas\nconcerns\nwith\nyour\nuse\nor\nactivity\nrelating\nto\nthe\nArgo\nSite,\nor\nif\nyou\nare\nin\nbreach\nof\napplicable\nlaws\nor\nSite\nTerms,\nAmazon\nreserves\nthe\nright\nto\ntake\naction,\nincluding\nwithout\nlimitation\nby\nrefusing\nservice,\nterminating\naccounts,\nor\nremoving\nor\nediting\ncontent\nin\nits\ndiscretion\nYou\nmay\nat\nany\ntime\nimmediately\ncease\nusing\nthe\nArgo\nSite,\nterminate\nyour\naccounts,\nor\nremove\nor\nedit\ncertain\ncontent\n(as\npermitted)\nusing\nthe\ntools\nand\nsettings\nwe\nmake\navailable\nto\nyou\nUSAGE\nAND\nCONTENT\nHeard\ninformation\nfoodback\nquestions\nand\nother\nthe\nArne\nSite\nillegal\nobscana\nthreatening\nfraud\nfalse\nmicleading\ninvacture\nprivacy\ninfrincina\nof\npreparts\nrights\ncould\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=7"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 8,
+        "file_type": ".pdf",
+        "text_content": "Once you hit continue, you will be brought to the SMART dashboard. Click on the RFI link to be taken to the main RFI page\nthat you are invited to. Please click on the radio button to explicitly let buyer know if you are participating or declining to\nparticipate in the RFI.\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nHome > SMART > Dashboard > RFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponse\nPlease let us know your interest in participation:\nintend to participate in this RFI\ndecline to participate in this RFI\nSend my response\n(You cannot change your decision once response is sent.)\nA pop up will appear. Please confirm or cancel your response. The buyer will be notified of your response.\nYou are accessing the non -production environment of this tool, which is intended for testing and demo purposes.\nHome\n>\nSMART\nDashboard\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend png\nOverview\nConfirm participation\nRElax, This just TEST\nYou confirm that you intend to participate in this RFI. You cannot change your decision\nonce response sent.\nBuyer correspondence\nCancel\nConfirm\nHELLO TEst\nHi Vendor pls ReSponD\nResponse\nPlease let us know your Interest in participation:\nIntend to participate in this RFI\ndecline to participate in this RFI\nSend my response\n(You cannot change your decision once response is sent.)\nAfter confirming you are participating in the RFI, you will be brought to the main dashboard. You can also see some important\ninformation of the RFI like the current status, Request ID, Name, Type, Buyer Name, Category, Project, Begin Date, Required\nanswer date, Region/Cluster, and Documents from Buyer. You and the Buyer will also be able to communicate through this\nOnce\nyou\nhit\ncontinue,\nyou\nwill\nbe\nbrought\nto\nthe\nSMART\ndashboard.\nClick\non\nthe\nRFI\nlink\nto\nbe\ntaken\nto\nthe\nmain\nRFI\npage\nthat\nyou\nare\ninvited\nto.\nPlease\nclick\non\nthe\nradio\nbutton\nto\nexplicitly\nlet\nbuyer\nknow\nif\nyou\nare\nparticipating\nor\ndeclining\nto\nparticipate\nin\nthe\nRFI.\n1\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nView\nall\nselected\ncategories\nTESTING\n2025-04-06\n00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-12\n23:59\nView\nall\nselected\nregions\nScreenshot\n2025-02-07\nat\n3.02.43\nPM.png\nsend.png\nOverview\nRElax,\nThis\nis\njust\nTEST\nBuyer\ncorrespondence\nHELLO\nTEst\nHi\nVendor\npls\nReSponD\nResponse\nPlease\nlet\nus\nknow\nyour\ninterest\nin\nparticipation:\nintend\nto\nparticipate\nin\nthis\nRFI\ndecline\nto\nparticipate\nin\nthis\nRFI\nSend\nmy\nresponse\n(You\ncannot\nchange\nyour\ndecision\nonce\nresponse\nis\nsent.)\nA\npop\nup\nwill\nappear.\nPlease\nconfirm\nor\ncancel\nyour\nresponse.\nThe\nbuyer\nwill\nbe\nnotified\nof\nyour\nresponse.\nYou\nare\naccessing\nthe\nnon\n-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nHome\n>\nSMART\nDashboard\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nView\nall\nselected\ncategories\nTESTING\n2025-04-06\n00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView\nall\nselected\nregions\nScreenshot\n2025-02-07\nat\n3.02.43\nPM.png\nsend\npng\nOverview\nConfirm\nparticipation\nRElax,\nThis\njust\nTEST\nYou\nconfirm\nthat\nyou\nintend\nto\nparticipate\nin\nthis\nRFI.\nYou\ncannot\nchange\nyour\ndecision\nonce\nresponse\nsent.\nBuyer\ncorrespondence\nCancel\nConfirm\nHELLO\nTEst\nHi\nVendor\npls\nReSponD\nResponse\nPlease\nlet\nus\nknow\nyour\nInterest\nin\nparticipation:\nIntend\nto\nparticipate\nin\nthis\nRFI\ndecline\nto\nparticipate\nin\nthis\nRFI\nSend\nmy\nresponse\n(You\ncannot\nchange\nyour\ndecision\nonce\nresponse\nis\nsent.)\nAfter\nconfirming\nyou\nare\nparticipating\nin\nthe\nRFI,\nyou\nwill\nbe\nbrought\nto\nthe\nmain\ndashboard.\nYou\ncan\nalso\nsee\nsome\nimportant\ninformation\nof\nthe\nRFI\nlike\nthe\ncurrent\nstatus,\nRequest\nID,\nName,\nType,\nBuyer\nName,\nCategory,\nProject,\nBegin\nDate,\nRequired\nanswer\ndate,\nRegion/Cluster,\nand\nDocuments\nfrom\nBuyer.\nYou\nand\nthe\nBuyer\nwill\nalso\nbe\nable\nto\ncommunicate\nthrough\nthis\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=8"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 9,
+        "file_type": ".pdf",
+        "text_content": "Dashboard.\nHome > SMART > Dashboard > RFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\n1 Published\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n4/4/2025 12:15 PM PDT (You accepted to participate in this RFI)\n4/4/2025 12:23 PM PDT (from ABBCIV)\nHi\nReply\nH1 H2\nSans Serif\n:\nNormal\n:\nEEEE8I\nReply RFI\nFiles upload\nor drag and drop files here\nT Choose files\nMaximum upload file size: 10 GB.\nSend\nAt the bottom of the screen you will be able to upload all documents for the RFI.\nDashboard.\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFI-1d829425\nTEST_RFI_MN\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\n1\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nView\nall\nselected\ncategories\nTESTING\n2025-04-06 00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView\nall\nselected\nregions\nScreenshot\n2025-02-07\nat\n3.02.43\nPM.png\nsend.png\nOverview\nRElax,\nThis\njust\nTEST\nBuyer\ncorrespondence\nHELLO\nTEst\nHi\nVendor\npls\nReSponD\nResponses\n4/4/2025\n12:15\nPM\nPDT\n(You\naccepted\nto\nparticipate\nin\nthis\nRFI)\n4/4/2025\n12:23\nPM\nPDT\n(from\nABBCIV)\nHi\nReply\nH1\nH2\nSans\nSerif\n:\nNormal\n:\nEEEE8I\nReply\nRFI\nFiles\nupload\nor\ndrag\nand\ndrop\nfiles\nhere\nT\nChoose\nfiles\nMaximum\nupload\nfile\nsize:\n10\nGB.\nSend\nAt\nthe\nbottom\nof\nthe\nscreen\nyou\nwill\nbe\nable\nto\nupload\nall\ndocuments\nfor\nthe\nRFI.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=9"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 10,
+        "file_type": ".pdf",
+        "text_content": "Request detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nView all selected categories\nTESTING\n2025-04-06 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-12 23:59\nView all selected regions\nScreenshot 2025-02-07 at 3.02.43 PM.png\nsend.png\nOverview\nRElax, This is just TEST\nBuyer correspondence\nHELLO TEst\nHi Vendor pls ReSponD\nResponses\n4/4/2025 12:15 PM PDT (You accepted to participate in this RFI)\n4/4/2025 12:23 PM PDT (from ABBCIV)\nHi\nReply\nH1 H2\nSans Serif\n:\nB\nI\nU\nS\nNormal\n:\nIII\nIII\nIII\nTx\nThese are my documents.\nFiles to upload\nor drag and drop files here\nIt\nChoose files\nMaximum upload file size: 10 GB\n74c907b7-2d21-463f-a0a7-e7de38f4db75_9_FAILED.cS\nX\nACx_DI_Migration of CxA Qualification Records onto Procore_R05_20251601.docx\nX\nSend\nAfter all docs are uploaded. Buyer will be notified via email that you are participating in the RFI and they will be able to see\nyour documents and messages. They can also respond to your messages and you can see it on your dashboard.\nWHAT HAPPENS IF I DON'T WITH TO PARTICIPATE IN A RFI?\nA. On your main dashboard you can choose to decline participation and Send your response.\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-1d829425\nPublished\nTEST_RFI_MN\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nView\nall\nselected\ncategories\nTESTING\n2025-04-06 00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-12\n23:59\nView\nall\nselected\nregions\nScreenshot\n2025-02-07\nat\n3.02.43 PM.png\nsend.png\nOverview\nRElax,\nThis\nis\njust\nTEST\nBuyer\ncorrespondence\nHELLO\nTEst\nHi\nVendor\npls\nReSponD\nResponses\n4/4/2025\n12:15\nPM\nPDT\n(You\naccepted\nto\nparticipate\nin\nthis\nRFI)\n4/4/2025\n12:23\nPM\nPDT\n(from\nABBCIV)\nHi\nReply\nH1\nH2\nSans\nSerif\n:\nB\nI\nU\nS\nNormal\n:\nIII\nIII\nIII\nTx\nThese\nare\nmy\ndocuments.\nFiles\nto\nupload\nor\ndrag\nand\ndrop\nfiles\nhere\nIt\nChoose\nfiles\nMaximum\nupload\nfile\nsize:\n10 GB\n74c907b7-2d21-463f-a0a7-e7de38f4db75_9_FAILED.cS\nX\nACx_DI_Migration\nof\nCxA\nQualification\nRecords\nonto\nProcore_R05_20251601.docx\nX\nSend\nAfter\nall\ndocs\nare\nuploaded.\nBuyer\nwill\nbe\nnotified\nvia\nemail\nthat\nyou\nare\nparticipating\nin\nthe\nRFI\nand\nthey\nwill\nbe\nable\nto\nsee\nyour\ndocuments\nand\nmessages.\nThey\ncan\nalso\nrespond\nto\nyour\nmessages\nand\nyou\ncan\nsee\nit\non\nyour\ndashboard.\nWHAT\nHAPPENS\nIF\nI\nDON'T\nWITH\nTO\nPARTICIPATE\nIN\nA\nRFI?\nA.\nOn\nyour\nmain\ndashboard\nyou\ncan\nchoose\nto\ndecline\nparticipation\nand\nSend\nyour\nresponse.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=10"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 11,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nHello nyekanm+1@amazon.com\nIII\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nO\nHome > SMART > Dashboard > RFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nBMS\n0407test\n2025-04-09 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-17 23:59\nAB\n74c907b7-2d21-463f-a0a7\ne7de38f4db75_8_FAILED.csv\nOverview\nBuyer correspondence\nHello Suppliers\nThis just test.\nResponse\nPlease let us know your interest in participation:\nintend to participate in this RFI\ndecline to participate in this RFI\nSend my response\nin once response sent.)\nA pop up will show, just click on Confirm.\nConfirm participation\nX\nYou confirm that you decline to participate in this RFI. You cannot change your decision\nonce response is sent.\nCancel\nConfirm\nAfter confirmation, the Buyer will receive an email stating that the RFI request was declined.\nAWS\nInfra\nHello nyekanm+1@amazon.com\nIII\n1\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nO\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nBMS\n0407test\n2025-04-09\n00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-17\n23:59\nAB\n74c907b7-2d21-463f-a0a7\ne7de38f4db75_8_FAILED.csv\nOverview\nBuyer\ncorrespondence\nHello\nSuppliers\nThis\njust\ntest.\nResponse\nPlease\nlet\nus\nknow\nyour\ninterest\nin\nparticipation:\nintend\nto\nparticipate\nin\nthis\nRFI\ndecline\nto\nparticipate\nin\nthis\nRFI\nSend\nmy\nresponse\nin\nonce\nresponse\nsent.)\nA\npop\nup\nwill\nshow,\njust\nclick\non\nConfirm.\nConfirm\nparticipation\nX\nYou\nconfirm\nthat\nyou\ndecline\nto\nparticipate\nin\nthis\nRFI.\nYou\ncannot\nchange\nyour\ndecision\nonce\nresponse\nis\nsent.\nCancel\nConfirm\nAfter\nconfirmation,\nthe\nBuyer\nwill\nreceive\nan\nemail\nstating\nthat\nthe\nRFI\nrequest\nwas\ndeclined.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=11"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 12,
+        "file_type": ".pdf",
+        "text_content": "Amazon - Test has responded to bid for Mac0407Test\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 1:41PM\nN\nTo: Nyekan, Mac\nHello,\nThis email is to inform you regarding the change in RFI Mac0407Test from supplier Test.\nSupplier Test has declined to participate in RFI Mac0407Test.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may\nbe confidential and/or proprietary material for the use of the intended addressee(s) only. If you are not an intended\naddressee, note that any disclosure, copying, distribution, or use of the contents of this message is prohibited. If you\nhave received this email in error, please notify the sender by reply email and delete the message and its attachments\nfrom all computers. Thank you for your cooperation.\nWhen you log into the dashboard the status of the RFI will show that you declined it.\nAmazon\n-\nTest\nhas\nresponded\nto\nbid\nfor\nMac0407Test\nno_reply@infra.amazon.com\n<no_reply@infra.amazon.com>\nToday\nat\n1:41PM\nN\nTo:\nNyekan,\nMac\nHello,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\nchange\nin\nRFI\nMac0407Test\nfrom\nsupplier\nTest.\nSupplier\nTest\nhas\ndeclined\nto\nparticipate\nin\nRFI\nMac0407Test.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nWhen\nyou\nlog\ninto\nthe\ndashboard\nthe\nstatus\nof\nthe\nRFI\nwill\nshow\nthat\nyou\ndeclined\nit.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=12"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 13,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nHello nyekanm+5@amazon.com\nE\ni\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\n1\nHome > SMART > Dashboard > RFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest detail\nRequest ID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin date\nnyekanm\nBMS\n0407test\n2025-04-09 00:00\nRequired answer date\nRegion/Cluster\nDocument\n2025-04-17 23:59\nAB\n74c907b7-2d21-463f-a0a7-\ne7de38f4db75_8_FAILED.cSV\nOverview\nBuyer correspondence\nHello Suppliers\nThis just test.\nResponses\n4/7/2025 1:23 PM PDT (You declined to participate in this RFI)\n\u00a9 2008 2025 Amazon Web Services, Inc. or its affiliates All rights reserved. Privacy Notice Site Terms\nWILL I BE NOTIFIED IF ANY CHANGES HAPPENS TO AN RFI OR RFQ?\nA. Yes, If a buyer modifies an RFI or cancels it, you will receive an auto-notification via email.\nWHAT HAPPENS IF A RFI IS COMPLETED OR CANCELLED?\nA. If an RFI is cancelled, you can view all correspondence between you and the buyer on the RFI's main dashboard. However,\nthe reply function will be deactivated, and you will no longer have the option to send new responses. If a buyer completes an\nRFI, the reply function also will be deactivated.\nHOW DO I KNOW IF I WAS SELECTED AS A BID CANDIDATE?\nA. If you are selected for a bid, you will receive a RFQ invite via email. You can click the link in the email to access the smart\nplatform: https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAWS\nInfra\nHello\nnyekanm+5@amazon.com\nE\ni\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\n1\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFI-dfde7b7c\nMac0407Test\nRequest\ndetail\nRequest\nID\nStatus\nName\nType\nRFXREQ-RFI-dfde7b7c\nPublished\nMac0407Test\nRFI\nBuyer\nCategory\nProject\nBegin\ndate\nnyekanm\nBMS\n0407test\n2025-04-09\n00:00\nRequired\nanswer\ndate\nRegion/Cluster\nDocument\n2025-04-17\n23:59\nAB\n74c907b7-2d21-463f-a0a7-\ne7de38f4db75_8_FAILED.cSV\nOverview\nBuyer\ncorrespondence\nHello\nSuppliers\nThis\njust\ntest.\nResponses\n4/7/2025\n1:23\nPM\nPDT\n(You\ndeclined\nto\nparticipate\nin\nthis\nRFI)\n\u00a9\n2008\n2025\nAmazon\nWeb\nServices,\nInc.\nor\nits\naffiliates\nAll\nrights\nreserved.\nPrivacy\nNotice\nSite\nTerms\nWILL\nI\nBE\nNOTIFIED\nIF\nANY\nCHANGES\nHAPPENS\nTO\nAN\nRFI\nOR\nRFQ?\nA.\nYes,\nIf\na\nbuyer\nmodifies\nan\nRFI\nor\ncancels\nit,\nyou\nwill\nreceive\nan\nauto-notification\nvia\nemail.\nWHAT\nHAPPENS\nIF\nA\nRFI\nIS\nCOMPLETED\nOR\nCANCELLED?\nA.\nIf\nan\nRFI\nis\ncancelled,\nyou\ncan\nview\nall\ncorrespondence\nbetween\nyou\nand\nthe\nbuyer\non\nthe\nRFI's\nmain\ndashboard.\nHowever,\nthe\nreply\nfunction\nwill\nbe\ndeactivated,\nand\nyou\nwill\nno\nlonger\nhave\nthe\noption\nto\nsend\nnew\nresponses.\nIf\na\nbuyer\ncompletes\nan\nRFI,\nthe\nreply\nfunction\nalso\nwill\nbe\ndeactivated.\nHOW\nDO\nI\nKNOW\nIF\nI\nWAS\nSELECTED\nAS\nA\nBID\nCANDIDATE?\nA.\nIf\nyou\nare\nselected\nfor\na\nbid,\nyou\nwill\nreceive\na\nRFQ\ninvite\nvia\nemail.\nYou\ncan\nclick\nthe\nlink\nin\nthe\nemail\nto\naccess\nthe\nsmart\nplatform:\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=13"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 14,
+        "file_type": ".pdf",
+        "text_content": "[EXTERNAL] Amazon - RFQ-Test has been published\nReply\nReply All\nForward\nno_reply@infra.amazon.com\nN\nTo olgashi+testfsh@amazon.com\nThu 3/13/2025 11:46 A\ni\nClick here to download pictures. To help protect your privacy, Outlook prevented automatic download of some pictures in this message.\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event RFQ-Test.\nRFx RFQ-Test has been published.\nThe due date for the RFx is: 2025-03-15 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf\nyou encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary\nmaterial for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its\nattachments from all computers. Thank you for your cooperation.\nHOW DO I PARTICIPATE IN A RFQ?\nA. When a new RFQ is published, you will be notified via email. Please click on the link in the email to go to your\ndashboard. https://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\n[EXTERNAL] Amazon - Newtest_Mac_RFQ has been published\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 10:44 PM\nN\nTo: nyekanm+5@amazon.com\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event Newtest Mac RFQ.\nRFx Newtest_Mac_RFQ has been published.\nThe due date for the RFx is: 2025-04-13 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nNext click on SMART on the left hand\n[EXTERNAL]\nAmazon\n-\nRFQ-Test\nhas\nbeen\npublished\nReply\nReply\nAll\nForward\nno_reply@infra.amazon.com\nN\nTo\nolgashi+testfsh@amazon.com\nThu\n3/13/2025\n11:46\nA\ni\nClick\nhere\nto\ndownload\npictures.\nTo\nhelp\nprotect\nyour\nprivacy,\nOutlook\nprevented\nautomatic\ndownload\nof\nsome\npictures\nin\nthis\nmessage.\nDear\nVendors,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\nongoing\nsourcing\nevent\nRFQ-Test.\nRFx\nRFQ-Test\nhas\nbeen\npublished.\nThe\ndue\ndate\nfor\nthe\nRFx\nis:\n2025-03-15\n06:59:00\nAM\nGMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nHOW\nDO\nI\nPARTICIPATE\nIN\nA\nRFQ?\nA.\nWhen\na\nnew\nRFQ\nis\npublished,\nyou\nwill\nbe\nnotified\nvia\nemail.\nPlease\nclick\non\nthe\nlink\nin\nthe\nemail\nto\ngo\nto\nyour\ndashboard.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\n[EXTERNAL]\nAmazon\n-\nNewtest_Mac_RFQ\nhas\nbeen\npublished\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday\nat\n10:44\nPM\nN\nTo:\nnyekanm+5@amazon.com\nDear\nVendors,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\nongoing\nsourcing\nevent\nNewtest\nMac\nRFQ.\nRFx\nNewtest_Mac_RFQ\nhas\nbeen\npublished.\nThe\ndue\ndate\nfor\nthe\nRFx\nis:\n2025-04-13\n06:59:00\nAM\nGMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nNext\nclick\non\nSMART\non\nthe\nleft\nhand\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=14"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 15,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nHello nyekanm+6@amazon.com\nInfra Portal\nWelcome to the Infra Portal\ni\nTo access your tools, please select an option from the navigation bar on the left.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve Data Exchange\nShipments\nSupplier Procurement\nTownsend PLM\nThe main dashboard will show the RFQ(s) you have been invited to. From here you can click on the RFQ ID under the\nRequest ID column.\nIII\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nO\nHome > SMART > Dashboard\nSMART\nEvents (1)\nFilter events by text, property or value\n<\nDeadline For\nRequest ID\nName\nBuyer\nA\nRequest Status\nCreated At\nAwarded At\nSupplier\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nnyekanm\nPublished\n2025-04-07\n2025-04-12\nThe page displays Bid Details and Bid Documents tabs, while the right panel contains Conversation, Announcements, and\nDocuments features. This page also displays the current round the RFQ is in, Begin date, deadline, and any important\ndocuments the Buyer may have provided. You can see the Instructions for next steps appear below the RFQ ID.\nE\nRFXREQ-RFQ-efb7ab45\nAWS (Newtest_Mac_RFQ)\n>\nO\nD\nPlease begin the process by navigating to \"Manage Bid' to 'Initiate Bid or 'Decline Bid' If bid is initiated, please read the terms & conditions and\nproceed to Step 1 for an overview of the Bid request.\nConversation\nAnnouncements\nDocuments\nRequest detail\nRound\nManage bid\nType your message\nRequest ID\nName\nType\nBuyer\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nT\nChoose file\nSend\nBegin date\nSupplier deadline\nRegion/Cluster\nDays remaining\n4/7/2025 12:00AM PDT\n4/12/2025 11:59 PM PDT (6 days,\nAB\n6\nWatermark attachhment PDF will be watermarked with \"Amazon\n1 hour, minutes remaining)\nConfidential\" and supplier.\n0 1,500\nQuote template\nDocument\nDCSP_Global_Bid_quote_template\n74c907b7-2d21-463f-a0a7-\nSMaRT _Custom.xl.xx\ne7de38f4db75_8_FAILED.csv\nII\nNo messages\nYou don't have any messages from AWS.\nOverview\nBid details\nBid documents\nBid ID\nBid status\nSupplier\nBid quotes\nABBKRA\nTotal acquisition cost\nNext select manage bid to either initiate bid or decline it.\nAWS\nInfra\nHello\nnyekanm+6@amazon.com\nInfra\nPortal\nWelcome\nto\nthe\nInfra\nPortal\ni\nTo\naccess\nyour\ntools,\nplease\nselect\nan\noption\nfrom\nthe\nnavigation\nbar\non\nthe\nleft.\nAsBuilt\nOEM/NP\nOffers\nSMART\nSelf-Serve\nData\nExchange\nShipments\nSupplier\nProcurement\nTownsend\nPLM\nThe\nmain\ndashboard\nwill\nshow\nthe\nRFQ(s)\nyou\nhave\nbeen\ninvited\nto.\nFrom\nhere\nyou\ncan\nclick\non\nthe\nRFQ\nID\nunder\nthe\nRequest\nID\ncolumn.\nIII\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nO\nHome\n>\nSMART\n>\nDashboard\nSMART\nEvents\n(1)\nFilter\nevents\nby\ntext,\nproperty\nor\nvalue\n<\nDeadline\nFor\nRequest\nID\nName\nBuyer\nA\nRequest\nStatus\nCreated\nAt\nAwarded\nAt\nSupplier\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nnyekanm\nPublished\n2025-04-07\n2025-04-12\nThe\npage\ndisplays\nBid\nDetails\nand\nBid\nDocuments\ntabs,\nwhile\nthe\nright\npanel\ncontains\nConversation,\nAnnouncements,\nand\nDocuments\nfeatures.\nThis\npage\nalso\ndisplays\nthe\ncurrent\nround\nthe\nRFQ\nis\nin,\nBegin\ndate,\ndeadline,\nand\nany\nimportant\ndocuments\nthe\nBuyer\nmay\nhave\nprovided.\nYou\ncan\nsee\nthe\nInstructions\nfor\nnext\nsteps\nappear\nbelow\nthe\nRFQ\nID.\nE\nRFXREQ-RFQ-efb7ab45\nAWS\n(Newtest_Mac_RFQ)\n>\nO\nD\nPlease\nbegin\nthe\nprocess\nby\nnavigating\nto\n\"Manage\nBid'\nto\n'Initiate\nBid\nor\n'Decline\nBid'\nIf\nbid\nis\ninitiated,\nplease\nread\nthe\nterms\n&\nconditions\nand\nproceed\nto\nStep\n1\nfor\nan\noverview\nof\nthe\nBid\nrequest.\nConversation\nAnnouncements\nDocuments\nRequest\ndetail\nRound\nManage\nbid\nType\nyour\nmessage\nRequest\nID\nName\nType\nBuyer\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nT\nChoose\nfile\nSend\nBegin\ndate\nSupplier\ndeadline\nRegion/Cluster\nDays\nremaining\n4/7/2025 12:00AM PDT\n4/12/2025\n11:59\nPM\nPDT\n(6\ndays,\nAB\n6\nWatermark\nattachhment\nPDF\nwill\nbe\nwatermarked\nwith\n\"Amazon\n1\nhour,\nminutes\nremaining)\nConfidential\"\nand\nsupplier.\n0\n1,500\nQuote\ntemplate\nDocument\nDCSP_Global_Bid_quote_template\n74c907b7-2d21-463f-a0a7-\nSMaRT\n_Custom.xl.xx\ne7de38f4db75_8_FAILED.csv\nII\nNo\nmessages\nYou\ndon't\nhave\nany\nmessages\nfrom\nAWS.\nOverview\nBid\ndetails\nBid\ndocuments\nBid ID\nBid\nstatus\nSupplier\nBid\nquotes\nABBKRA\nTotal\nacquisition\ncost\nNext\nselect\nmanage\nbid\nto\neither\ninitiate\nbid\nor\ndecline\nit.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=15"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 16,
+        "file_type": ".pdf",
+        "text_content": "You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nHome > SMART >\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nPlease begin the process by navigating to 'Manage Bid' to 'Initiate Bid' or 'Decline Bid'. If bid is initiated, please read\nX\nthe terms & conditions and proceed to Step 1 for an overview of the Bid request.\nRequest detail\nRound 1\nManage bid\nRequest ID\nName\nType\nBuye\nInitiate Bid\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyek\nEdit Bid\nBegin date\nSupplier deadline\nRegion/Cluster\nDays\nPublish Bid\n4/7/2025 12:00 AM PDT\n4/12/2025 11:59 PM PDT\nAB\n5\nWithdraw Bid\n(5 days, 14 hours, 52\nminutes remaining)\nDecline Bid\nQuote template\nDocument\nDCSP_Global_Bid_quote_t\n74c907b7-2d21-463f-a0a7-\nemplate_SMaRT_Custom.x\ne7de38f4db75_8_FAILED.csv\nlsx\nOverview\nTo participate in the RFQ, click \"Initiate Bid\". The bidding process consists of four steps: General Information, Quotes,\nDocuments, and Review and Create.\nAWS Infra\nHello nyekanm+6@amazon.com\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 Initiate Bid\nIII\n1\nStep 1\nGeneral Information\nGeneral Information\nStep 2\nQuotes\nRequest Type\nStep optional\nRequest ID\nRequest Type\nDocuments\nRFXREQ-RFQ-efb7ab45\nRFQ\nStep 4\nReview and Create\nRequest Information\nRequest Name\nRegion\nNewtest_Mac_RFQ\nAB\nBegin Date\nDeadline For Supplier\n4/7/2025 12:00 AM PDT\n4/12/2025 11:59 PM PDT (5 days, 14 hours, 45 minutes remaining)\nOverview\nOverview\nProcess Details\nProcess Details\nGeneral information - On this page, you can review all details of the RFQ. The Request Type informs you of the type of\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nPlease\nbegin\nthe\nprocess\nby\nnavigating\nto\n'Manage\nBid'\nto\n'Initiate\nBid'\nor\n'Decline\nBid'.\nIf\nbid\nis\ninitiated,\nplease\nread\nX\nthe\nterms\n&\nconditions\nand\nproceed\nto\nStep\n1\nfor\nan\noverview\nof\nthe\nBid\nrequest.\nRequest\ndetail\nRound\n1\nManage\nbid\nRequest\nID\nName\nType\nBuye\nInitiate\nBid\nRFXREQ-RFQ-efb7ab45\nNewtest_Mac_RFQ\nRFQ\nnyek\nEdit\nBid\nBegin\ndate\nSupplier\ndeadline\nRegion/Cluster\nDays\nPublish\nBid\n4/7/2025\n12:00\nAM\nPDT\n4/12/2025\n11:59\nPM\nPDT\nAB\n5\nWithdraw\nBid\n(5\ndays,\n14\nhours,\n52\nminutes\nremaining)\nDecline\nBid\nQuote\ntemplate\nDocument\nDCSP_Global_Bid_quote_t\n74c907b7-2d21-463f-a0a7-\nemplate_SMaRT_Custom.x\ne7de38f4db75_8_FAILED.csv\nlsx\nOverview\nTo\nparticipate\nin\nthe\nRFQ,\nclick\n\"Initiate\nBid\".\nThe\nbidding\nprocess\nconsists\nof\nfour\nsteps:\nGeneral\nInformation,\nQuotes,\nDocuments,\nand\nReview\nand\nCreate.\nAWS\nInfra\nHello\nnyekanm+6@amazon.com\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\nInitiate\nBid\nIII\n1\nStep\n1\nGeneral\nInformation\nGeneral\nInformation\nStep\n2\nQuotes\nRequest\nType\nStep\noptional\nRequest\nID\nRequest\nType\nDocuments\nRFXREQ-RFQ-efb7ab45\nRFQ\nStep\n4\nReview\nand\nCreate\nRequest\nInformation\nRequest\nName\nRegion\nNewtest_Mac_RFQ\nAB\nBegin\nDate\nDeadline\nFor\nSupplier\n4/7/2025\n12:00\nAM\nPDT\n4/12/2025\n11:59\nPM\nPDT\n(5\ndays,\n14\nhours,\n45\nminutes\nremaining)\nOverview\nOverview\nProcess\nDetails\nProcess\nDetails\nGeneral\ninformation\n-\nOn\nthis\npage,\nyou\ncan\nreview\nall\ndetails\nof\nthe\nRFQ.\nThe\nRequest\nType\ninforms\nyou\nof\nthe\ntype\nof\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=16"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 17,
+        "file_type": ".pdf",
+        "text_content": "request that it is. The request information section provides important information like, The name of the RFQ, the Region,\nWhen it begins and the Deadline for Supplier to complete their bid. Read the overview section for any important details\nconcerning the RFQ. Read the process detail section for any RFQ specific instructions/guidelines. The Bidder Template\nsection is where the Buyer uploaded the bid quotes. And the Participation confirmation section is an information section\ninforming you that if you want to participate in the bid you should click Save & Next or if you dont want to participate click exit.\nQuotes - On the Quotes page, you well need to download the Quote file, populate mandatory fields, marked with * and upload\nthe completed file. Save & Next when done\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nx\nIII\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Initiate Bid\nStep\nGeneral Information\nQuotes\nStep\nQuotes\nPlease download the bid quote template and populate the mandatory fields and upload the completed file. If there is an error, please rectify and\ntry again.\nStep optional\nDocuments\nStep\nBidder Quote Template\nReview and Create\nQuote File\nRegion\nDCSP_Global_Bid_quote_template_SMaRT_Custom.xlsx\nAB\nQuotes Uploaded by You (0)\nAdd Quote\nList of quote versions in response to request.\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\nNo quotes\nNo quotes found.\nExit\nPrevious\nSave Next\nAdd Quote\nX\nFile(s) to upload\nDCSP_Global_Bid_quote_template_SMaRT_Custom (2).xlsx uploaded successfully.\nChoose file\nUpload quote as Excel Workbook (.xlsx) file\nDCSP_Global_Bid_quote_template_SMaRT_Custom( (2).xlsx\nX\n14.86 KB\n2025-04-07T10:03:13\nDescription optional\nDescribe the quotes for keeping track of things.\nCancel\nSubmit\nAfter clicking submit check the status of your upload to see if it was completed or if it failed.\nrequest\nthat\nit\nis.\nThe\nrequest\ninformation\nsection\nprovides\nimportant\ninformation\nlike,\nThe\nname\nof\nthe\nRFQ,\nthe\nRegion,\nWhen\nit\nbegins\nand\nthe\nDeadline\nfor\nSupplier\nto\ncomplete\ntheir\nbid.\nRead\nthe\noverview\nsection\nfor\nany\nimportant\ndetails\nconcerning\nthe\nRFQ.\nRead\nthe\nprocess\ndetail\nsection\nfor\nany\nRFQ\nspecific\ninstructions/guidelines.\nThe\nBidder\nTemplate\nsection\nis\nwhere\nthe\nBuyer\nuploaded\nthe\nbid\nquotes.\nAnd\nthe\nParticipation\nconfirmation\nsection\nis\nan\ninformation\nsection\ninforming\nyou\nthat\nif\nyou\nwant\nto\nparticipate\nin\nthe\nbid\nyou\nshould\nclick\nSave\n&\nNext\nor\nif\nyou\ndont\nwant\nto\nparticipate\nclick\nexit.\nQuotes\n-\nOn\nthe\nQuotes\npage,\nyou\nwell\nneed\nto\ndownload\nthe\nQuote\nfile,\npopulate\nmandatory\nfields,\nmarked\nwith\n*\nand\nupload\nthe\ncompleted\nfile.\nSave\n&\nNext\nwhen\ndone\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nx\nIII\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\n>\nInitiate\nBid\nStep\nGeneral\nInformation\nQuotes\nStep\nQuotes\nPlease\ndownload\nthe\nbid\nquote\ntemplate\nand\npopulate\nthe\nmandatory\nfields\nand\nupload\nthe\ncompleted\nfile.\nIf\nthere\nis\nan\nerror,\nplease\nrectify\nand\ntry\nagain.\nStep\noptional\nDocuments\nStep\nBidder\nQuote\nTemplate\nReview\nand\nCreate\nQuote\nFile\nRegion\nDCSP_Global_Bid_quote_template_SMaRT_Custom.xlsx\nAB\nQuotes\nUploaded\nby\nYou\n(0)\nAdd\nQuote\nList\nof\nquote\nversions\nin\nresponse\nto\nrequest.\nVersion\nQuotes\nStatus\nUpload\nDate\nReport\nError\nMessage\nNo\nquotes\nNo\nquotes\nfound.\nExit\nPrevious\nSave\nNext\nAdd\nQuote\nX\nFile(s)\nto\nupload\nDCSP_Global_Bid_quote_template_SMaRT_Custom\n(2).xlsx\nuploaded\nsuccessfully.\nChoose\nfile\nUpload\nquote\nas\nExcel\nWorkbook\n(.xlsx)\nfile\nDCSP_Global_Bid_quote_template_SMaRT_Custom(\n(2).xlsx\nX\n14.86\nKB\n2025-04-07T10:03:13\nDescription\noptional\nDescribe\nthe\nquotes\nfor\nkeeping\ntrack\nof\nthings.\nCancel\nSubmit\nAfter\nclicking\nsubmit\ncheck\nthe\nstatus\nof\nyour\nupload\nto\nsee\nif\nit\nwas\ncompleted\nor\nif\nit\nfailed.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=17"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 18,
+        "file_type": ".pdf",
+        "text_content": "Quotes Uploaded by You (2)\nAdd Quote\nList of quote versions in response to request.\n<\n1\n>\nYOU\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\n*\nDownload the\nDCSP_Global_Bid_\nerror report to add\nquote_template_S\n2\n*\nFAILED\n2025-03-13\nError Report\nress the validation\nMaRT_Custom\nerrors and try agai\n(5).xlsx\nn.\nQuotes Uploaded by You (1)\nAdd Quote\nList of quote versions in response to request.\n<\n1\n>\n&\nVersion\nQuotes\nStatus\nUpload Date\nReport\nError Message\nDCSP_Global_Bid_\nquote_template_S\n1\nCOMPLETED\n2025-04-07\nMaRT_Custom\n(2).xlsx\nIf\nthe upload shows \"Failed\" status, select \"Error Report\" to view the specific issues. Make the necessary corrections to your\nQuote file following the provided instructions. If status was completed, please click on Save & Next.\nDocuments - The Documents section if completely optional. If you have any supporting documents to upload, here is where\nyou will do it. Click on the Add Documents button to add additional documents.\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\nO You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nx\ni\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep\nGeneral Information\nDocuments-optional\nStep 2\nQuotes\nOriginal Documents by Buyer (1)\nList of documents to supplement the Bid.\nStep optional\nDocuments\na\nStep\nType\nAttachment Name\nCreated Time(UTC)\nReview and Create\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48.\nDocuments Uploaded by You (0)\nRemove Document(s)\nAdd Document(s)\nList of documents in response to request.\n<\nType\nAttachment Name\nCreated Time(UTC)\nNo documents\nNo documents found.\nExit\nPrevious\nSave Next\nUpload your additional documents and click on submit(if there is any).\nQuotes\nUploaded\nby\nYou\n(2)\nAdd\nQuote\nList\nof\nquote\nversions\nin\nresponse\nto\nrequest.\n<\n1\n>\nYOU\nVersion\nQuotes\nStatus\nUpload\nDate\nReport\nError\nMessage\n*\nDownload\nthe\nDCSP_Global_Bid_\nerror\nreport\nto\nadd\nquote_template_S\n2\n*\nFAILED\n2025-03-13\nError\nReport\nress\nthe\nvalidation\nMaRT_Custom\nerrors\nand\ntry\nagai\n(5).xlsx\nn.\nQuotes\nUploaded\nby\nYou\n(1)\nAdd\nQuote\nList\nof\nquote\nversions\nin\nresponse\nto\nrequest.\n<\n1\n>\n&\nVersion\nQuotes\nStatus\nUpload\nDate\nReport\nError\nMessage\nDCSP_Global_Bid_\nquote_template_S\n1\nCOMPLETED\n2025-04-07\nMaRT_Custom\n(2).xlsx\nIf\nthe\nupload\nshows\n\"Failed\"\nstatus,\nselect\n\"Error\nReport\"\nto\nview\nthe\nspecific\nissues.\nMake\nthe\nnecessary\ncorrections\nto\nyour\nQuote\nfile\nfollowing\nthe\nprovided\ninstructions.\nIf\nstatus\nwas\ncompleted,\nplease\nclick\non\nSave\n&\nNext.\nDocuments\n-\nThe\nDocuments\nsection\nif\ncompletely\noptional.\nIf\nyou\nhave\nany\nsupporting\ndocuments\nto\nupload,\nhere\nis\nwhere\nyou\nwill\ndo\nit.\nClick\non\nthe\nAdd\nDocuments\nbutton\nto\nadd\nadditional\ndocuments.\nAWS\nInfra\nHello\nnyekanm+6@amazon.com\nIII\nO\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nx\ni\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\n>\nEdit\nBid\nStep\nGeneral\nInformation\nDocuments-optional\nStep\n2\nQuotes\nOriginal\nDocuments\nby\nBuyer\n(1)\nList\nof\ndocuments\nto\nsupplement\nthe\nBid.\nStep\noptional\nDocuments\na\nStep\nType\nAttachment\nName\nCreated\nTime(UTC)\nReview\nand\nCreate\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48.\nDocuments\nUploaded\nby\nYou\n(0)\nRemove\nDocument(s)\nAdd\nDocument(s)\nList\nof\ndocuments\nin\nresponse\nto\nrequest.\n<\nType\nAttachment\nName\nCreated\nTime(UTC)\nNo\ndocuments\nNo\ndocuments\nfound.\nExit\nPrevious\nSave\nNext\nUpload\nyour\nadditional\ndocuments\nand\nclick\non\nsubmit(if\nthere\nis\nany).\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=18"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 19,
+        "file_type": ".pdf",
+        "text_content": "Add Document(s)\nX\nFile(s) to upload\n1 file(s) uploaded\nChoose files\nMaximum upload file size: 5 GB.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nDocument Type\nType for this document.\nMiscellaneous/Others\nCancel\nSubmit\nAfter submitting the document(s), you can either remove them or click on Save & Next.\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\n1 You are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\n1\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep 1\nGeneral Information\nDocuments optional\nStep\nQuotes\nOriginal Documents by Buyer (1)\nList of documents to supplement the Bid.\nStep 3- optional\nO\nDocuments\na\n<\nStep 4\nType\nAttachment Name\nCreated Time(UTC)\nReview and Create\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48\nDocuments Uploaded by You (1)\nRemove Document(s)\nAdd Document(s)\nList of documents in response to request.\n<\nType\nA\nAttachment Name\nCreated Time(UTC)\nMiscellan.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nExit\nPrevious\nSave Next\nReview and Create - This is the last page in the bidding process. Review your quote carefully. To make changes, click \"Edit\" on\nthe relevant section. Once you have verified all information is correct, click \"Confirm\" and Save as draft.\nAdd\nDocument(s)\nX\nFile(s)\nto\nupload\n1\nfile(s)\nuploaded\nChoose\nfiles\nMaximum\nupload\nfile\nsize:\n5\nGB.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nDocument\nType\nType\nfor\nthis\ndocument.\nMiscellaneous/Others\nCancel\nSubmit\nAfter\nsubmitting\nthe\ndocument(s),\nyou\ncan\neither\nremove\nthem\nor\nclick\non\nSave\n&\nNext.\nAWS\nInfra\nHello\nnyekanm+6@amazon.com\nIII\n1\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\n1\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\n>\nEdit\nBid\nStep\n1\nGeneral\nInformation\nDocuments\noptional\nStep\nQuotes\nOriginal\nDocuments\nby\nBuyer\n(1)\nList\nof\ndocuments\nto\nsupplement\nthe\nBid.\nStep\n3-\noptional\nO\nDocuments\na\n<\nStep\n4\nType\nAttachment\nName\nCreated\nTime(UTC)\nReview\nand\nCreate\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.cSV\n2025-04-04T17:59:48\nDocuments\nUploaded\nby\nYou\n(1)\nRemove\nDocument(s)\nAdd\nDocument(s)\nList\nof\ndocuments\nin\nresponse\nto\nrequest.\n<\nType\nA\nAttachment\nName\nCreated\nTime(UTC)\nMiscellan.\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csv\nExit\nPrevious\nSave\nNext\nReview\nand\nCreate\n-\nThis\nis\nthe\nlast\npage\nin\nthe\nbidding\nprocess.\nReview\nyour\nquote\ncarefully.\nTo\nmake\nchanges,\nclick\n\"Edit\"\non\nthe\nrelevant\nsection.\nOnce\nyou\nhave\nverified\nall\ninformation\nis\ncorrect,\nclick\n\"Confirm\"\nand\nSave\nas\ndraft.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=19"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 20,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nHello nyekanm+6@amazon.com\nYou are accessing the non-production environment of this tool, which is intended for testing and demo purposes.\nX\nIII\ni\nHome >\nSMART > Dashboard > RFXREQ-RFQ-efb7ab45 > Edit Bid\nStep\nGeneral Information\nReview and Create\nStep 2\nQuotes\nEdit\nQuotes\nStep optional\nDocuments\nLatest Quote\nVersion\nQuotes\nStatus\nUpload Date\nStep\n1\nDCSP_Global_Bid_quote_templa\nV\nCOMPLETED\n2025-04-07\no\nReview and Create\nte_SMaRT_Custom(2).xlsx\nReport\nError Message\nDescription\nDocuments\nEdit\nDocument Entries (1)\nList of documents in response to request.\na\n<\nType\nA\nAttachment Name\nCreated Time(UTC)\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csV\n2025-04-07T17:12:58\nExit\nPrevious\nConfirm\nConfirm\nX\nUser\nnyekanm+6@amazon.com\nCancel\nSave as draft\nWHAT HAPPENS AFTER I SAVE MY BID?\nA. After you have successfully Save your bid as a draft you will be brought back to the main RFQ dashboard. Here you can\neither edit your bid or publish it.\nAWS\nInfra\nHello\nnyekanm+6@amazon.com\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nis\nintended\nfor\ntesting\nand\ndemo\npurposes.\nX\nIII\ni\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\n>\nEdit Bid\nStep\nGeneral\nInformation\nReview\nand\nCreate\nStep\n2\nQuotes\nEdit\nQuotes\nStep\noptional\nDocuments\nLatest\nQuote\nVersion\nQuotes\nStatus\nUpload\nDate\nStep\n1\nDCSP_Global_Bid_quote_templa\nV\nCOMPLETED\n2025-04-07\no\nReview\nand\nCreate\nte_SMaRT_Custom(2).xlsx\nReport\nError\nMessage\nDescription\nDocuments\nEdit\nDocument\nEntries\n(1)\nList\nof\ndocuments\nin\nresponse\nto\nrequest.\na\n<\nType\nA\nAttachment\nName\nCreated\nTime(UTC)\nMISC\n74c907b7-2d21-463f-a0a7-e7de38f4db75_8_FAILED.csV\n2025-04-07T17:12:58\nExit\nPrevious\nConfirm\nConfirm\nX\nUser\nnyekanm+6@amazon.com\nCancel\nSave\nas\ndraft\nWHAT\nHAPPENS\nAFTER\nI\nSAVE\nMY\nBID?\nA.\nAfter\nyou\nhave\nsuccessfully\nSave\nyour\nbid\nas\na\ndraft\nyou\nwill\nbe\nbrought\nback\nto\nthe\nmain\nRFQ\ndashboard.\nHere\nyou\ncan\neither\nedit\nyour\nbid\nor\npublish\nit.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=20"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 21,
+        "file_type": ".pdf",
+        "text_content": "AWS Infra\nnyekanm+6@amazon.com\nHome > SMART > Dashboard > RFXREQ-RFQ-efb7ab45\nE\nAWS (Newtest_Mac_RFQ)\ni\nRFXREQ-RFQ-efb7ab45\nO\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under \"Manage bid' to submit\n<\nConversation\nAnnouncements\n>\nthe bid.\nType your message\nRequest detail\nRound\nManage bid\nRequest ID\nName\nType\nInitiate Bid\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit Bid\nChoose file\nSend\nefb7ab45\nPublish Bid\nWatermark attachhment PDF will be watermarked\nBegin date\nSupplier deadline\nRegion/Cluster\nWithdraw Bid\nII\nwith \"Amazon Confidential\" and supplier.\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\nPDT\nPDT (5 days, 13 hours,\nDecline Bid\n0/ 1,500\n41 minutes\nremaining)\nNo messages\nYou don't have any messages from AWS.\nQuote template\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.cSv\nustom.xlsx\nOverview\nBid details\nBid documents\nIf all the information about your bid is correct, you can select the Publish Bid option.\nPublish Bid\nX\nChecking if quote file is in good state to publish. If so, click on 'Publish' to submit this\nbid for review. If the 'Publish' is disabled, check the following steps:\nQuote\nSuccess\nCancel\nPublish\nHere the system will checking if the quote file is good. If the system deems everything to be ok you can now publish your bid.\nPublish Bid\nX\nChecking if quote file is in good state to publish. If so, click on 'Publish' to submit this\nbid for review. If the 'Publish' is disabled, check the following steps:\nQuote\nSuccess\nCancel\nPublish\nYou bid has now been publish for the current round.\nAWS\nInfra\nnyekanm+6@amazon.com\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-efb7ab45\nE\nAWS\n(Newtest_Mac_RFQ)\ni\nRFXREQ-RFQ-efb7ab45\nO\nThis\nbid\nis\nstill\nin\ndraft\nstage\nand\nis\nnot\nsubmitted.\nClick\n'Publish\nbid'\nunder\n\"Manage\nbid'\nto\nsubmit\n<\nConversation\nAnnouncements\n>\nthe\nbid.\nType\nyour\nmessage\nRequest\ndetail\nRound\nManage\nbid\nRequest\nID\nName\nType\nInitiate\nBid\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit\nBid\nChoose\nfile\nSend\nefb7ab45\nPublish\nBid\nWatermark\nattachhment\nPDF\nwill\nbe\nwatermarked\nBegin\ndate\nSupplier\ndeadline\nRegion/Cluster\nWithdraw\nBid\nII\nwith\n\"Amazon\nConfidential\"\nand\nsupplier.\n4/7/2025\n12:00\nAM\n4/12/2025\n11:59\nPM\nAB\nPDT\nPDT\n(5\ndays,\n13\nhours,\nDecline\nBid\n0/\n1,500\n41\nminutes\nremaining)\nNo\nmessages\nYou\ndon't\nhave\nany\nmessages\nfrom\nAWS.\nQuote\ntemplate\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.cSv\nustom.xlsx\nOverview\nBid\ndetails\nBid\ndocuments\nIf\nall\nthe\ninformation\nabout\nyour\nbid\nis\ncorrect,\nyou\ncan\nselect\nthe\nPublish\nBid\noption.\nPublish\nBid\nX\nChecking\nif\nquote\nfile\nis\nin\ngood\nstate\nto\npublish.\nIf\nso,\nclick\non\n'Publish'\nto\nsubmit\nthis\nbid\nfor\nreview.\nIf\nthe\n'Publish'\nis\ndisabled,\ncheck\nthe\nfollowing\nsteps:\nQuote\nSuccess\nCancel\nPublish\nHere\nthe\nsystem\nwill\nchecking\nif\nthe\nquote\nfile\nis\ngood.\nIf\nthe\nsystem\ndeems\neverything\nto\nbe\nok\nyou\ncan\nnow\npublish\nyour\nbid.\nPublish\nBid\nX\nChecking\nif\nquote\nfile\nis\nin\ngood\nstate\nto\npublish.\nIf\nso,\nclick\non\n'Publish'\nto\nsubmit\nthis\nbid\nfor\nreview.\nIf\nthe\n'Publish'\nis\ndisabled,\ncheck\nthe\nfollowing\nsteps:\nQuote\nSuccess\nCancel\nPublish\nYou\nbid\nhas\nnow\nbeen\npublish\nfor\nthe\ncurrent\nround.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=21"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 22,
+        "file_type": ".pdf",
+        "text_content": "Home SMART > Dashboard RFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nSuccessfully published bid for current round\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under 'Manage bid' to submit\nthe bid.\nRequest detail\nRound\nManage bid\nRequest ID\nName\nType\nBuyer\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nefb7ab45\nBegin date\nSupplier deadline\nRegion/Cluster\nDays remaining\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\n5\nPDT\nPDT (5 days, 13 hours,\n35 minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nte_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter your bid is Published, you and the Buyer will receive an email notification.\nAmazon - ABBKRA has responded to bid for Newtest_Mac_RFQ\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday at 10:24 AM\nN\nTo: nyekanm+5@amazon.com\nHello,\nThis email is to inform you regarding the change in sourcing event Newtest Mac RFQ from supplier\nABBKRA\nThank you for submitting your bid. To review your bid, click the link provided above. Otherwise, we will\ncontact you if we have further questions.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nCAN I WITHDRAW MY BID AFTER IT HAS BEEN PUBLISHED?\nA. Yes you can withdraw your bid after it has been published. Head to the main RFQ dashboard and select Withdraw Bid from\nthe Manage Bid dropdown\nHome\nSMART\n>\nDashboard\nRFXREQ-RFQ-efb7ab45\nRFXREQ-RFQ-efb7ab45\nSuccessfully\npublished\nbid\nfor\ncurrent\nround\nThis\nbid\nis\nstill\nin\ndraft\nstage\nand\nis\nnot\nsubmitted.\nClick\n'Publish\nbid'\nunder\n'Manage\nbid'\nto\nsubmit\nthe\nbid.\nRequest\ndetail\nRound\nManage\nbid\nRequest\nID\nName\nType\nBuyer\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nnyekanm\nefb7ab45\nBegin\ndate\nSupplier\ndeadline\nRegion/Cluster\nDays\nremaining\n4/7/2025\n12:00\nAM\n4/12/2025\n11:59\nPM\nAB\n5\nPDT\nPDT\n(5\ndays,\n13\nhours,\n35\nminutes\nremaining)\nQuote\ntemplate\nDocument\nDCSP_Global_Bid_quo\n74c907b7-2d21-463f-a0a7-\nte_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter\nyour\nbid\nis\nPublished,\nyou\nand\nthe\nBuyer\nwill\nreceive\nan\nemail\nnotification.\nAmazon\n-\nABBKRA\nhas\nresponded\nto\nbid\nfor\nNewtest_Mac_RFQ\nno_reply@infra.amazon.com<no_reply@infra.amazon.com>\nToday\nat\n10:24\nAM\nN\nTo:\nnyekanm+5@amazon.com\nHello,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\nchange\nin\nsourcing\nevent\nNewtest\nMac\nRFQ\nfrom\nsupplier\nABBKRA\nThank\nyou\nfor\nsubmitting\nyour\nbid.\nTo\nreview\nyour\nbid,\nclick\nthe\nlink\nprovided\nabove.\nOtherwise,\nwe\nwill\ncontact\nyou\nif\nwe\nhave\nfurther\nquestions.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nCAN\nI\nWITHDRAW\nMY\nBID\nAFTER\nIT\nHAS\nBEEN\nPUBLISHED?\nA.\nYes\nyou\ncan\nwithdraw\nyour\nbid\nafter\nit\nhas\nbeen\npublished.\nHead\nto\nthe\nmain\nRFQ\ndashboard\nand\nselect\nWithdraw\nBid\nfrom\nthe\nManage\nBid\ndropdown\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=22"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 23,
+        "file_type": ".pdf",
+        "text_content": "Home\nSMART\n>\nDashboard\nRFXREQ-RFQ-efb7ab45\nAWS (Newtest_Mac_RFQ)\nRFXREQ-RFQ-efb7ab45\nO\nSuccessfully published bid for current round\n<\nConversation\nAnnouncements\nThis bid is still in draft stage and is not submitted. Click 'Publish bid' under \"Manage bid' to submit\nX\nthe bid.\nType your message\nRequest detail\nRound\nManage bid\nChoose file\nSend\nRequest ID\nName\nType\nInitiate Bid\nWatermark attachhment PDF will be watermarked\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit Bid\nII\nwith \"Amazon Confidential\" and supplier.\nefb7ab45\nPublish Bid\n/1,500\nBegin date\nSupplier deadline\nRegion/Cluster\nWithdraw Bid\n4/7/2025 12:00 AM\n4/12/2025 11:59 PM\nAB\nNo messages\nPDT\nPDT (5 days, 13 hours,\nDecline Bid\nYou don't have any messages from AWS.\n35 minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bld_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter withdrawing your bid, you and the Buyer will receive an email of your withdrawal.\nWHAT HAPPENS IF MY BID IS SELECTED?\nA. If your bid is selected, the status can be changed to \"Soft-Awarded\" / \"Awarded\" and you'll receive an email notification.\n\"Soft-Awarded\" status indicates that some qualifications are still pending completion. When you are fully compliant at the time\nof selection, your bid status will be updated to \"Awarded\".\n[EXTERNAL] AMAZON CONFIDENTIAL - Successful Bidder Shortlist\nNotice\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 10:34 AM\nN\nTo: nyekanm+5@amazon.com\nHello,\nThis email is to inform you regarding the decision made in sourcing event Newtest Mac RFQ.\nThank you for your time and effort in submitting your response to Newtest_Mac_RFQ. I am pleased\nto\ninform that your bid is shortlisted by Amazon Web Services (AWS). Amazon's formal acceptance of your\nquote will not be in effect until your work order is executed by both parties.\nWe look forward to working with you on this project.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nHome\nSMART\n>\nDashboard\nRFXREQ-RFQ-efb7ab45\nAWS\n(Newtest_Mac_RFQ)\nRFXREQ-RFQ-efb7ab45\nO\nSuccessfully\npublished\nbid\nfor\ncurrent\nround\n<\nConversation\nAnnouncements\nThis\nbid\nis\nstill\nin\ndraft\nstage\nand\nis\nnot\nsubmitted.\nClick\n'Publish\nbid'\nunder\n\"Manage\nbid'\nto\nsubmit\nX\nthe\nbid.\nType\nyour\nmessage\nRequest\ndetail\nRound\nManage\nbid\nChoose\nfile\nSend\nRequest\nID\nName\nType\nInitiate\nBid\nWatermark\nattachhment\nPDF\nwill\nbe\nwatermarked\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nRFQ\nEdit\nBid\nII\nwith\n\"Amazon\nConfidential\"\nand\nsupplier.\nefb7ab45\nPublish\nBid\n/1,500\nBegin\ndate\nSupplier\ndeadline\nRegion/Cluster\nWithdraw\nBid\n4/7/2025\n12:00\nAM\n4/12/2025\n11:59\nPM\nAB\nNo\nmessages\nPDT\nPDT\n(5\ndays,\n13\nhours,\nDecline\nBid\nYou\ndon't\nhave\nany\nmessages\nfrom\nAWS.\n35\nminutes\nremaining)\nQuote\ntemplate\nDocument\nDCSP_Global_Bld_quo\n74c907b7-2d21-463f-a0a7-\nite_template_SMaRT_C\ne7de38f4db75_8_FAILED.csv\nustom.xlsx\nOverview\nAfter\nwithdrawing\nyour\nbid,\nyou\nand\nthe\nBuyer\nwill\nreceive\nan\nemail\nof\nyour\nwithdrawal.\nWHAT\nHAPPENS\nIF\nMY\nBID\nIS\nSELECTED?\nA.\nIf\nyour\nbid\nis\nselected,\nthe\nstatus\ncan\nbe\nchanged\nto\n\"Soft-Awarded\"\n/\n\"Awarded\"\nand\nyou'll\nreceive\nan\nemail\nnotification.\n\"Soft-Awarded\"\nstatus\nindicates\nthat\nsome\nqualifications\nare\nstill\npending\ncompletion.\nWhen\nyou\nare\nfully\ncompliant\nat\nthe\ntime\nof\nselection,\nyour\nbid\nstatus\nwill\nbe\nupdated\nto\n\"Awarded\".\n[EXTERNAL]\nAMAZON\nCONFIDENTIAL\n-\nSuccessful\nBidder\nShortlist\nNotice\nno_reply@infra.amazon.com\n<no_reply@infra.amazon.com>\nToday\nat\n10:34\nAM\nN\nTo:\nnyekanm+5@amazon.com\nHello,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\ndecision\nmade\nin\nsourcing\nevent\nNewtest\nMac\nRFQ.\nThank\nyou\nfor\nyour\ntime\nand\neffort\nin\nsubmitting\nyour\nresponse\nto\nNewtest_Mac_RFQ.\nI\nam\npleased\nto\ninform\nthat\nyour\nbid\nis\nshortlisted\nby\nAmazon\nWeb\nServices\n(AWS).\nAmazon's\nformal\nacceptance\nof\nyour\nquote\nwill\nnot\nbe\nin\neffect\nuntil\nyour\nwork\norder\nis\nexecuted\nby\nboth\nparties.\nWe\nlook\nforward\nto\nworking\nwith\nyou\non\nthis\nproject.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=23"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 24,
+        "file_type": ".pdf",
+        "text_content": "SMART\nEvents (1)\nQ Filter events by text, property or value\nnyekanm\nand\nRFQ\nX\nClear filters\n<\n1\n8\nDeadline For\nRequest ID\nName\nBuyer\nD\nRequest Status\nA\nCreated At\nAwarded At\nSupplier\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nnyekanm\nSoft_Awarded\n2025-04-07\n2025-04-12\nefb7ab45\nWHAT HAPPENS IF MY BID IS NOT SELECTED?\nA. If the bid is awarded to another supplier you'll receive a \"Supplier Bid Rejected Notice\" via email, informing you of your bid\nstatus. Both the buyer and co-manager will receive email confirmation when non-selected suppliers are notified of their\nrejection.\n[EXTERNAL] AMAZON CONFIDENTIAL - Supplier Bid Rejected Notice\nReply\nReply All\nForward\nno_reply@infra.amazon.com\nN\nTo olgashi+testfsh@amazon.com\nMon 3/10/2025 8:11\nClick here to download pictures. To help protect your privacy, Outlook prevented automatic download of some pictures in this message.\nHello,\nThis email is to inform you regarding the decision made in sourcing event RFQ 1 os.\nThank you for your time and effort in submitting your response to RFQ_1_os. After careful review of all submissions, Amazon has selected another firm as\nthe successful bidder for this project. Pursuant to the Nondisclosure Agreement between your company and Amazon, you are required to return or\ndestroy all tangible materials embodying Confidential Information (in any form and including, without limitation, all summaries, copies and excerpts of\nConfidential Information) related to this RFx.\nWe encourage your participation in future solicitations and appreciate your interest in this project.NOTE: Amazon reserves the right to invite your\ncompany back into this project in the future, if needed.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf you encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain information that may be confidential and/or proprietary\nmaterial for the use of the intended addressee(s) only. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by reply email and delete the message and its\nattachments from all computers. Thank you for your cooperation.\nWHAT HAPPENS IF BUYER INITIATE NEW ROUND?\nA. If a Buyer initiates a new round you will be notified via email.\nSMART\nEvents\n(1)\nQ\nFilter\nevents\nby\ntext,\nproperty\nor\nvalue\nnyekanm\nand\nRFQ\nX\nClear\nfilters\n<\n1\n8\nDeadline\nFor\nRequest\nID\nName\nBuyer\nD\nRequest\nStatus\nA\nCreated\nAt\nAwarded\nAt\nSupplier\nRFXREQ-RFQ-\nNewtest_Mac_RFQ\nnyekanm\nSoft_Awarded\n2025-04-07\n2025-04-12\nefb7ab45\nWHAT\nHAPPENS\nIF\nMY\nBID\nIS\nNOT\nSELECTED?\nA.\nIf\nthe\nbid\nis\nawarded\nto\nanother\nsupplier\nyou'll\nreceive\na\n\"Supplier\nBid\nRejected\nNotice\"\nvia\nemail,\ninforming\nyou\nof\nyour\nbid\nstatus.\nBoth\nthe\nbuyer\nand\nco-manager\nwill\nreceive\nemail\nconfirmation\nwhen\nnon-selected\nsuppliers\nare\nnotified\nof\ntheir\nrejection.\n[EXTERNAL]\nAMAZON\nCONFIDENTIAL\n-\nSupplier\nBid\nRejected\nNotice\nReply\nReply\nAll\nForward\nno_reply@infra.amazon.com\nN\nTo\nolgashi+testfsh@amazon.com\nMon\n3/10/2025\n8:11\nClick\nhere\nto\ndownload\npictures.\nTo\nhelp\nprotect\nyour\nprivacy,\nOutlook\nprevented\nautomatic\ndownload\nof\nsome\npictures\nin\nthis\nmessage.\nHello,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\ndecision\nmade\nin\nsourcing\nevent\nRFQ\n1\nos.\nThank\nyou\nfor\nyour\ntime\nand\neffort\nin\nsubmitting\nyour\nresponse\nto\nRFQ_1_os.\nAfter\ncareful\nreview\nof\nall\nsubmissions,\nAmazon\nhas\nselected\nanother\nfirm\nas\nthe\nsuccessful\nbidder\nfor\nthis\nproject.\nPursuant\nto\nthe\nNondisclosure\nAgreement\nbetween\nyour\ncompany\nand\nAmazon,\nyou\nare\nrequired\nto\nreturn\nor\ndestroy\nall\ntangible\nmaterials\nembodying\nConfidential\nInformation\n(in\nany\nform\nand\nincluding,\nwithout\nlimitation,\nall\nsummaries,\ncopies\nand\nexcerpts\nof\nConfidential\nInformation)\nrelated\nto\nthis\nRFx.\nWe\nencourage\nyour\nparticipation\nin\nfuture\nsolicitations\nand\nappreciate\nyour\ninterest\nin\nthis\nproject.NOTE:\nAmazon\nreserves\nthe\nright\nto\ninvite\nyour\ncompany\nback\ninto\nthis\nproject\nin\nthe\nfuture,\nif\nneeded.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nWHAT\nHAPPENS\nIF\nBUYER\nINITIATE\nNEW\nROUND?\nA.\nIf\na\nBuyer\ninitiates\na\nnew\nround\nyou\nwill\nbe\nnotified\nvia\nemail.\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=24"
+      },
+      {
+        "source_bucket": "documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi",
+        "source_key": "Smart FAQs.pdf",
+        "page_number": 25,
+        "file_type": ".pdf",
+        "text_content": "[EXTERNAL] Amazon - Newtest_Mac_RFQ_CLONE new round\npublished\nno_reply@infra.amazon.com <no_reply@infra.amazon.com>\nToday at 10:47 AM\nN\nTo: nyekanm+5@amazon.com\nDear Vendors,\nThis email is to inform you regarding the ongoing sourcing event Newtest Mac RFQ CLONE.\nA new round of the RFx Newtest_Mac_RFQ_CLONE has been published.\nThe due date for the RFx is: 2025-04-25 06:59:00 AM GMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional questions?\nIf\nyou encounter any issues or have questions, please send an email to help-ninja@amazon.com\nBest regards,\nData Center Services Procurement\nAmazon Web Services Confidential. Do Not Distribute. This email and any attachments contain\ninformation that may be confidential and/or proprietary material for the use of the intended addressee(s)\nonly. If you are not an intended addressee, note that any disclosure, copying, distribution, or use of the\ncontents of this message is prohibited. If you have received this email in error, please notify the sender by\nreply email and delete the message and its attachments from all computers. Thank you for your\ncooperation.\nYou then decide to initiate a bid or decline the bid.\n17 laws-beta.argo.ocean-wave.aws.a2z.com/smart/supplier/view/RFXREQ-RFQ-382d2e69\nFinish update\n:\nAll Bookmarks\nAWS Infra\nHello nyekanm+6@amazon.com\nIII\n1\nYou are accessing the non-production environment of this tool, which Is Intended for testing and\nX\nAWS (Newtest_Mac_RFQ_CLONE)\ndemo purposes.\nO\nHome > SMART > Dashboard > RFXREQ-RFQ-382d2e69\n<\nConversation\nAnnouncements\nRFXREQ-RFQ-382d2e69\nType your message\n1\nPlease begin the process by navigating to 'Manage Bid to 'Initiate Bid or Decline Bid' If bid is\ninitiated, please read the terms & conditions and proceed to Step for an overview of the Bid\nrequest.\nT\nChoose file\nSend\nRequest detail\nRound\nManage bid\nWatermark attachhment PDF will be watermarked\nII\nwith \"Amazon Confidential\" and supplier.\nRequest ID\nName\nType\nInitiate Bid\n1,500\nRFXREQ-RFQ-\nNewtest_Mac_RFQ_CL\nRFQ\nEdit Bid\n382d2e69\nONE\nPublish Bid\nNo messages\nBegin date\nSupplier deadline\nRegion/Cluster\nYou don't have any messages from AWS.\nWithdraw Bid\n4/18/2025 12:00 AM\n4/24/2025 11:59 PM\nAB\nPDT\nPDT (17 days, 13\nDecline Bid\nhours, minutes\nremaining)\nQuote template\nDocument\nDCSP_Global_Bld_quo\nt_template_SMaRT_C\nustom (1).xlsx\nOverview\n\u00a9 2008 2025, Amazon Web Services, Privacy Notice\nREF: https://amazon.awsapps.com/workdocs-\nnazon/index.html#/document/a2a7111809bebbac8daa53a5d703b23e8ee304fc5b4794f4fe4e13ad4482032\n[EXTERNAL]\nAmazon\n-\nNewtest_Mac_RFQ_CLONE\nnew\nround\npublished\nno_reply@infra.amazon.com\n<no_reply@infra.amazon.com>\nToday\nat\n10:47\nAM\nN\nTo:\nnyekanm+5@amazon.com\nDear\nVendors,\nThis\nemail\nis\nto\ninform\nyou\nregarding\nthe\nongoing\nsourcing\nevent\nNewtest\nMac\nRFQ\nCLONE.\nA\nnew\nround\nof\nthe\nRFx\nNewtest_Mac_RFQ_CLONE\nhas\nbeen\npublished.\nThe\ndue\ndate\nfor\nthe\nRFx\nis:\n2025-04-25\n06:59:00\nAM\nGMT.\nhttps://aws-beta.argo.ocean-wave.aws.a2z.com/smart/\nAdditional\nquestions?\nIf\nyou\nencounter\nany\nissues\nor\nhave\nquestions,\nplease\nsend\nan\nemail\nto\nhelp-ninja@amazon.com\nBest\nregards,\nData\nCenter\nServices\nProcurement\nAmazon\nWeb\nServices\nConfidential.\nDo\nNot\nDistribute.\nThis\nemail\nand\nany\nattachments\ncontain\ninformation\nthat\nmay\nbe\nconfidential\nand/or\nproprietary\nmaterial\nfor\nthe\nuse\nof\nthe\nintended\naddressee(s)\nonly.\nIf\nyou\nare\nnot\nan\nintended\naddressee,\nnote\nthat\nany\ndisclosure,\ncopying,\ndistribution,\nor\nuse\nof\nthe\ncontents\nof\nthis\nmessage\nis\nprohibited.\nIf\nyou\nhave\nreceived\nthis\nemail\nin\nerror,\nplease\nnotify\nthe\nsender\nby\nreply\nemail\nand\ndelete\nthe\nmessage\nand\nits\nattachments\nfrom\nall\ncomputers.\nThank\nyou\nfor\nyour\ncooperation.\nYou\nthen\ndecide\nto\ninitiate\na\nbid\nor\ndecline\nthe\nbid.\n17\nlaws-beta.argo.ocean-wave.aws.a2z.com/smart/supplier/view/RFXREQ-RFQ-382d2e69\nFinish\nupdate\n:\nAll\nBookmarks\nAWS Infra\nHello\nnyekanm+6@amazon.com\nIII\n1\nYou\nare\naccessing\nthe\nnon-production\nenvironment\nof\nthis\ntool,\nwhich\nIs\nIntended\nfor\ntesting\nand\nX\nAWS\n(Newtest_Mac_RFQ_CLONE)\ndemo\npurposes.\nO\nHome\n>\nSMART\n>\nDashboard\n>\nRFXREQ-RFQ-382d2e69\n<\nConversation\nAnnouncements\nRFXREQ-RFQ-382d2e69\nType\nyour\nmessage\n1\nPlease\nbegin\nthe\nprocess\nby\nnavigating\nto\n'Manage\nBid\nto\n'Initiate\nBid\nor\nDecline\nBid'\nIf\nbid\nis\ninitiated,\nplease\nread\nthe\nterms\n&\nconditions\nand\nproceed\nto\nStep\nfor\nan\noverview\nof\nthe\nBid\nrequest.\nT\nChoose\nfile\nSend\nRequest\ndetail\nRound\nManage\nbid\nWatermark\nattachhment\nPDF\nwill\nbe\nwatermarked\nII\nwith\n\"Amazon\nConfidential\"\nand\nsupplier.\nRequest\nID\nName\nType\nInitiate\nBid\n1,500\nRFXREQ-RFQ-\nNewtest_Mac_RFQ_CL\nRFQ\nEdit\nBid\n382d2e69\nONE\nPublish\nBid\nNo\nmessages\nBegin date\nSupplier\ndeadline\nRegion/Cluster\nYou\ndon't\nhave\nany\nmessages\nfrom\nAWS.\nWithdraw\nBid\n4/18/2025 12:00\nAM\n4/24/2025\n11:59\nPM\nAB\nPDT\nPDT\n(17\ndays,\n13\nDecline\nBid\nhours,\nminutes\nremaining)\nQuote\ntemplate\nDocument\nDCSP_Global_Bld_quo\nt_template_SMaRT_C\nustom\n(1).xlsx\nOverview\n\u00a9\n2008\n2025,\nAmazon\nWeb\nServices,\nPrivacy\nNotice\nREF:\nhttps://amazon.awsapps.com/workdocs-\nnazon/index.html#/document/a2a7111809bebbac8daa53a5d703b23e8ee304fc5b4794f4fe4e13ad4482032\n",
+        "s3_uri": "s3://documentprocessingcdkstack-documentbucketae41e5a9-shcxifixmubi/Smart FAQs.pdf#page=25"
+      }
+    ],
+    "is_image": false
+  },
+  "metadata": {
+    "title": "Smart FAQs",
+    "summary": "The document contains frequently asked questions and answers about using the Smart procurement platform. It explains what RFQ and RFI mean, how to access the Smart portal, and provides a sample login flow.",
+    "topics": [
+      "Procurement",
+      "FAQ",
+      "Vendor portal"
+    ],
+    "category": "Technical",
+    "entities": {
+      "people": [],
+      "organizations": [
+        "Amazon"
+      ],
+      "locations": []
+    },
+    "image_description": null
+  }
+}

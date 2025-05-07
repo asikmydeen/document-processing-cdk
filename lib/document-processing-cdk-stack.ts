@@ -8,6 +8,7 @@ import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import { createPdfImageLayer } from './create-pdf-image-layer';
 
 export class DocumentProcessingCdkStack extends cdk.Stack {
   // Public properties to expose resources to other stacks if needed
@@ -152,6 +153,9 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       })
     );
 
+    // Create the PDF/Image processing Lambda Layer
+    const pdfImageProcessingLayer = createPdfImageLayer(this, 'PdfImageProcessingLayer');
+
     // Lambda function for Textract processing
     const textractProcessorLambda = new lambda.Function(this, 'TextractProcessorFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
@@ -160,8 +164,11 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(15),
       memorySize: 1024,
       role: textractProcessorRole,
+      layers: [pdfImageProcessingLayer],
       environment: {
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
+        // Add any other necessary environment variables for the layer if needed
+        // e.g., if poppler path needs to be explicitly set for some reason
       },
     });
 
@@ -178,6 +185,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ['s3:GetObject', 's3:ListBucket', 's3:PutObject'],
         resources: [
+          this.documentBucket.bucketArn, // Add permission for DocumentBucket
+          `${this.documentBucket.bucketArn}/*`,
           this.processedBucket.bucketArn,
           `${this.processedBucket.bucketArn}/*`,
           this.payloadBucket.bucketArn,
@@ -203,15 +212,24 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         ],
       })
     );
+    metadataExtractorRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: ['bedrock:InvokeModel'],
+        // Consider scoping this down to the specific model ARN if known and fixed
+        // e.g., "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0"
+        resources: ['*'],
+      })
+    );
 
     // Lambda function for metadata extraction
     const metadataExtractorLambda = new lambda.Function(this, 'MetadataExtractorFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
       handler: 'metadata-extractor.lambda_handler',
       code: lambda.Code.fromAsset('lambda'),
-      timeout: cdk.Duration.minutes(5),
+      timeout: cdk.Duration.minutes(10),
       memorySize: 512,
       role: metadataExtractorRole,
+      layers: [pdfImageProcessingLayer], // Also adding to metadata extractor
       environment: {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName,
@@ -398,15 +416,17 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(10),
       memorySize: 512,
       role: bedrockLambdaRole,
+      layers: [pdfImageProcessingLayer], // Also adding to Bedrock KB Lambda
       environment: {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
+        SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName, // Add this
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         KNOWLEDGE_BASE_ROLE_ARN: bedrockKnowledgeBaseRole.roleArn,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
         AUTO_CREATE_KNOWLEDGE_BASE: 'true',
         KENDRA_INDEX_ID: '4c9190f6-671c-4508-a524-a180433c2774', // Your Kendra index ID
         KENDRA_S3_BUCKET: 'aseekbot-poc-kb', // Kendra S3 data source bucket
-        // Note: CLAUDE_INFERENCE_PROFILE_ARN should be set manually after deployment
+        // CLAUDE_INFERENCE_PROFILE_ARN: '', // Explicitly unset or remove if not using a specific profile for this function
       },
     });
 
@@ -613,34 +633,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
 
     const stateMachineTriggerLambda = new lambda.Function(this, 'StateMachineTriggerFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
-      handler: 'index.lambda_handler',
-      code: lambda.Code.fromInline(`
-import json
-import boto3
-import os
-import urllib.parse
-
-def lambda_handler(event, context):
-    # Get the S3 bucket and key from the event
-    record = event['Records'][0]
-    bucket = record['s3']['bucket']['name']
-    key = urllib.parse.unquote_plus(record['s3']['object']['key'])
-
-    # Start the Step Functions state machine
-    client = boto3.client('stepfunctions')
-    response = client.start_execution(
-        stateMachineArn=os.environ['STATE_MACHINE_ARN'],
-        input=json.dumps({
-            'bucket': bucket,
-            'key': key
-        })
-    )
-
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Started document processing state machine')
-    }
-      `),
+      handler: 'trigger-state-machine.lambda_handler',
+      code: lambda.Code.fromAsset('lambda'),
       timeout: cdk.Duration.minutes(1),
       memorySize: 128,
       role: stateMachineTriggerRole,
@@ -674,6 +668,51 @@ def lambda_handler(event, context):
         // Note: CLAUDE_INFERENCE_PROFILE_ARN should be set manually after deployment
       },
     });
+    
+    // Create a role for the PDF image layer Lambda
+    const pdfImageLayerLambdaRole = new iam.Role(this, 'PdfImageLayerLambdaRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+      ],
+    });
+    
+    // Add permissions for S3 and Lambda
+    pdfImageLayerLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject', 's3:GetObject', 's3:ListBucket'],
+        resources: [
+          this.processedBucket.bucketArn,
+          `${this.processedBucket.bucketArn}/*`,
+        ],
+      })
+    );
+    
+    pdfImageLayerLambdaRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'lambda:PublishLayerVersion',
+          'lambda:GetLayerVersion',
+          'lambda:GetFunction',
+          'lambda:GetFunctionConfiguration',
+          'lambda:UpdateFunctionConfiguration',
+        ],
+        resources: ['*'], // Scope down in production
+      })
+    );
+    
+    // Create a Lambda function to create the PDF image layer
+    const createPdfImageLayerLambda = new lambda.Function(this, 'CreatePdfImageLayerFunction', {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: 'create-pdf-image-layer.lambda_handler',
+      code: lambda.Code.fromAsset('lambda'),
+      timeout: cdk.Duration.minutes(10),
+      memorySize: 1024,
+      role: pdfImageLayerLambdaRole,
+      environment: {
+        PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
+      },
+    });
 
     // Create a custom resource to initialize the knowledge base during deployment
     const initializeKnowledgeBaseProvider = new cdk.custom_resources.Provider(this, 'InitializeKnowledgeBaseProvider', {
@@ -686,6 +725,26 @@ def lambda_handler(event, context):
       serviceToken: initializeKnowledgeBaseProvider.serviceToken,
       properties: {
         knowledge_base_name: 'DocumentProcessingKnowledgeBase',
+      },
+    });
+    
+    // Create a custom resource provider for the PDF image layer
+    const createPdfImageLayerProvider = new cdk.custom_resources.Provider(this, 'CreatePdfImageLayerProvider', {
+      onEventHandler: createPdfImageLayerLambda,
+      logRetention: logs.RetentionDays.ONE_WEEK,
+    });
+    
+    // Create the PDF image layer resource
+    new cdk.CustomResource(this, 'CreatePdfImageLayerResource', {
+      serviceToken: createPdfImageLayerProvider.serviceToken,
+      properties: {
+        bucket_name: this.processedBucket.bucketName,
+        layer_name: 'pdf-image-layer',
+        lambda_functions: [
+          textractProcessorLambda.functionName,
+          metadataExtractorLambda.functionName,
+          bedrockKnowledgeBaseLambda.functionName
+        ]
       },
     });
 

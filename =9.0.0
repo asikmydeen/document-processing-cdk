@@ -1,0 +1,8 @@
+Collecting pdf2image==1.16.3
+  Downloading pdf2image-1.16.3-py3-none-any.whl.metadata (6.2 kB)
+Collecting pillow
+  Using cached pillow-11.2.1-cp311-cp311-macosx_11_0_arm64.whl.metadata (8.9 kB)
+Downloading pdf2image-1.16.3-py3-none-any.whl (11 kB)
+Using cached pillow-11.2.1-cp311-cp311-macosx_11_0_arm64.whl (3.0 MB)
+Installing collected packages: pillow, pdf2image
+Successfully installed pdf2image-1.16.3 pillow-11.2.1
