@@ -172,7 +172,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       },
     });
 
-    // Lambda role for metadata extraction
+    // Lambda role for metadata extraction and image description generation
     const metadataExtractorRole = new iam.Role(this, 'MetadataExtractorRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
@@ -234,6 +234,24 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName,
         PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
+      },
+    });
+
+    // Lambda function for image description generation
+    const imageDescriptionGeneratorLambda = new lambda.Function(this, 'ImageDescriptionGeneratorFunction', {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: 'image-description-generator.lambda_handler',
+      code: lambda.Code.fromAsset('lambda'),
+      timeout: cdk.Duration.minutes(15), // Longer timeout for image processing
+      memorySize: 1024, // More memory for image processing
+      role: metadataExtractorRole, // Reuse the same role
+      layers: [pdfImageProcessingLayer],
+      environment: {
+        METADATA_TABLE_NAME: this.metadataTable.tableName,
+        SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName,
+        PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
+        PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
+        BEDROCK_MODEL_ID_FOR_IMAGE_DESC: 'anthropic.claude-3-5-sonnet-20241022-v2:0',
       },
     });
 
@@ -462,6 +480,19 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       },
     });
 
+    // Lambda function for retrieving payloads and extracting metadata fields
+    const retrievePayloadLambda = new lambda.Function(this, 'RetrievePayloadFunction', {
+      runtime: lambda.Runtime.PYTHON_3_9,
+      handler: 'retrieve-payload.lambda_handler',
+      code: lambda.Code.fromAsset('lambda'),
+      timeout: cdk.Duration.minutes(2),
+      memorySize: 256,
+      role: payloadUtilsRole, // Reuse the same role as payloadUtilsLambda
+      environment: {
+        PAYLOAD_BUCKET_NAME: this.payloadBucket.bucketName,
+      },
+    });
+
     // Step Functions state machine for document processing
     // Define the Textract processing task
     const textractTask = new tasks.LambdaInvoke(this, 'ProcessDocumentWithTextract', {
@@ -508,6 +539,18 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       outputPath: '$.Payload',
     });
 
+    // Define a function to create an image description generator task
+    const createImageDescriptionTask = (id: string) => {
+      return new tasks.LambdaInvoke(this, id, {
+        lambdaFunction: imageDescriptionGeneratorLambda,
+        payload: stepfunctions.TaskInput.fromObject({
+          'document_id': stepfunctions.JsonPath.stringAt('$.metadata.document_id'),
+          'metadata_id': stepfunctions.JsonPath.stringAt('$.metadata.id')
+        }),
+        outputPath: '$.Payload',
+      });
+    };
+
     // Define a task to store the metadata result in S3 if it's too large
     const storeMetadataResultTask = new tasks.LambdaInvoke(this, 'StoreMetadataResult', {
       lambdaFunction: payloadUtilsLambda,
@@ -518,13 +561,23 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       outputPath: '$.Payload',
     });
 
+    // Define a task to retrieve the payload and extract metadata fields
+    const retrievePayloadTask = new tasks.LambdaInvoke(this, 'RetrievePayload', {
+      lambdaFunction: retrievePayloadLambda,
+      outputPath: '$.Payload',
+    });
+
     // Define tasks to extract metadata for the Bedrock task
     // One for the large payload path
     const extractMetadataForBedrockLargeState = new stepfunctions.Pass(this, 'ExtractMetadataForBedrockLarge', {
       parameters: {
         'processed_bucket': stepfunctions.JsonPath.stringAt('$.processed_bucket'),
-        'processed_key': stepfunctions.JsonPath.stringAt('$.payload_reference.key'),
-        'document_id': stepfunctions.JsonPath.stringAt('$.metadata.document_id')
+        'processed_key': stepfunctions.JsonPath.stringAt('$.processed_key'),
+        'document_id': stepfunctions.JsonPath.stringAt('$.document_id'),
+        'metadata': {
+          'document_id': stepfunctions.JsonPath.stringAt('$.document_id'),
+          'id': stepfunctions.JsonPath.stringAt('$.metadata_id')
+        }
       },
     });
 
@@ -540,13 +593,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
     // Define the Bedrock knowledge base task
     const bedrockTask = new tasks.LambdaInvoke(this, 'AddToBedrockKnowledgeBase', {
       lambdaFunction: bedrockKnowledgeBaseLambda,
-      payload: stepfunctions.TaskInput.fromObject({
-        operation: 'add_document_to_knowledge_base',
-        'processed_bucket': stepfunctions.JsonPath.stringAt('$.processed_bucket'),
-        'processed_key': stepfunctions.JsonPath.stringAt('$.processed_key'),
-        'document_id': stepfunctions.JsonPath.stringAt('$.document_id')
-      }),
-      outputPath: '$.Payload',
+      // Use the entire input as the payload, but don't set payloadResponseOnly
+      // This ensures the response has the standard Lambda Invoke structure with Payload field
     });
 
     // Define the success and failure states
@@ -584,16 +632,37 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
                     stepfunctions.Condition.stringGreaterThan('$.body', '204800') // 200KB in characters
                   ),
                     storeMetadataResultTask
+                      .next(retrievePayloadTask)
                       .next(extractMetadataForBedrockLargeState)
+                      .next(createImageDescriptionTask('GenerateImageDescriptionsLarge'))
+                      .next(new stepfunctions.Pass(this, 'MapImageDescriptionFieldsLarge', {
+                        parameters: {
+                          'processed_bucket.$': "$.processed_bucket",
+                          'processed_key.$': "$.processed_key",
+                          'document_id.$': "$.document_id",
+                          'statusCode.$': "$.statusCode",
+                          'operation': 'add_document_to_knowledge_base'
+                        },
+                      }))
                       .next(bedrockTask)
                   )
                   .otherwise(
                     extractMetadataForBedrockState
+                      .next(createImageDescriptionTask('GenerateImageDescriptionsNormal'))
+                      .next(new stepfunctions.Pass(this, 'MapImageDescriptionFieldsNormal', {
+                        parameters: {
+                          'processed_bucket.$': "$.processed_bucket",
+                          'processed_key.$': "$.processed_key",
+                          'document_id.$': "$.document_id",
+                          'statusCode.$': "$.statusCode",
+                          'operation': 'add_document_to_knowledge_base'
+                        },
+                      }))
                       .next(bedrockTask)
                   )
                   .afterwards()
                   .next(new stepfunctions.Choice(this, 'CheckBedrockIntegration')
-                    .when(stepfunctions.Condition.numberEquals('$.statusCode', 200), successState)
+                    .when(stepfunctions.Condition.numberEquals('$.Payload.statusCode', 200), successState)
                     .otherwise(failureState)
                   )
               )
@@ -668,7 +737,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         // Note: CLAUDE_INFERENCE_PROFILE_ARN should be set manually after deployment
       },
     });
-    
+
     // Create a role for the PDF image layer Lambda
     const pdfImageLayerLambdaRole = new iam.Role(this, 'PdfImageLayerLambdaRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -676,7 +745,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
       ],
     });
-    
+
     // Add permissions for S3 and Lambda
     pdfImageLayerLambdaRole.addToPolicy(
       new iam.PolicyStatement({
@@ -687,7 +756,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         ],
       })
     );
-    
+
     pdfImageLayerLambdaRole.addToPolicy(
       new iam.PolicyStatement({
         actions: [
@@ -700,7 +769,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         resources: ['*'], // Scope down in production
       })
     );
-    
+
     // Create a Lambda function to create the PDF image layer
     const createPdfImageLayerLambda = new lambda.Function(this, 'CreatePdfImageLayerFunction', {
       runtime: lambda.Runtime.PYTHON_3_9,
@@ -727,13 +796,13 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
         knowledge_base_name: 'DocumentProcessingKnowledgeBase',
       },
     });
-    
+
     // Create a custom resource provider for the PDF image layer
     const createPdfImageLayerProvider = new cdk.custom_resources.Provider(this, 'CreatePdfImageLayerProvider', {
       onEventHandler: createPdfImageLayerLambda,
       logRetention: logs.RetentionDays.ONE_WEEK,
     });
-    
+
     // Create the PDF image layer resource
     new cdk.CustomResource(this, 'CreatePdfImageLayerResource', {
       serviceToken: createPdfImageLayerProvider.serviceToken,

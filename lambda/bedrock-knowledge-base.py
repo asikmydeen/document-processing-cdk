@@ -27,7 +27,7 @@ def get_bedrock_clients():
 
     # Create the runtime client for model invocation
     bedrock_runtime = boto3.client('bedrock-runtime')
-    
+
     # Create the bedrock client for managing inference profiles
     if bedrock_client is None:
         bedrock_client = boto3.client('bedrock')
@@ -59,7 +59,7 @@ def get_inference_profile_arn():
     inference_profile_arn = os.environ.get('CLAUDE_INFERENCE_PROFILE_ARN')
     if inference_profile_arn:
         print(f"Using inference profile ARN from environment: {inference_profile_arn}")
-        
+
         # Validate that the ARN looks correct
         if inference_profile_arn.startswith('arn:aws:bedrock:') and 'inference-profile' in inference_profile_arn:
             return inference_profile_arn
@@ -67,7 +67,7 @@ def get_inference_profile_arn():
             print(f"Warning: Inference profile ARN format looks incorrect: {inference_profile_arn}")
             # Continue anyway as it might be a valid ARN in a different format
             return inference_profile_arn
-    
+
     # If no ARN is provided, return None
     print("No inference profile ARN found in environment variables")
     return None
@@ -93,40 +93,72 @@ def get_content_type(key):
     return content_types.get(ext, 'application/octet-stream')
 
 def create_structured_response(answer, images):
-    """Create a structured response with inline image references."""
+    """Create a structured response with inline image references and Q&A information."""
     # If no images, just return the text answer
     if not images:
         return [{'type': 'text', 'content': answer}]
-    
+
     # Create a structured response with text and image blocks
     structured_response = []
-    
+
     # Add the text answer
     structured_response.append({'type': 'text', 'content': answer})
-    
+
+    # Add a text block explaining the images
+    if images:
+        image_intro = {
+            'type': 'text',
+            'content': f"Here are the top {len(images)} images relevant to your query, ranked by relevance score:"
+        }
+        structured_response.append(image_intro)
+
     # Add image blocks for relevant images
-    for img in images:
+    for i, img in enumerate(images):
         if 'presigned_url' in img:  # Only include images with valid URLs
+            # Create the basic image block
             image_block = {
                 'type': 'image',
                 'url': img['presigned_url'],
                 'description': img['description'],
-                'relevance_score': img['relevance_score']
+                'relevance_score': img['relevance_score'],
+                'rank': i + 1  # Add rank information (1-based)
             }
-            
+
             # Add additional metadata if available
             if 'pdf_page_uri' in img:
                 image_block['source_pdf'] = img['pdf_page_uri']
-                
+
+            # Add Q&A information if available
+            if 'is_qa_image' in img and img['is_qa_image'] and 'question' in img:
+                image_block['question'] = img['question']
+                image_block['answer'] = img['answer']
+                image_block['is_qa_image'] = True
+
+                # Add a text block with the Q&A information before the image
+                qa_text_block = {
+                    'type': 'text',
+                    'content': f"Image {i+1} (Relevance Score: {img['relevance_score']:.2f}):\nQuestion: {img['question']}\nAnswer: {img['answer']}",
+                    'is_qa_content': True
+                }
+                structured_response.append(qa_text_block)
+            else:
+                # Add a text block with image information
+                image_text_block = {
+                    'type': 'text',
+                    'content': f"Image {i+1} (Relevance Score: {img['relevance_score']:.2f}):\n{img['description']}"
+                }
+                structured_response.append(image_text_block)
+
+            # Add the image block after the text
             structured_response.append(image_block)
-    
+
     return structured_response
 
 def calculate_image_relevance(query_terms, index_value, index_type):
     """Calculate a more sophisticated relevance score for an image."""
     score = 0
     matched_terms = set()
-    
+
     # Base score from term matches
     for term in query_terms:
         if term in index_value.lower():
@@ -137,28 +169,28 @@ def calculate_image_relevance(query_terms, index_value, index_type):
                 score += 2  # Medium weight for image content
             else:
                 score += 1  # Lower weight for section matches
-            
+
             matched_terms.add(term)
-    
+
     # Boost score based on term density
     if len(index_value) > 0:
         term_density = len(matched_terms) / (len(index_value.split()) + 1)
         score += term_density * 5
-    
+
     # Boost score based on consecutive term matches
     consecutive_matches = find_consecutive_matches(query_terms, index_value.lower())
     score += consecutive_matches * 2
-    
+
     return score, matched_terms
 
 def find_consecutive_matches(query_terms, text):
     """Find consecutive term matches in text."""
     consecutive_count = 0
     query_phrase = ' '.join(query_terms)
-    
+
     if query_phrase in text:
         consecutive_count += len(query_terms)
-    
+
     return consecutive_count
 
 s3_client = boto3.client('s3')
@@ -170,6 +202,19 @@ def lambda_handler(event, context):
 
     # Get the operation from the event
     operation = event.get('operation', 'create_knowledge_base')
+
+    # Check if the previous step had an error
+    if 'statusCode' in event and event['statusCode'] >= 400:
+        print(f"Received error from previous step: {event.get('error', event.get('body', 'Unknown error'))}")
+        # Pass through the error but ensure we have the necessary fields for the next step
+        return {
+            'statusCode': event['statusCode'],
+            'body': event.get('body', json.dumps('Error from previous step')),
+            'error': event.get('error', 'Error from previous step'),
+            'document_id': event.get('document_id', 'unknown'),
+            'processed_bucket': event.get('processed_bucket', ''),
+            'processed_key': event.get('processed_key', '')
+        }
 
     if operation == 'create_knowledge_base':
         return create_knowledge_base(event)
@@ -562,28 +607,69 @@ def add_document_to_knowledge_base(event):
                     text_content = ""
 
                     # Print the document JSON structure to help debug
-                    print(f"Document JSON keys: {list(document_json.keys())}")
+                    if isinstance(document_json, dict):
+                        print(f"Document JSON keys: {list(document_json.keys())}")
+                    elif isinstance(document_json, list):
+                        print(f"Document JSON is a list with {len(document_json)} items")
+                        if document_json and isinstance(document_json[0], dict):
+                            print(f"First item keys: {list(document_json[0].keys())}")
+                    else:
+                        print(f"Document JSON is of type: {type(document_json)}")
 
-                    # Check for document_content field which is likely to contain the full text
-                    if 'document_content' in document_json:
-                        if isinstance(document_json['document_content'], dict) and 'text_content' in document_json['document_content']:
-                            text_content = document_json['document_content']['text_content']
-                            print(f"Found document_content.text_content field with length: {len(text_content)}")
-                        elif isinstance(document_json['document_content'], str):
-                            text_content = document_json['document_content']
-                            print(f"Found document_content field with length: {len(text_content)}")
-                    elif 'text_content' in document_json:
-                        text_content = document_json['text_content']
-                        print(f"Found text_content field with length: {len(text_content)}")
-                    elif 'content' in document_json:
-                        text_content = document_json['content']
-                        print(f"Found content field with length: {len(text_content)}")
-                    elif 'body' in document_json:
-                        text_content = document_json['body']
-                        print(f"Found body field with length: {len(text_content)}")
-                    elif 'text' in document_json:
-                        text_content = document_json['text']
-                        print(f"Found text field with length: {len(text_content)}")
+                    # Handle different document_json structures
+                    if isinstance(document_json, dict):
+                        # Check for document_content field which is likely to contain the full text
+                        if 'document_content' in document_json:
+                            if isinstance(document_json['document_content'], dict) and 'text_content' in document_json['document_content']:
+                                text_content = document_json['document_content']['text_content']
+                                print(f"Found document_content.text_content field with length: {len(text_content)}")
+                            elif isinstance(document_json['document_content'], str):
+                                text_content = document_json['document_content']
+                                print(f"Found document_content field with length: {len(text_content)}")
+                        elif 'text_content' in document_json:
+                            text_content = document_json['text_content']
+                            print(f"Found text_content field with length: {len(text_content)}")
+                        elif 'content' in document_json:
+                            text_content = document_json['content']
+                            print(f"Found content field with length: {len(text_content)}")
+                        elif 'body' in document_json:
+                            text_content = document_json['body']
+                            print(f"Found body field with length: {len(text_content)}")
+                        elif 'text' in document_json:
+                            text_content = document_json['text']
+                            print(f"Found text field with length: {len(text_content)}")
+                    elif isinstance(document_json, list):
+                        # If it's a list, try to extract text from each item
+                        print("Document JSON is a list, extracting text from items")
+                        combined_text = []
+
+                        for idx, item in enumerate(document_json):
+                            if isinstance(item, dict):
+                                # Try to extract text from common fields
+                                item_text = ""
+                                if 'text_content' in item:
+                                    item_text = item['text_content']
+                                elif 'ai_generated_description' in item:
+                                    item_text = item['ai_generated_description']
+                                elif 'description' in item:
+                                    item_text = item['description']
+                                elif 'text' in item:
+                                    item_text = item['text']
+
+                                if item_text:
+                                    combined_text.append(f"Item {idx+1}: {item_text}")
+                                    print(f"Extracted text from item {idx+1} with length: {len(item_text)}")
+                            elif isinstance(item, str):
+                                combined_text.append(item)
+                                print(f"Added string item {idx+1} with length: {len(item)}")
+
+                        if combined_text:
+                            text_content = "\n\n".join(combined_text)
+                            print(f"Combined text from {len(combined_text)} items, total length: {len(text_content)}")
+                        else:
+                            # If we couldn't extract text from items, use the JSON representation
+                            text_content = json.dumps(document_json, indent=2)
+                            print(f"No text extracted from list items, using JSON representation with length: {len(text_content)}")
 
                     # If we still don't have content, try to extract it from nested structures
                     if not text_content and isinstance(document_json, dict):
@@ -615,6 +701,18 @@ def add_document_to_knowledge_base(event):
                             metadata = document_json['metadata']
                         elif 'document_metadata' in document_json and isinstance(document_json['document_metadata'], dict):
                             metadata = document_json['document_metadata']
+                    elif isinstance(document_json, list) and document_json:
+                        # If it's a list, try to extract metadata from the first item
+                        first_item = document_json[0]
+                        if isinstance(first_item, dict):
+                            if 'metadata' in first_item and isinstance(first_item['metadata'], dict):
+                                metadata = first_item['metadata']
+                            elif 'document_metadata' in first_item and isinstance(first_item['document_metadata'], dict):
+                                metadata = first_item['document_metadata']
+
+                        # Add some metadata about the list itself
+                        metadata['item_count'] = str(len(document_json))
+                        metadata['document_type'] = 'image_descriptions'
 
                     # Create attributes for Kendra
                     attributes = []
@@ -1206,10 +1304,11 @@ def query_knowledge_base(event):
         # Add information about relevant images to the context
         if relevant_images:
             context += "\nRelevant images found:\n"
-            for i, img in enumerate(relevant_images[:5]):  # Include up to 5 images in the context
+            for i, img in enumerate(relevant_images):  # Include all relevant images in the context
                 description = img.get('image_description', f"Image {i+1}")
                 preview = img.get('text_content_preview', 'No text content')
-                context += f"Image {i+1}: {description}\nText content: {preview}\n\n"
+                score = img.get('relevance_score', 0)
+                context += f"Image {i+1}: {description}\nRelevance Score: {score}\nText content: {preview}\n\n"
 
         # Generate a response using Claude
         try:
@@ -1218,18 +1317,18 @@ def query_knowledge_base(event):
             # Create a prompt that includes information about images
             image_instruction = ""
             if relevant_images:
-                image_instruction = """
-                I've also found some images that might be relevant to your question.
-                In your answer, please mention that there are relevant images available
-                that will be displayed alongside your response.
-                
-                For each image, I'll provide a description and the text content associated with it.
-                Please refer to these images in your answer where appropriate.
+                image_instruction = f"""
+                I've found the top {len(relevant_images)} images that are relevant to your question,
+                ranked by relevance score. In your answer, please mention that these relevant images
+                will be displayed alongside your response.
+
+                For each image, I'll provide a description, relevance score, and the text content associated with it.
+                Please refer to these images in your answer where appropriate, mentioning their relevance scores.
                 """
 
             # Get the inference profile ARN from environment variable
             inference_profile_arn = get_inference_profile_arn()
-            
+
             if inference_profile_arn:
                 try:
                     print(f"Using inference profile: {inference_profile_arn}")
@@ -1287,11 +1386,12 @@ def query_knowledge_base(event):
 
         # Format the images for the response
         formatted_images = []
-        for img in relevant_images:
+        for i, img in enumerate(relevant_images):
             formatted_img = {
                 'description': img.get('image_description', 'Image'),
                 'uri': img.get('image_s3_uri', ''),
-                'relevance_score': img.get('relevance_score', 0)
+                'relevance_score': img.get('relevance_score', 0),
+                'rank': i + 1  # Add rank information (1-based)
             }
 
             # Add presigned URL if available
@@ -1303,6 +1403,10 @@ def query_knowledge_base(event):
             # Add text content preview
             if 'text_content_preview' in img:
                 formatted_img['text_content'] = img['text_content_preview']
+
+            # Add matched terms if available
+            if 'matched_terms' in img:
+                formatted_img['matched_terms'] = img['matched_terms']
 
             formatted_images.append(formatted_img)
 
@@ -1397,43 +1501,74 @@ def get_sources_from_results(retrieval_results):
 
     return sources or ['No sources found']
 
-def calculate_image_relevance(query_terms, index_value, index_type):
-    """Calculate a more sophisticated relevance score for an image."""
+def calculate_image_relevance(query_terms, index_value, index_type, index=None):
+    """Calculate a more sophisticated relevance score for an image.
+
+    Args:
+        query_terms: List of query terms to match
+        index_value: The text content to match against
+        index_type: The type of index (embedded_image, qa_image, etc.)
+        index: The full index object, which may contain Q&A information
+    """
     score = 0
     matched_terms = set()
-    
-    # Base score from term matches
+
+    # Check if this is a Q&A image
+    is_qa_image = index_type in ['qa_image', 'qa_pdf_page']
+
+    # If this is a Q&A image, check if the query matches the question
+    if is_qa_image and index and 'question' in index:
+        question = index.get('question', '').lower()
+        answer = index.get('answer', '').lower()
+
+        # Check if any query term is in the question
+        question_match = False
+        for term in query_terms:
+            if term in question:
+                question_match = True
+                matched_terms.add(term)
+
+        # If the query matches the question, give a high score
+        if question_match:
+            score += 10  # High priority for Q&A matches
+            print(f"Q&A match found! Question: {question[:50]}...")
+
+    # Base score from term matches in the index value
     for term in query_terms:
         if term in index_value.lower():
             # Weight based on index type
-            if index_type == 'embedded_image':
+            if index_type == 'qa_image':
+                score += 5  # Highest weight for Q&A images
+            elif index_type == 'qa_pdf_page':
+                score += 4  # High weight for Q&A PDF pages
+            elif index_type == 'embedded_image':
                 score += 3  # Higher weight for direct image text
             elif index_type == 'image_content':
                 score += 2  # Medium weight for image content
             else:
                 score += 1  # Lower weight for section matches
-            
+
             matched_terms.add(term)
-    
+
     # Boost score based on term density
     if len(index_value) > 0:
         term_density = len(matched_terms) / (len(index_value.split()) + 1)
         score += term_density * 5
-    
+
     # Boost score based on consecutive term matches
     consecutive_matches = find_consecutive_matches(query_terms, index_value.lower())
     score += consecutive_matches * 2
-    
+
     return score, matched_terms
 
 def find_consecutive_matches(query_terms, text):
     """Find consecutive term matches in text."""
     consecutive_count = 0
     query_phrase = ' '.join(query_terms)
-    
+
     if query_phrase in text:
         consecutive_count += len(query_terms)
-    
+
     return consecutive_count
 
 def find_relevant_images(query, search_index_table):
@@ -1458,7 +1593,7 @@ def find_relevant_images(query, search_index_table):
                 )
                 type_indices = response.get('Items', [])
                 print(f"Found {len(type_indices)} {index_type} indices")
-                
+
                 # If we didn't find any indices, try a more general scan
                 if not type_indices:
                     print(f"No {index_type} indices found with image_s3_uri, trying general scan")
@@ -1470,13 +1605,13 @@ def find_relevant_images(query, search_index_table):
                     )
                     type_indices = response.get('Items', [])
                     print(f"Found {len(type_indices)} {index_type} indices with general scan")
-                
+
                 image_indices.extend(type_indices)
             except Exception as e:
                 print(f"Error scanning for {index_type} indices: {str(e)}")
 
         print(f"Total image indices found: {len(image_indices)}")
-        
+
         # Debug: Print some sample indices to understand their structure
         if image_indices:
             print("Sample image index:")
@@ -1496,11 +1631,11 @@ def find_relevant_images(query, search_index_table):
         # Score images based on relevance to the query
         image_scores = {}
         extracted_image_map = {}  # Map PDF page URIs to their extracted image URIs
-        
+
         for index in image_indices:
             index_value = index.get('index_value', '').lower()
             image_s3_uri = index.get('image_s3_uri', '')
-            
+
             # If this is a PDF page with an extracted image, store the mapping
             if index.get('index_type') == 'pdf_page_image' and 'extracted_image_s3_uri' in index:
                 extracted_image_map[image_s3_uri] = index['extracted_image_s3_uri']
@@ -1516,17 +1651,18 @@ def find_relevant_images(query, search_index_table):
                     'index': index,
                     'matched_terms': set()
                 }
-            
+
             # Calculate score using the enhanced relevance function
             score, matched_terms = calculate_image_relevance(
                 query_terms,
                 index_value,
-                index.get('index_type', '')
+                index.get('index_type', ''),
+                index  # Pass the full index object for Q&A matching
             )
-            
+
             # Add to the existing score
             image_scores[image_s3_uri]['score'] += score
-            
+
             # Add matched terms
             for term in matched_terms:
                 image_scores[image_s3_uri]['matched_terms'].add(term)
@@ -1539,7 +1675,7 @@ def find_relevant_images(query, search_index_table):
         )
 
         print(f"Found {len(sorted_images)} images with non-zero scores")
-        
+
         # Debug: Print the top scoring images
         for i, (image_uri, score_data) in enumerate(sorted_images[:3]):
             if i == 0:
@@ -1548,43 +1684,70 @@ def find_relevant_images(query, search_index_table):
                 print(f"Matched terms: {score_data['matched_terms']}")
                 print(f"Index type: {score_data['index'].get('index_type', 'unknown')}")
 
-        # Take only the top 1 image if its score is greater than 0
+        # Take up to top 5 images if their scores are greater than a threshold
         top_images = []
-        if sorted_images and sorted_images[0][1]['score'] > 0:
-            top_images = sorted_images[:1]
-            print(f"Selected top 1 image with score: {sorted_images[0][1]['score']}")
+        relevance_threshold = 5  # Minimum score to consider an image relevant
+
+        # First, check for any Q&A images with high scores
+        qa_images = [img for img in sorted_images if img[1]['index'].get('index_type') in ['qa_image', 'qa_pdf_page'] and img[1]['score'] > relevance_threshold]
+
+        if qa_images:
+            # If we have Q&A images, prioritize them but still include regular images if needed
+            qa_top = qa_images[:5]  # Take up to 5 Q&A images
+
+            # If we have fewer than 5 Q&A images, add regular images to reach 5 total
+            if len(qa_top) < 5 and sorted_images:
+                # Get regular images not already in qa_top
+                regular_images = [img for img in sorted_images if img not in qa_top and img[1]['score'] > relevance_threshold]
+                # Add enough to reach 5 total
+                regular_top = regular_images[:5-len(qa_top)]
+                top_images = qa_top + regular_top
+            else:
+                top_images = qa_top
+
+            print(f"Selected {len(qa_top)} Q&A images and {len(top_images) - len(qa_top)} regular images with scores: {[img[1]['score'] for img in top_images]}")
+        elif sorted_images:
+            # Take up to 5 images with scores above the threshold
+            top_images = [img for img in sorted_images[:5] if img[1]['score'] > relevance_threshold]
+
+            # If we don't have enough images above threshold, take the top 5 regardless of threshold
+            if not top_images and sorted_images:
+                top_images = sorted_images[:5]
+                print(f"No images above threshold, selecting top 5 images with scores: {[img[1]['score'] for img in top_images]}")
+            else:
+                print(f"Selected {len(top_images)} images with scores above threshold: {[img[1]['score'] for img in top_images]}")
         else:
-            print("No images found with a relevance score greater than 0, or no images scored.")
+            print("No images found with scores.")
 
         # Create the result list with image details
         relevant_images = []
         processed_uris = set()  # Track which URIs we've already processed
-        
+
         for image_uri, score_data in top_images: # This loop will now run at most once
             # The check for score_data['score'] == 0 is now implicitly handled by the top_images selection
 
             index = score_data['index']
             index_value = index.get('index_value', '')
-            
+
             # Check if this is a PDF page that has an extracted image
             extracted_image_uri = extracted_image_map.get(image_uri)
-            
+
             # Also check if the index itself has an extracted image URI
             if not extracted_image_uri and 'extracted_image_s3_uri' in index:
                 extracted_image_uri = index['extracted_image_s3_uri']
                 print(f"Found extracted image URI in index: {extracted_image_uri}")
-            
+
             # If we have an extracted image, use that instead of the PDF page
             primary_uri = extracted_image_uri if extracted_image_uri else image_uri
-            
+
             # Skip if we've already processed this URI
             if primary_uri in processed_uris:
                 print(f"Skipping already processed URI: {primary_uri}")
                 continue
-                
+
             processed_uris.add(primary_uri)
             print(f"Processing image URI: {primary_uri}")
-            
+
             # Get the image details
             image_info = {
                 'image_s3_uri': primary_uri,
@@ -1594,12 +1757,83 @@ def find_relevant_images(query, search_index_table):
                 'relevance_score': score_data['score'],
                 'matched_terms': list(score_data['matched_terms'])
             }
-            
+
+            # Add Q&A information if available directly in the index
+            if index.get('index_type') in ['qa_image', 'qa_pdf_page'] and 'question' in index:
+                image_info['question'] = index.get('question', '')
+                image_info['answer'] = index.get('answer', '')
+                image_info['is_qa_image'] = True
+                print(f"Adding Q&A information to image: Question: {index.get('question', '')[:50]}...")
+            # If we don't have Q&A info in the index but have document_id, try to get it from the metadata table
+            elif 'document_id' in index:
+                try:
+                    # Get the metadata item from DynamoDB
+                    metadata_table = dynamodb.Table(os.environ.get('METADATA_TABLE_NAME'))
+                    response = metadata_table.query(
+                        IndexName='DocumentIdIndex',
+                        KeyConditionExpression='document_id = :did',
+                        ExpressionAttributeValues={
+                            ':did': index.get('document_id')
+                        }
+                    )
+
+                    if response['Items']:
+                        metadata_item = response['Items'][0]
+
+                        # Check if we have Q&A pairs in the metadata
+                        if 'qa_pairs' in metadata_item:
+                            qa_pairs = metadata_item['qa_pairs']
+                            print(f"Found {len(qa_pairs)} Q&A pairs in metadata")
+                        elif 'qa_pairs_sample' in metadata_item:
+                            qa_pairs = metadata_item['qa_pairs_sample']
+                            print(f"Using {len(qa_pairs)} sample Q&A pairs from metadata")
+                        elif 'qa_pairs_s3_key' in metadata_item and 'qa_pairs_s3_bucket' in metadata_item:
+                            # Retrieve Q&A pairs from S3
+                            try:
+                                qa_s3_response = s3_client.get_object(
+                                    Bucket=metadata_item['qa_pairs_s3_bucket'],
+                                    Key=metadata_item['qa_pairs_s3_key']
+                                )
+                                qa_pairs = json.loads(qa_s3_response['Body'].read().decode('utf-8'))
+                                print(f"Retrieved {len(qa_pairs)} Q&A pairs from S3")
+                            except Exception as e:
+                                print(f"Error retrieving Q&A pairs from S3: {str(e)}")
+                                qa_pairs = []
+                        else:
+                            qa_pairs = []
+
+                        # If we have Q&A pairs, find the most relevant one for this image
+                        if qa_pairs and 'image_position' in index:
+                            img_position = index.get('image_position', 0)
+
+                            # Try to find a Q&A pair that might be related to this image
+                            # This is a simplified approach - in a real system, you'd want a more sophisticated matching
+                            for qa_pair in qa_pairs:
+                                # Check if any query term is in the question or answer
+                                question = qa_pair.get('question', '').lower()
+                                answer = qa_pair.get('answer', '').lower()
+
+                                # Simple matching - check if any query term is in the question or answer
+                                query_in_qa = False
+                                for term in query_terms:
+                                    if term in question or term in answer:
+                                        query_in_qa = True
+                                        break
+
+                                if query_in_qa:
+                                    image_info['question'] = qa_pair.get('question', '')
+                                    image_info['answer'] = qa_pair.get('answer', '')
+                                    image_info['is_qa_image'] = True
+                                    print(f"Found matching Q&A for image: Question: {qa_pair.get('question', '')[:50]}...")
+                                    break
+                except Exception as e:
+                    print(f"Error retrieving Q&A information from metadata: {str(e)}")
+
             # If we're using an extracted image, also store the original PDF page URI
             if extracted_image_uri:
                 image_info['pdf_page_uri'] = image_uri
                 print(f"Using extracted image {extracted_image_uri} instead of PDF page {image_uri}")
-                
+
             # Add any additional metadata from the index
             for key, value in index.items():
                 if key not in image_info and key not in ['id', 'document_id', 'metadata_id', 'index_type', 'index_value', 'created_at']:
@@ -1624,7 +1858,7 @@ def find_relevant_images(query, search_index_table):
                                 key = key_parts[0]
                                 if len(key_parts) > 1:
                                     page_ref = key_parts[1]
-                            
+
                             # Generate presigned URL with CORS headers
                             presigned_url = s3_client.generate_presigned_url(
                                 'get_object',
@@ -1636,11 +1870,11 @@ def find_relevant_images(query, search_index_table):
                                 },
                                 ExpiresIn=60  # URL valid for 60 seconds - FOR DEBUGGING
                             )
-                            
+
                             # Add page reference back if it was a PDF
                             if page_ref:
                                 presigned_url += f"#page={page_ref}"
-                                
+
                             image_info['presigned_url'] = presigned_url
                             # Also add a direct URL field for easier client rendering
                             image_info['direct_url'] = presigned_url
@@ -1653,14 +1887,14 @@ def find_relevant_images(query, search_index_table):
             relevant_images.append(image_info)
 
         print(f"Returning {len(relevant_images)} relevant images")
-        
+
         # Debug: Print the first image's details
         if relevant_images:
             print("First relevant image details:")
             for key, value in relevant_images[0].items():
                 if key not in ['presigned_url', 'direct_url']:
                     print(f"  {key}: {value}")
-        
+
         return relevant_images
 
     except Exception as e:

@@ -12,17 +12,139 @@ bedrock_runtime = boto3.client('bedrock-runtime') # Add Bedrock runtime client
 # Bedrock Model ID for Image Description
 BEDROCK_MODEL_ID_FOR_IMAGE_DESC = os.environ.get('BEDROCK_MODEL_ID_IMAGE_DESC', 'us.anthropic.claude-3-5-sonnet-20240620-v1:0')
 
-def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str) -> str:
-    """Generate a detailed description for an image using Bedrock Claude 3.5 Sonnet."""
+def extract_qa_pairs(text):
+    """Extract question-answer pairs from document text.
+
+    This function analyzes the document text to identify question-answer pairs,
+    particularly in FAQ-style documents or documents with clear Q&A sections.
+
+    Args:
+        text: The document text to analyze
+
+    Returns:
+        A list of dictionaries, each containing a question, answer, and estimated page number
+    """
+    if not text:
+        return []
+
+    qa_pairs = []
+
+    # Try to identify Q&A patterns in the text
+    lines = text.split('\n')
+    current_question = None
+    current_answer = []
+    current_page = 1
+    line_count = 0
+
+    # Estimate 40 lines per page for rough page number assignment
+    lines_per_page = 40
+
+    for line in lines:
+        line = line.strip()
+        line_count += 1
+
+        # Update the estimated page number
+        current_page = (line_count // lines_per_page) + 1
+
+        # Skip empty lines
+        if not line:
+            continue
+
+        # Check if this line looks like a question
+        # Common patterns: starts with "Q:", "Question:", contains a question mark, etc.
+        is_question = False
+
+        if line.startswith('Q:') or line.startswith('Question:'):
+            is_question = True
+        elif line.endswith('?'):
+            is_question = True
+        elif line.lower().startswith('how ') or line.lower().startswith('what ') or line.lower().startswith('why ') or line.lower().startswith('when ') or line.lower().startswith('where ') or line.lower().startswith('who ') or line.lower().startswith('which '):
+            is_question = True
+
+        if is_question:
+            # If we already have a question, save the previous Q&A pair
+            if current_question and current_answer:
+                qa_pairs.append({
+                    'question': current_question,
+                    'answer': '\n'.join(current_answer),
+                    'page_number': current_page
+                })
+
+            # Start a new question
+            current_question = line
+            current_answer = []
+        elif current_question:
+            # This is part of the answer to the current question
+            current_answer.append(line)
+
+    # Don't forget to add the last Q&A pair
+    if current_question and current_answer:
+        qa_pairs.append({
+            'question': current_question,
+            'answer': '\n'.join(current_answer),
+            'page_number': current_page
+        })
+
+    print(f"Extracted {len(qa_pairs)} Q&A pairs from document text")
+    return qa_pairs
+
+def process_images_without_ai(images, document_id, processed_bucket):
+    """Process images without generating AI descriptions.
+
+    This function processes images from a document but skips the AI description generation
+    to avoid timeouts. The AI descriptions will be generated in a separate Lambda function.
+
+    Args:
+        images: List of image data from the document
+        document_id: The document ID
+        processed_bucket: The S3 bucket where processed documents are stored
+
+    Returns:
+        List of processed image information
+    """
+    processed_images = []
+
+    for img_idx, img_data_from_input in enumerate(images):
+        image_info = {
+            'source_bucket': img_data_from_input.get('source_bucket', processed_bucket),
+            'source_key': img_data_from_input.get('source_key', ''),
+            'page_number': img_data_from_input.get('page_number', 0),
+            'file_type': img_data_from_input.get('file_type', ''),
+            'text_content': img_data_from_input.get('text_content', ''),
+            's3_uri': img_data_from_input.get('s3_uri', '')
+        }
+
+        # Add extracted image information if available
+        if 'extracted_image_s3_uri' in img_data_from_input and img_data_from_input['extracted_image_s3_uri']:
+            image_info['extracted_image_key'] = img_data_from_input.get('extracted_image_key', '')
+            image_info['extracted_image_s3_uri'] = img_data_from_input['extracted_image_s3_uri']
+            print(f"Processing image {img_idx}: {image_info['extracted_image_s3_uri']}")
+        elif 'extraction_error' in img_data_from_input:
+            image_info['extraction_error'] = img_data_from_input['extraction_error']
+            print(f"Image extraction error: {img_data_from_input['extraction_error']}")
+
+        processed_images.append(image_info)
+
+    print(f"Processed {len(processed_images)} images without AI descriptions")
+    return processed_images
+
+def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str, context_text: str = "") -> str:
+    """Generate a detailed description for an image using Bedrock Claude 3.5 Sonnet.
+
+    Args:
+        image_s3_bucket: The S3 bucket containing the image
+        image_s3_key: The S3 key of the image
+        context_text: Optional surrounding text context to help with image description
+    """
     print(f"Generating description for image s3://{image_s3_bucket}/{image_s3_key} using model {BEDROCK_MODEL_ID_FOR_IMAGE_DESC}")
-    
+
     import base64
 
     try:
         # Download image from S3
         s3_response = s3_client.get_object(Bucket=image_s3_bucket, Key=image_s3_key)
         image_bytes = s3_response['Body'].read()
-        
+
         # Determine media type (simple check, can be enhanced)
         media_type = "image/png" # Default
         if image_s3_key.lower().endswith(".jpg") or image_s3_key.lower().endswith(".jpeg"):
@@ -34,6 +156,24 @@ def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str) 
 
         # Base64 encode the image bytes
         base64_image_data = base64.b64encode(image_bytes).decode('utf-8')
+
+        # Prepare the prompt based on whether we have context
+        prompt_text = "Describe this image in detail. What are the key objects, context, and any text visible? If it's a document or screenshot, summarize its purpose and content."
+
+        # If we have context text, enhance the prompt to use it
+        if context_text:
+            prompt_text = f"""Describe this image in detail. What are the key objects, context, and any text visible?
+
+This image appears in a document with the following surrounding text:
+{context_text}
+
+Based on this context and the image content, provide a detailed description that explains:
+1. What the image shows
+2. How it relates to the surrounding text (especially if it's part of a question and answer)
+3. Any text visible in the image itself
+4. The specific purpose this image serves in the document
+
+If it's a document or screenshot, summarize its purpose and content."""
 
         request_body = {
             "anthropic_version": "bedrock-2023-05-31",
@@ -52,7 +192,7 @@ def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str) 
                         },
                         {
                             "type": "text",
-                            "text": "Describe this image in detail. What are the key objects, context, and any text visible? If it's a document or screenshot, summarize its purpose and content."
+                            "text": prompt_text
                         }
                     ]
                 }
@@ -66,7 +206,7 @@ def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str) 
             accept='application/json'
         )
         response_body = json.loads(response.get('body').read())
-        
+
         # Extract text content from the response
         # Claude 3.5 Sonnet (Messages API) returns content in a list, usually with one text block.
         description = ""
@@ -74,7 +214,7 @@ def get_image_description_from_bedrock(image_s3_bucket: str, image_s3_key: str) 
             for block in response_body["content"]:
                 if block.get("type") == "text":
                     description += block.get("text", "")
-        
+
         if description:
             print(f"Successfully generated description for s3://{image_s3_bucket}/{image_s3_key}: {description[:200]}...")
             return description.strip()
@@ -180,9 +320,9 @@ def lambda_handler(event, context):
         # Check if the document is an image
         is_image = document_content_data.get('is_image', False)
         images = document_content_data.get('images', [])
-        
+
         print(f"Processing document with {len(images)} images")
-        
+
         # Process extracted images if available
         processed_images = []
         if images: # If there's an 'images' array in the document_content_data
@@ -211,7 +351,7 @@ def lambda_handler(event, context):
                 elif 'extraction_error' in img_data_from_input:
                     print(f"Image extraction error noted: {img_data_from_input['extraction_error']}")
                     image_info['extraction_error'] = img_data_from_input['extraction_error']
-                
+
                 processed_images.append(image_info)
         elif is_image: # Document is an image itself, but 'images' array was empty/missing in its JSON
             print(f"Document itself is an image ({processed_bucket}/{processed_key}) and no 'images' array was found in its content. Creating self-referential entry.")
@@ -225,9 +365,9 @@ def lambda_handler(event, context):
                 'extracted_image_s3_uri': f"s3://{processed_bucket}/{processed_key}",
                 'extracted_image_key': processed_key
             })
-            
+
         print(f"Processed {len(processed_images)} images")
-        
+
         # Prepare the item for DynamoDB
         item = {
             'id': str(uuid.uuid4()),  # Primary key
@@ -265,16 +405,16 @@ def lambda_handler(event, context):
                 image_s3_uri_to_describe = processed_images[0]['extracted_image_s3_uri']
             elif processed_key.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.tiff')): # Fallback if processed_images wasn't set up as expected
                 image_s3_uri_to_describe = f"s3://{processed_bucket}/{processed_key}"
-            
+
             if image_s3_uri_to_describe:
                 uri_parts = image_s3_uri_to_describe.replace("s3://", "").split("/", 1)
                 if len(uri_parts) == 2:
                     image_bucket_to_describe, image_key_to_describe = uri_parts
-                    
+
                     print(f"Document is an image. Generating AI description for: {image_s3_uri_to_describe}")
                     ai_description = get_image_description_from_bedrock(image_bucket_to_describe, image_key_to_describe)
                     item['image_description'] = ai_description # Set main item's image_description
-                    
+
                     # Update the corresponding entry in processed_images (should be the first/only one)
                     if processed_images:
                         processed_images[0]['ai_generated_description'] = ai_description
@@ -284,22 +424,140 @@ def lambda_handler(event, context):
             else:
                 print(f"Could not determine S3 URI for AI description of image document: {document_id}")
                 item['image_description'] = metadata.get('image_description', 'Description not available.') # Fallback
-        
+
         else: # Document is not an image (e.g., PDF), but might contain extracted images
             item['image_description'] = metadata.get('image_description', '') # This is description of the whole PDF text
-            # Iterate through extracted images and get their individual AI descriptions
+
+            # Extract Q&A content from the document text if available
+            document_text = document_content_data.get('text_content', '')
+            qa_pairs = extract_qa_pairs(document_text)
+
+            if qa_pairs:
+                print(f"Extracted {len(qa_pairs)} Q&A pairs from document")
+
+                # Instead of storing all Q&A pairs directly in the item, store them in S3
+                # and keep a reference in the DynamoDB item
+                qa_pairs_key = f"qa_pairs/{document_id}_{str(uuid.uuid4())}.json"
+
+                try:
+                    # Store the Q&A pairs in S3
+                    s3_client.put_object(
+                        Bucket=processed_bucket,
+                        Key=qa_pairs_key,
+                        Body=json.dumps(qa_pairs),
+                        ContentType='application/json'
+                    )
+
+                    print(f"Stored {len(qa_pairs)} Q&A pairs in S3: {processed_bucket}/{qa_pairs_key}")
+
+                    # Store a reference to the S3 object in the DynamoDB item
+                    item['qa_pairs_s3_key'] = qa_pairs_key
+                    item['qa_pairs_s3_bucket'] = processed_bucket
+                    item['qa_pairs_count'] = len(qa_pairs)
+
+                    # Store a small subset of Q&A pairs directly in the item for quick access
+                    # (just the first few pairs)
+                    max_inline_pairs = 5
+                    item['qa_pairs_sample'] = qa_pairs[:max_inline_pairs] if len(qa_pairs) > max_inline_pairs else qa_pairs
+
+                except Exception as e:
+                    print(f"Error storing Q&A pairs in S3: {str(e)}")
+                    # Fall back to storing a limited number of Q&A pairs directly in the item
+                    print("Falling back to storing limited Q&A pairs directly in the item")
+                    item['qa_pairs'] = qa_pairs[:10]  # Store only the first 10 pairs to limit size
+
+            # We'll skip generating AI descriptions for images here to avoid timeouts
+            # Instead, we'll just associate Q&A pairs with images and let the image-description-generator Lambda handle the AI descriptions
             for img_info in processed_images:
                 if img_info.get('extracted_image_s3_uri') and not img_info.get('extraction_error'):
-                    img_uri_parts = img_info['extracted_image_s3_uri'].replace("s3://", "").split("/",1)
-                    if len(img_uri_parts) == 2:
-                        img_bucket, img_key = img_uri_parts
-                        print(f"Generating AI description for extracted image: {img_info['extracted_image_s3_uri']}")
-                        img_ai_description = get_image_description_from_bedrock(img_bucket, img_key)
-                        img_info['ai_generated_description'] = img_ai_description
-                        # Crucially, update text_content for this specific image, this will be used by create_image_search_indices
-                        img_info['text_content'] = img_ai_description
-        
-        item['images'] = processed_images # Ensure item['images'] has the updated list with AI descriptions
+                    # Find the closest Q&A pair to this image based on page number
+                    img_page = img_info.get('page_number', 0)
+                    associated_qa = None
+
+                    # Get Q&A pairs - either from the direct item or from S3
+                    qa_pairs_to_use = []
+
+                    if 'qa_pairs' in item:
+                        # Use Q&A pairs directly from the item
+                        qa_pairs_to_use = item['qa_pairs']
+                    elif 'qa_pairs_sample' in item:
+                        # Use the sample Q&A pairs from the item
+                        qa_pairs_to_use = item['qa_pairs_sample']
+                        print(f"Using {len(qa_pairs_to_use)} sample Q&A pairs from the item")
+                    elif 'qa_pairs_s3_key' in item and 'qa_pairs_s3_bucket' in item:
+                        # Retrieve Q&A pairs from S3
+                        try:
+                            qa_s3_response = s3_client.get_object(
+                                Bucket=item['qa_pairs_s3_bucket'],
+                                Key=item['qa_pairs_s3_key']
+                            )
+                            qa_pairs_to_use = json.loads(qa_s3_response['Body'].read().decode('utf-8'))
+                            print(f"Retrieved {len(qa_pairs_to_use)} Q&A pairs from S3")
+                        except Exception as e:
+                            print(f"Error retrieving Q&A pairs from S3: {str(e)}")
+                            # Fall back to using the sample if available
+                            if 'qa_pairs_sample' in item:
+                                qa_pairs_to_use = item['qa_pairs_sample']
+                                print(f"Falling back to {len(qa_pairs_to_use)} sample Q&A pairs")
+
+                    if qa_pairs_to_use:
+                        # Try to find a Q&A pair on the same page
+                        for qa_pair in qa_pairs_to_use:
+                            if qa_pair.get('page_number') == img_page:
+                                associated_qa = qa_pair
+                                print(f"Found Q&A pair on page {img_page} for image: {img_info['extracted_image_s3_uri']}")
+                                break
+
+                        # If no Q&A pair on the same page, use the closest one
+                        if not associated_qa and qa_pairs_to_use:
+                            closest_qa = min(qa_pairs_to_use, key=lambda qa: abs(qa.get('page_number', 0) - img_page))
+                            associated_qa = closest_qa
+                            print(f"Using closest Q&A pair from page {closest_qa.get('page_number')} for image on page {img_page}")
+
+                    # Store the associated Q&A pair with the image
+                    if associated_qa:
+                        img_info['associated_qa'] = associated_qa
+
+                    # Set a placeholder for text_content - will be updated by the image-description-generator Lambda
+                    if associated_qa:
+                        img_info['text_content'] = f"Question: {associated_qa.get('question', '')}\nAnswer: {associated_qa.get('answer', '')}"
+                    else:
+                        img_info['text_content'] = "Image content will be processed separately."
+
+        # Store images in S3 if there are many of them to avoid exceeding DynamoDB item size limits
+        if len(processed_images) > 10:
+            # Store the full processed_images list in S3
+            images_s3_key = f"images/{document_id}_{str(uuid.uuid4())}.json"
+
+            try:
+                # Store the images in S3
+                s3_client.put_object(
+                    Bucket=processed_bucket,
+                    Key=images_s3_key,
+                    Body=json.dumps(processed_images),
+                    ContentType='application/json'
+                )
+
+                print(f"Stored {len(processed_images)} images in S3: {processed_bucket}/{images_s3_key}")
+
+                # Store a reference to the S3 object in the DynamoDB item
+                item['images_s3_key'] = images_s3_key
+                item['images_s3_bucket'] = processed_bucket
+                item['images_count'] = len(processed_images)
+
+                # Store a small subset of images directly in the item for quick access
+                # (just the first few images)
+                max_inline_images = 5
+                item['images'] = processed_images[:max_inline_images]
+
+            except Exception as e:
+                print(f"Error storing images in S3: {str(e)}")
+                # Fall back to storing a limited number of images directly in the item
+                print("Falling back to storing limited images directly in the item")
+                item['images'] = processed_images[:10]  # Store only the first 10 images to limit size
+        else:
+            # If there aren't many images, store them directly in the item
+            item['images'] = processed_images # Ensure item['images'] has the updated list with AI descriptions
 
         # Add the item to DynamoDB
         table.put_item(Item=item)
@@ -374,6 +632,7 @@ def lambda_handler(event, context):
                     },
                     'metadata': {
                         'document_id': document_id,
+                        'id': item['id'],
                         'processed_bucket': processed_bucket,
                         'processed_key': processed_key
                     }
@@ -452,13 +711,38 @@ def create_image_search_indices(metadata_item, document_content):
     print(f"Creating image search indices for document: {metadata_item['document_id']}")
     print(f"Is image document: {metadata_item.get('is_image', False)}")
     print(f"Number of embedded images: {len(metadata_item.get('images', []))}")
-    
+
+    # Get the images - either directly from the item or from S3
+    images_to_process = []
+
+    if 'images' in metadata_item:
+        # Use images directly from the item
+        images_to_process = metadata_item['images']
+        print(f"Using {len(images_to_process)} images directly from metadata")
+    elif 'images_s3_key' in metadata_item and 'images_s3_bucket' in metadata_item:
+        # Retrieve images from S3
+        try:
+            images_s3_response = s3_client.get_object(
+                Bucket=metadata_item['images_s3_bucket'],
+                Key=metadata_item['images_s3_key']
+            )
+            images_to_process = json.loads(images_s3_response['Body'].read().decode('utf-8'))
+            print(f"Retrieved {len(images_to_process)} images from S3")
+        except Exception as e:
+            print(f"Error retrieving images from S3: {str(e)}")
+            # Fall back to using any images that might be in the item
+            if 'images' in metadata_item:
+                images_to_process = metadata_item['images']
+                print(f"Falling back to {len(images_to_process)} images in metadata")
+
     # Log the actual images for debugging
-    for i, img in enumerate(metadata_item.get('images', [])):
+    for i, img in enumerate(images_to_process):
         print(f"Image {i+1}:")
         print(f"  S3 URI: {img.get('s3_uri', 'None')}")
         print(f"  Extracted image S3 URI: {img.get('extracted_image_s3_uri', 'None')}")
         print(f"  Extraction error: {img.get('extraction_error', 'None')}")
+        if 'associated_qa' in img:
+            print(f"  Associated Q&A: {img['associated_qa'].get('question', '')[:50]}...")
 
     # Extract text content from the document
     document_text = document_content.get('text_content', '')
@@ -469,6 +753,36 @@ def create_image_search_indices(metadata_item, document_content):
                 document_text = value['text_content']
                 print(f"Found text content in nested field: {key}.text_content")
                 break
+
+    # Get Q&A pairs from metadata if available - either directly or from S3
+    qa_pairs = []
+
+    if 'qa_pairs' in metadata_item:
+        # Use Q&A pairs directly from the item
+        qa_pairs = metadata_item['qa_pairs']
+        print(f"Found {len(qa_pairs)} Q&A pairs directly in metadata")
+    elif 'qa_pairs_sample' in metadata_item:
+        # Use the sample Q&A pairs from the item
+        qa_pairs = metadata_item['qa_pairs_sample']
+        print(f"Using {len(qa_pairs)} sample Q&A pairs from metadata")
+    elif 'qa_pairs_s3_key' in metadata_item and 'qa_pairs_s3_bucket' in metadata_item:
+        # Retrieve Q&A pairs from S3
+        try:
+            qa_s3_response = s3_client.get_object(
+                Bucket=metadata_item['qa_pairs_s3_bucket'],
+                Key=metadata_item['qa_pairs_s3_key']
+            )
+            qa_pairs = json.loads(qa_s3_response['Body'].read().decode('utf-8'))
+            print(f"Retrieved {len(qa_pairs)} Q&A pairs from S3")
+        except Exception as e:
+            print(f"Error retrieving Q&A pairs from S3: {str(e)}")
+            # Fall back to using the sample if available
+            if 'qa_pairs_sample' in metadata_item:
+                qa_pairs = metadata_item['qa_pairs_sample']
+                print(f"Falling back to {len(qa_pairs)} sample Q&A pairs")
+
+    if qa_pairs:
+        print(f"Using {len(qa_pairs)} Q&A pairs for image indexing")
 
     # If this is an image document, create indices for the text content
     if metadata_item.get('is_image', False):
@@ -492,12 +806,12 @@ def create_image_search_indices(metadata_item, document_content):
         search_indices.append(index_item)
 
     # For documents with embedded images, create indices for each image
-    for i, image in enumerate(metadata_item.get('images', [])):
+    for i, image in enumerate(images_to_process):
         # First check for extracted image URI, then fall back to PDF page URI
         image_s3_uri = image.get('extracted_image_s3_uri', image.get('s3_uri', ''))
-        
+
         print(f"Creating index for image {i+1} with URI: {image_s3_uri}")
-        
+
         # If we have image data but no S3 URI, upload the image to S3
         if not image_s3_uri and 'image_data' in image:
             try:
@@ -526,7 +840,7 @@ def create_image_search_indices(metadata_item, document_content):
         # The 'text_content' field in 'image' should have already been updated to ai_generated_description
         # in the lambda_handler if AI description was successful.
         image_text = image.get('text_content', '') # This should be the AI description now
-        
+
         if not image_text and document_text: # Fallback if image_text is still empty for some reason
             print(f"Warning: image_text for image {i+1} is empty. Falling back to document_text for index_value.")
             image_text = document_text[:1000]
@@ -542,13 +856,16 @@ def create_image_search_indices(metadata_item, document_content):
         print(f"Creating embedded image index for: {image_s3_uri}")
         print(f"Using Image description for index item: {image_description[:100]}...")
         print(f"Using Text content for index_value: {image_text[:100]}...")
-        
+
         # Create a unique ID for this index to avoid duplicates
         index_id = str(uuid.uuid4())
 
+        # Check if this image has an associated Q&A pair
+        associated_qa = image.get('associated_qa')
+
         # Create two indices - one for the extracted image and one for the PDF page
         # This ensures we can find the image regardless of which URI is used in the query
-        
+
         # Index for the extracted image or primary image URI
         index_item = {
             'id': index_id,
@@ -561,7 +878,16 @@ def create_image_search_indices(metadata_item, document_content):
             'image_position': i,
             'created_at': datetime.now().isoformat()
         }
-        
+
+        # Add Q&A information if available
+        if associated_qa:
+            index_item['question'] = associated_qa.get('question', '')
+            index_item['answer'] = associated_qa.get('answer', '')
+            index_item['page_number'] = associated_qa.get('page_number', 0)
+            # Set a special index type for Q&A images to prioritize them in search
+            index_item['index_type'] = 'qa_image'
+            print(f"Created Q&A image index for question: {associated_qa.get('question', '')[:50]}...")
+
         # Add extracted image URI if available
         if 'extracted_image_s3_uri' in image:
             index_item['extracted_image_s3_uri'] = image['extracted_image_s3_uri']
@@ -573,7 +899,7 @@ def create_image_search_indices(metadata_item, document_content):
             search_indices.append(index_item)
         except Exception as e:
             print(f"Error adding index to DynamoDB: {str(e)}")
-        
+
         # If we have both extracted image and PDF page URIs, create an additional index for the PDF page
         pdf_page_uri = image.get('s3_uri', '')
         if pdf_page_uri and pdf_page_uri != image_s3_uri:
@@ -589,7 +915,15 @@ def create_image_search_indices(metadata_item, document_content):
                 'image_position': i,
                 'created_at': datetime.now().isoformat()
             }
-            
+
+            # Add Q&A information to the PDF page index as well
+            if associated_qa:
+                pdf_index_item['question'] = associated_qa.get('question', '')
+                pdf_index_item['answer'] = associated_qa.get('answer', '')
+                pdf_index_item['page_number'] = associated_qa.get('page_number', 0)
+                # Set a special index type for Q&A PDF pages
+                pdf_index_item['index_type'] = 'qa_pdf_page'
+
             # Add the PDF page index to DynamoDB
             table.put_item(Item=pdf_index_item)
             search_indices.append(pdf_index_item)
@@ -617,7 +951,7 @@ def create_image_search_indices(metadata_item, document_content):
                     'section': j,
                     'created_at': datetime.now().isoformat()
                 }
-                
+
                 # Add extracted image URI if available
                 if 'extracted_image_s3_uri' in image:
                     section_index_item['extracted_image_s3_uri'] = image['extracted_image_s3_uri']
