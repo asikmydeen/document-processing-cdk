@@ -9,6 +9,7 @@ import urllib.request
 import sys
 import time
 from pathlib import Path
+import cfnresponse
 
 # Initialize AWS clients
 s3_client = boto3.client('s3')
@@ -18,14 +19,27 @@ def lambda_handler(event, context):
     """
     Lambda function to create a PDF image layer with pdf2image and poppler,
     upload it to S3, and attach it to the specified Lambda functions.
+
+    This function is designed to be used as a CloudFormation custom resource.
     """
+    print(f"Event: {json.dumps(event)}")
+
+    # Initialize response data
+    response_data = {}
+
+    # Skip if this is not a Create or Update operation
+    if event.get('RequestType') not in ['Create', 'Update']:
+        cfnresponse.send(event, context, cfnresponse.SUCCESS, response_data)
+        return
+
     try:
         print("Starting PDF image layer creation process")
 
         # Get parameters from the event
-        bucket_name = event.get('bucket_name')
-        layer_name = event.get('layer_name', 'pdf-image-layer')
-        lambda_functions = event.get('lambda_functions', [])
+        resource_properties = event.get('ResourceProperties', {})
+        bucket_name = resource_properties.get('bucket_name')
+        layer_name = resource_properties.get('layer_name', 'pdf-image-layer')
+        lambda_functions = resource_properties.get('lambda_functions', [])
 
         if not bucket_name:
             raise ValueError("bucket_name is required in the event")
@@ -294,21 +308,28 @@ def lambda_handler(event, context):
                 except Exception as e:
                     print(f"Error invoking function {function_name}: {str(e)}")
 
-            return {
-                'statusCode': 200,
-                'body': json.dumps({
-                    'message': 'PDF image layer created and attached successfully',
-                    'layer_name': layer_name,
-                    'layer_version_arn': layer_version_arn,
-                    'updated_functions': lambda_functions
-                })
+            # Set the response data for CloudFormation
+            response_data = {
+                'LayerArn': layer_version_arn,
+                'LayerName': layer_name,
+                'UpdatedFunctions': lambda_functions
             }
+
+            # Send success response to CloudFormation
+            cfnresponse.send(event, context, cfnresponse.SUCCESS, response_data)
+
+            return response_data
 
     except Exception as e:
         print(f"Error creating PDF image layer: {str(e)}")
+
+        # Send failure response to CloudFormation
+        response_data = {
+            'Error': str(e)
+        }
+        cfnresponse.send(event, context, cfnresponse.FAILED, response_data)
+
         return {
             'statusCode': 500,
-            'body': json.dumps({
-                'message': f'Error creating PDF image layer: {str(e)}'
-            })
+            'error': str(e)
         }

@@ -9,6 +9,7 @@ import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import { createPdfImageLayer } from './create-pdf-image-layer';
+import { BedrockInferenceProfile } from './create-inference-profile';
 
 export class DocumentProcessingCdkStack extends cdk.Stack {
   // Public properties to expose resources to other stacks if needed
@@ -153,8 +154,8 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       })
     );
 
-    // Create the PDF/Image processing Lambda Layer
-    const pdfImageProcessingLayer = createPdfImageLayer(this, 'PdfImageProcessingLayer');
+    // We'll create the PDF/Image processing Lambda Layer later using a custom resource
+    // and attach it to the Lambda functions after they're created
 
     // Lambda function for Textract processing
     const textractProcessorLambda = new lambda.Function(this, 'TextractProcessorFunction', {
@@ -164,7 +165,6 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(15),
       memorySize: 1024,
       role: textractProcessorRole,
-      layers: [pdfImageProcessingLayer],
       environment: {
         PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
         // Add any other necessary environment variables for the layer if needed
@@ -229,7 +229,6 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(10),
       memorySize: 512,
       role: metadataExtractorRole,
-      layers: [pdfImageProcessingLayer], // Also adding to metadata extractor
       environment: {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName,
@@ -245,7 +244,6 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(15), // Longer timeout for image processing
       memorySize: 1024, // More memory for image processing
       role: metadataExtractorRole, // Reuse the same role
-      layers: [pdfImageProcessingLayer],
       environment: {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName,
@@ -434,7 +432,6 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(10),
       memorySize: 512,
       role: bedrockLambdaRole,
-      layers: [pdfImageProcessingLayer], // Also adding to Bedrock KB Lambda
       environment: {
         METADATA_TABLE_NAME: this.metadataTable.tableName,
         SEARCH_INDEX_TABLE_NAME: this.searchIndexTable.tableName, // Add this
@@ -738,50 +735,19 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       },
     });
 
-    // Create a role for the PDF image layer Lambda
-    const pdfImageLayerLambdaRole = new iam.Role(this, 'PdfImageLayerLambdaRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
-      ],
-    });
-
-    // Add permissions for S3 and Lambda
-    pdfImageLayerLambdaRole.addToPolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:PutObject', 's3:GetObject', 's3:ListBucket'],
-        resources: [
-          this.processedBucket.bucketArn,
-          `${this.processedBucket.bucketArn}/*`,
-        ],
-      })
+    // Create the PDF/Image processing Lambda Layer using the custom resource approach
+    // This will create the layer and attach it to the Lambda functions
+    createPdfImageLayer(
+      this,
+      'PdfImageProcessingLayer',
+      this.processedBucket,
+      [
+        textractProcessorLambda.functionName,
+        metadataExtractorLambda.functionName,
+        imageDescriptionGeneratorLambda.functionName,
+        bedrockKnowledgeBaseLambda.functionName
+      ]
     );
-
-    pdfImageLayerLambdaRole.addToPolicy(
-      new iam.PolicyStatement({
-        actions: [
-          'lambda:PublishLayerVersion',
-          'lambda:GetLayerVersion',
-          'lambda:GetFunction',
-          'lambda:GetFunctionConfiguration',
-          'lambda:UpdateFunctionConfiguration',
-        ],
-        resources: ['*'], // Scope down in production
-      })
-    );
-
-    // Create a Lambda function to create the PDF image layer
-    const createPdfImageLayerLambda = new lambda.Function(this, 'CreatePdfImageLayerFunction', {
-      runtime: lambda.Runtime.PYTHON_3_9,
-      handler: 'create-pdf-image-layer.lambda_handler',
-      code: lambda.Code.fromAsset('lambda'),
-      timeout: cdk.Duration.minutes(10),
-      memorySize: 1024,
-      role: pdfImageLayerLambdaRole,
-      environment: {
-        PROCESSED_BUCKET_NAME: this.processedBucket.bucketName,
-      },
-    });
 
     // Create a custom resource to initialize the knowledge base during deployment
     const initializeKnowledgeBaseProvider = new cdk.custom_resources.Provider(this, 'InitializeKnowledgeBaseProvider', {
@@ -797,25 +763,7 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       },
     });
 
-    // Create a custom resource provider for the PDF image layer
-    const createPdfImageLayerProvider = new cdk.custom_resources.Provider(this, 'CreatePdfImageLayerProvider', {
-      onEventHandler: createPdfImageLayerLambda,
-      logRetention: logs.RetentionDays.ONE_WEEK,
-    });
 
-    // Create the PDF image layer resource
-    new cdk.CustomResource(this, 'CreatePdfImageLayerResource', {
-      serviceToken: createPdfImageLayerProvider.serviceToken,
-      properties: {
-        bucket_name: this.processedBucket.bucketName,
-        layer_name: 'pdf-image-layer',
-        lambda_functions: [
-          textractProcessorLambda.functionName,
-          metadataExtractorLambda.functionName,
-          bedrockKnowledgeBaseLambda.functionName
-        ]
-      },
-    });
 
     // Output the state machine ARN
     new cdk.CfnOutput(this, 'DocumentProcessingStateMachineArn', {
@@ -863,10 +811,10 @@ export class DocumentProcessingCdkStack extends cdk.Stack {
       exportName: 'BedrockKnowledgeBaseFunctionName',
     });
 
-    // Output a reminder to set the inference profile ARN
-    new cdk.CfnOutput(this, 'InferenceProfileReminder', {
-      value: 'Run ./create-inference-profile.sh to create an inference profile and update the Lambda function',
-      description: 'Reminder to create an inference profile for Claude 3.5 Sonnet',
-    });
+    // Create the inference profile and update the Lambda functions
+    const inferenceProfile = new BedrockInferenceProfile(this, 'BedrockInferenceProfile', [
+      bedrockKnowledgeBaseLambda,
+      imageDescriptionGeneratorLambda
+    ]);
   }
 }
